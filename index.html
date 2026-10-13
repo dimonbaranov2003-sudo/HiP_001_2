@@ -193,6 +193,71 @@
   a.card.card-tile .card-date svg{width:26px; height:26px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;}
   a.card.card-tile .card-arrow-corner{right:16px; color:var(--accent);}
   a.card.card-tile .tea-logo{height:17px;}
+  /* ================= Плитки в строку, поиск и результаты на главной ================= */
+  .tiles{display:flex; gap:var(--sp-3); margin-top:var(--sp-3); overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+  .tiles::-webkit-scrollbar{display:none;}
+  .tiles a.card.card-tile{flex:0 0 calc(50% - 6px); scroll-snap-align:start; min-height:68px; padding:0 30px 0 46px; justify-content:flex-start;}
+  .tiles a.card.card-tile .card-text-center{align-items:flex-start; width:100%;}
+  .tile-fade{display:block;}
+  .tile-label{display:block; font-family:'Montserrat',sans-serif; font-weight:800; font-size:11px; line-height:1.3; letter-spacing:.03em; text-transform:uppercase; color:#F4ECDF;}
+  a.card.card-tile .card-date{left:12px;}
+  a.card.card-tile .card-arrow-corner{right:12px; font-size:.9rem;}
+  .fly-title{font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; line-height:32px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF; text-align:center;}
+  .ix-search{position:relative; margin:0 0 var(--sp-3);}
+  .ix-search::before{content:'⌕'; position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:1.2rem; font-weight:700; color:#6B5858; pointer-events:none;}
+  #ixSearch{width:100%; height:46px; padding:0 14px 0 42px; border-radius:var(--r-md); border:1.5px solid rgba(200,138,78,.55); background:#F4ECDF; color:#332C2C; font:600 1rem 'Manrope',sans-serif; box-sizing:border-box; outline:none; -webkit-appearance:none; appearance:none;}
+  #ixSearch::placeholder{color:#6D6262; font-weight:500;}
+  #ixSearch:focus{border-color:#C88A4E; box-shadow:0 0 0 3px rgba(200,138,78,.3);}
+  body.ix-on #cardsBox, body.ix-on #tiles{display:none;}
+  .ix-results[hidden]{display:none;}
+  .ix-head{display:flex; align-items:center; gap:var(--sp-2); margin:var(--sp-4) 2px var(--sp-3); font-size:1.02rem; font-weight:700; color:#F4ECDF;}
+  .ix-head:first-child{margin-top:var(--sp-1);}
+  .ix-head .n{font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:500; opacity:.7;}
+  .ix-empty{text-align:center; color:#F4ECDF; opacity:.85; font-size:.85rem; padding:22px 0;}
+  .ix-tea{--bg:#F4ECDF; --surface:#FBF9F8; --surface-2:#F3EDEC; --ink:#332C2C; --muted:#6D6262; --line:#DED4D2; --accent:#B7A8A8; --accent-ink:#6B5858;}
+  .ix-bar{--bg:#241611; --surface:#241811; --surface-2:#2C2015; --ink:#F4ECDF; --muted:#B49C89; --line:rgba(200,138,78,0.28); --accent:#C88A4E; --accent-ink:#E8B57E;}
+  .ix-tea, .ix-bar{color:var(--ink);}
+  #ixResults details.card{opacity:1;}
+  #ixResults details.card {display:block; background:var(--surface); border:1px solid var(--line);
+    border-left:4px solid var(--dot); border-radius:8px; margin-bottom:9px; overflow:hidden;
+    transition:box-shadow .18s ease, transform .18s ease;}
+  #ixResults summary.card-head {display:flex; align-items:center; justify-content:space-between; gap:10px;
+    cursor:pointer; padding:12px 12px 10px; list-style:none;}
+  #ixResults summary.card-head::-webkit-details-marker {display:none;}
+  #ixResults summary.card-head::marker {content:'';}
+  #ixResults .card-name {font-family:'Fraunces',serif; font-size:1.02rem; font-weight:500; line-height:1.25;}
+  #ixResults .prep-note {font-family:'Manrope',sans-serif; font-size:.76rem; font-weight:400; color:var(--muted); font-style:italic;}
+  #ixResults .chev {font-family:'IBM Plex Mono',monospace; color:var(--muted); font-size:.85rem;
+    transition:transform .15s ease; flex:0 0 auto;}
+  #ixResults details.card[open] .chev {transform:rotate(180deg);}
+  #ixResults .card-content {height:0; overflow:hidden;
+    transition:height .32s cubic-bezier(.4,0,.2,1);}
+  #ixResults details.card[open] .card-content {height:auto;}
+  #ixResults .card-content-inner {overflow:hidden; contain:content;}
+  #ixResults .badges {display:flex; flex-wrap:wrap; gap:5px; padding:0 12px 11px;}
+  #ixResults .badge {font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600;
+    color:var(--dot); border:1px solid var(--dot); border-radius:4px; padding:2px 7px;
+    background:color-mix(in srgb, var(--dot) 8%, transparent);}
+  #ixResults .ing-table {width:100%; border-collapse:collapse; font-size:.86rem;}
+  #ixResults .ing-table th {text-align:right; font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:.66rem;
+    color:var(--muted); padding:6px 10px; border-top:1px solid var(--line);
+    background:var(--surface-2); white-space:nowrap;}
+  #ixResults .ing-table th:first-child {text-align:left;}
+  #ixResults .ing-table td {padding:8px 10px; border-top:1px solid var(--line); vertical-align:top;}
+  #ixResults .ing-table tr:nth-child(odd) td {background:rgba(0,0,0,0.015);}
+  #ixResults .decor-box {margin:0 12px 12px; padding:9px 11px; background:var(--surface-2); border-radius:6px; border:1px solid var(--line);}
+  #ixResults .decor-title {font-family:'IBM Plex Mono',monospace; font-size:.64rem; font-weight:600;
+    color:var(--dot); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;}
+  #ixResults .decor-list {list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px;}
+  #ixResults .decor-list li {display:flex; justify-content:space-between; gap:10px; font-size:.83rem; line-height:1.4;}
+  #ixResults .decor-name {color:var(--ink);}
+  #ixResults .decor-val {font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--muted);
+    white-space:nowrap; text-align:right; flex:0 0 auto;}
+  #ixResults .card-name .hit {display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
+  #ixResults summary.card-head {padding:var(--sp-3) 14px;}
+  #ixResults .badges {padding:0 14px var(--sp-3);}
+  #ixResults .decor-box {margin:0 14px 14px;}
+  #ixResults .card-name .hit{display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
 </style>
 </head>
 <body>
@@ -210,7 +275,9 @@
 <section class="rest-panel">
 <h2 class="rest-name"><img class="rest-logo" src="logo-hacho-puri-light.png" alt="Хачо и Пури"/></h2>
 <div class="divider"></div>
-<div class="cards">
+<div class="search-row ix-search"><input id="ixSearch" type="text" autocomplete="off" placeholder="Чай, коктейль, ингредиент…"/></div>
+<div id="ixResults" class="ix-results" hidden></div>
+<div class="cards" id="cardsBox">
 <a class="card card-tea card-hero" href="chai.html" data-final-logo-height="31" data-final-logo-top="20" data-tile-width="460">
 <span class="card-text-center">
 <img class="tea-logo" src="logo-chai-wide.png" alt="Чайная карта"/>
@@ -225,18 +292,14 @@
 <span class="card-arrow-corner card-open">Открыть <i>→</i></span>
 </span>
 </a>
-<a class="card card-bar card-tile card-inventory" href="inventory.html" data-final-logo-height="32" data-final-logo-top="20" data-tile-width="420">
-<span class="card-text-center">
-<span class="card-title-text">Инвента</span>
-<span class="card-date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9 4.5V3.5h6v1"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span>
-</span>
+</div>
+<div class="tiles" id="tiles">
+<a class="card card-bar card-tile card-inventory" href="inventory.html" data-final-logo-height="32" data-final-logo-top="20" data-tile-width="420" data-fly-text="Инвента">
+<span class="card-text-center"><span class="tile-fade"><span class="card-date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16.5" rx="2"/><path d="M9 4.5V3.5h6v1"/><path d="M8.5 10h7M8.5 13.5h7M8.5 17h4"/></svg></span><span class="tile-label">Инвента</span></span></span>
 <span class="card-arrow-corner">→</span>
 </a>
-<a class="card card-bar card-tile card-banquet" href="banquet.html" data-final-logo-height="22" data-final-logo-top="25" data-tile-width="620">
-<span class="card-text-center">
-<img class="tea-logo" src="logo-banquet-wide-light.png" alt="Банкетное меню"/>
-<span class="card-date"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18"/><path d="M4.5 18a7.5 7.5 0 0 1 15 0"/><path d="M12 10.5V9"/><circle cx="12" cy="8" r="1"/><path d="M2.5 21h19"/></svg></span>
-</span>
+<a class="card card-bar card-tile card-banquet" href="banquet.html" data-final-logo-height="22" data-final-logo-top="25" data-tile-width="620" data-fly-logo="logo-banquet-wide-light.png">
+<span class="card-text-center"><span class="tile-fade"><span class="card-date"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18"/><path d="M4.5 18a7.5 7.5 0 0 1 15 0"/><path d="M12 10.5V9"/><circle cx="12" cy="8" r="1"/><path d="M2.5 21h19"/></svg></span><span class="tile-label">Банкетное<br/>меню</span></span></span>
 <span class="card-arrow-corner">→</span>
 </a>
 </div>
@@ -271,7 +334,7 @@
   var activeFlights = [];
 
   function siblingCardsOf(link){
-    var res = [], all = link.parentElement ? link.parentElement.querySelectorAll('a.card, .card.disabled') : [];
+    var panel = link.closest ? link.closest('.rest-panel') : null, res = [], all = (panel || document).querySelectorAll('a.card, .card.disabled');
     for(var i = 0; i < all.length; i++){ if(all[i] !== link) res.push(all[i]); }
     return res;
   }
@@ -354,6 +417,7 @@
       var sibsFwd = siblingCardsOf(link); for(var sf = 0; sf < sibsFwd.length; sf++) fadeOutTargets.push(sibsFwd[sf]);
       for(var pf = 0; pf < otherPanelsFwd.length; pf++) fadeOutTargets.push(otherPanelsFwd[pf]);
       if(sigFooterFwd) fadeOutTargets.push(sigFooterFwd);
+      var ixSearchFwd = document.getElementById('ixSearch'); if(ixSearchFwd && ixSearchFwd.parentElement) fadeOutTargets.push(ixSearchFwd.parentElement);
 
       for(var k = 0; k < fadeOutTargets.length; k++){
         var elOut = fadeOutTargets[k];
@@ -367,6 +431,22 @@
       var cloneLogo = clone.querySelector('.tea-logo, .bar-logo');
       var cloneDate = clone.querySelector('.card-date');
       var cloneArrow = clone.querySelector('.card-arrow-corner');
+
+      // Плитки с текстовой подписью: подпись гаснет, а ближе к концу проявляется настоящий
+      // заголовок страницы (логотип или текст) — ровно там, где он стоит в шапке.
+      var flyImg = link.getAttribute('data-fly-logo'), flyTxt = link.getAttribute('data-fly-text');
+      var tileFade = null, flyFinal = null;
+      if(flyImg || flyTxt){
+        tileFade = clone.querySelector('.tile-fade'); cloneText = null; cloneLogo = null;
+        if(flyImg){
+          flyFinal = document.createElement('img'); flyFinal.src = flyImg; flyFinal.alt = '';
+          flyFinal.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);top:' + finalLogoTop + 'px;height:' + finalLogoH + 'px;width:auto;opacity:0;pointer-events:none;';
+        } else {
+          flyFinal = document.createElement('span'); flyFinal.className = 'fly-title'; flyFinal.textContent = flyTxt;
+          flyFinal.style.cssText = 'position:fixed;left:0;right:0;top:' + finalLogoTop + 'px;opacity:0;pointer-events:none;';
+        }
+        flyFinal.classList.add('fly-final'); clone.appendChild(flyFinal);
+      }
 
       // Текст — на собственном позиционировании "поверх экрана", полностью
       // независимом от коробки вокруг. Едет туда же и с той же скоростью,
@@ -428,6 +508,8 @@
           // кнопку видимой", а не спрятать её перед переходом.
           if(cloneLogo){ cloneLogo.style.height = finalLogoH + 'px'; }
           if(cloneDate){ cloneDate.style.opacity = '0'; }
+          if(tileFade){ tileFade.style.transition = 'opacity 380ms ease'; tileFade.style.opacity = '0'; }
+          if(flyFinal){ flyFinal.style.transition = 'opacity 380ms ease ' + Math.round(TOTAL_MS * 0.62) + 'ms'; flyFinal.style.opacity = '1'; }
 
           setTimeout(goToPage, TOTAL_MS + 60);
         });
@@ -468,6 +550,7 @@
       var sibsBack = siblingCardsOf(link); for(var sb = 0; sb < sibsBack.length; sb++) targets.push(sibsBack[sb]);
       for(var po = 0; po < otherPanels.length; po++) targets.push(otherPanels[po]);
       if(sigFooter) targets.push(sigFooter);
+      var ixs = document.querySelector('.ix-search'); if(ixs) targets.push(ixs);
 
       for(var k = 0; k < targets.length; k++){
         var el = targets[k];
@@ -496,6 +579,8 @@
     var cloneArrow = clone.querySelector('.card-arrow-corner');
     var tileW = parseInt(clone.getAttribute('data-tile-width'), 10);
     if(isNaN(tileW)) tileW = 460;
+    var tileFadeB = clone.querySelector('.tile-fade'), flyFinalB = clone.querySelector('.fly-final');
+    if(flyFinalB){ cloneText = null; cloneLogo = null; }
 
     clone.style.transition =
       'top ' + TOTAL_MS + 'ms ' + EASE + ',' +
@@ -536,6 +621,8 @@
       requestAnimationFrame(function(){
         requestAnimationFrame(function(){
           restoreOtherContent(true); // отсчёт «проявления остальных» идёт от старта сжатия
+          if(flyFinalB){ flyFinalB.style.transition = 'opacity 240ms ease'; flyFinalB.style.opacity = '0'; }
+          if(tileFadeB){ tileFadeB.style.transition = 'opacity 420ms ease ' + Math.round(TOTAL_MS * 0.7) + 'ms'; tileFadeB.style.opacity = '1'; }
           var rectNow = link.getBoundingClientRect();
           var naturalTextTopNow = rectNow.top;
           if(cloneText){
@@ -621,6 +708,14 @@
     var cArrow = clone.querySelector('.card-arrow-corner'); if(cArrow) cArrow.style.opacity = '0';
     document.body.appendChild(clone);
     newLink.style.visibility = 'hidden';
+    var fImg = newLink.getAttribute('data-fly-logo'), fTxt = newLink.getAttribute('data-fly-text');
+    if(fImg || fTxt){
+      var tf = clone.querySelector('.tile-fade'); if(tf) tf.style.opacity = '0';
+      var ff;
+      if(fImg){ ff = document.createElement('img'); ff.src = fImg; ff.alt = ''; ff.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);top:' + finalLogoTop + 'px;height:' + finalLogoH + 'px;width:auto;pointer-events:none;'; }
+      else { ff = document.createElement('span'); ff.className = 'fly-title'; ff.textContent = fTxt; ff.style.cssText = 'position:fixed;left:0;right:0;top:' + finalLogoTop + 'px;pointer-events:none;'; }
+      ff.classList.add('fly-final'); clone.appendChild(ff);
+    }
 
     var sib = null, sibs = newLink.parentElement.querySelectorAll('a.card, .card.disabled');
     for(var j = 0; j < sibs.length; j++){ if(sibs[j] !== newLink){ sib = sibs[j]; break; } }
@@ -773,6 +868,65 @@
       })(old[j]);
     }
   });
+})();
+</script>
+<script>
+(function(){
+  // ---------- Быстрый поиск по чайной и барной картам: результаты прямо здесь, без перехода ----------
+  var inp=document.getElementById('ixSearch'), box=document.getElementById('ixResults');
+  if(!inp||!box) return;
+  var DB=null, loading=null;
+  function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }
+  function load(){
+    if(DB) return Promise.resolve(DB); if(loading) return loading;
+    loading=Promise.all(['chai.html','bar.html'].map(function(u){ return fetch(u).then(function(r){ if(!r.ok) throw new Error(u); return r.text(); }); })).then(function(txts){
+      DB=[];
+      txts.forEach(function(t,i){
+        var doc=new DOMParser().parseFromString(t,'text/html'), kind=i?'bar':'tea';
+        doc.querySelectorAll('details.card').forEach(function(card){
+          var nm=card.querySelector('.card-name'); if(!nm) return;
+          var c=nm.cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
+          var rows=[];
+          card.querySelectorAll('.ing-table tbody tr').forEach(function(tr){ var tds=tr.querySelectorAll('td'); if(tds.length<2||tr.classList.contains('total')) return; rows.push({n:tds[0].textContent.trim(), a:tds[1].textContent.trim()}); });
+          card.querySelectorAll('.decor-list li').forEach(function(li){ var a=li.querySelector('.decor-name'), v=li.querySelector('.decor-val'); if(a&&!/^(премикс|подача)$/i.test(a.textContent.trim())) rows.push({n:a.textContent.trim(), a:v?v.textContent.trim():''}); });
+          var holder=card.closest('[style*="--dot"]'), dot=card.style.getPropertyValue('--dot')||(holder?holder.style.getPropertyValue('--dot'):'');
+          DB.push({kind:kind, card:card, name:norm(c.textContent), rows:rows, dot:dot.trim()});
+        });
+      });
+      return DB;
+    }).catch(function(e){ loading=null; throw e; });
+    return loading;
+  }
+  var HEAD={tea:'Чайная карта', bar:'Барная карта'};
+  function render(){
+    var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0;
+    document.body.classList.toggle('ix-on',on); box.hidden=!on; box.innerHTML='';
+    if(!on) return;
+    if(!DB){ box.innerHTML='<div class="ix-empty">Ищу…</div>'; load().then(render,function(){ box.innerHTML='<div class="ix-empty">Не удалось загрузить карты для поиска</div>'; }); return; }
+    var total=0;
+    ['tea','bar'].forEach(function(kind){
+      var found=DB.filter(function(it){
+        if(it.kind!==kind) return false;
+        var hay=it.name+' '+it.rows.map(function(r){ return norm(r.n); }).join(' ');
+        return tokens.every(function(t){ return hay.indexOf(t)>-1; });
+      });
+      if(!found.length) return; total+=found.length;
+      var h=document.createElement('div'); h.className='ix-head'; h.innerHTML='<span></span><span class="n"></span>'; h.firstChild.textContent=HEAD[kind]; h.lastChild.textContent=found.length; box.appendChild(h);
+      var wrap=document.createElement('div'); wrap.className='ix-'+kind;
+      found.forEach(function(it){
+        var el=document.importNode(it.card,true); el.removeAttribute('open'); el.classList.remove('js-hidden');
+        if(it.dot) el.style.setProperty('--dot',it.dot);
+        var nm=el.querySelector('.card-name'), hits=it.rows.filter(function(r){ var k=norm(r.n); return tokens.every(function(t){ return k.indexOf(t)>-1; }); });
+        if(nm&&hits.length){ var seen={}, parts=[]; hits.forEach(function(r){ var k=norm(r.n); if(!seen[k]){ seen[k]=1; parts.push(r.n+(r.a?' — '+r.a:'')); } }); var sp=document.createElement('span'); sp.className='hit'; sp.textContent='В составе: '+parts.join(' · '); nm.appendChild(sp); }
+        wrap.appendChild(el);
+      });
+      box.appendChild(wrap);
+    });
+    if(!total) box.innerHTML='<div class="ix-empty">Ничего не найдено</div>';
+  }
+  inp.addEventListener('input',render);
+  inp.addEventListener('focus',function(){ if(inp.value){ inp.value=''; render(); } });
+  setTimeout(function(){ load().catch(function(){}); },900);
 })();
 </script>
 </body>

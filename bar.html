@@ -283,15 +283,8 @@
   #ingSearch{width:100%; font-family:'Manrope',sans-serif; font-size:1rem; font-weight:600; padding:12px 14px 12px 42px; border-radius:10px; border:1.5px solid var(--accent); background:var(--surface); color:var(--ink); outline:none; -webkit-appearance:none; appearance:none;}
   #ingSearch:focus{border-color:var(--accent-ink); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);}
   #ingSearch::placeholder{color:var(--muted); font-weight:500;}
-  .ing-res{display:none;}
-  body.ing-on .ing-res{display:block;}
-  body.ing-on main .demo-panel{display:none !important;}
-  .ing-hit{display:block; width:100%; text-align:left; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--dot,var(--accent)); border-radius:8px; padding:11px 12px; margin-bottom:9px; color:var(--ink); font:inherit; -webkit-tap-highlight-color:transparent;}
-  .ing-hit-top{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
-  .ing-hit-name{font-family:'Fraunces',serif; font-size:1.02rem; font-weight:500; line-height:1.25;}
-  .ing-hit-type{font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--muted); white-space:nowrap;}
-  .ing-hit-line{display:block; margin-top:4px; font-size:.78rem; font-weight:600; color:var(--accent-ink); line-height:1.35;}
   .ing-empty{text-align:center; color:var(--muted); font-size:.85rem; padding:26px 0;}
+  .ing-empty[hidden]{display:none;}
   /* ---------- Пересчёт премиксов ---------- */
   .scale-btn{display:block; margin:14px auto 4px; background:none; border:1.5px solid var(--accent); color:var(--accent-ink); font:700 .8rem 'Manrope',sans-serif; border-radius:9px; padding:9px 14px; -webkit-tap-highlight-color:transparent;}
   .scale-banner{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 12px; padding:9px 12px; border:1px dashed var(--accent); border-radius:9px; font-size:.8rem; font-weight:600; color:var(--accent-ink);}
@@ -346,6 +339,12 @@
   .inv-sheet, .sc-sheet{border-radius:var(--r-xl) var(--r-xl) 0 0;}
   .brand{--logo-h:27px;}
   .cat-head h2{font-weight:700;}
+  /* поиск по месту: показываем все разделы, но только подходящие карточки */
+  body.ing-on main .demo-panel{display:block !important;}
+  body.ing-on main .demo-panel.js-empty{display:none !important;}
+  details.card.js-hidden{display:none !important;}
+  body.ing-on .cat-note, body.ing-on .scale-btn, body.ing-on .scale-banner{display:none !important;}
+  .card-name .hit{display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
 </style></style>
 </head>
 <body>
@@ -388,7 +387,6 @@
 </nav>
 </header>
 <main id="app">
-<section class="ing-res" id="ingRes"><div class="cat-head"><span class="dot"></span><h2>Где используется</h2><span class="n" id="ingN"></span></div><div id="ingList"></div></section>
 <section class="demo-panel" data-cat="sets">
 <div class="cat-head"><span class="dot"></span><h2>Сеты</h2><span class="n">4</span></div>
 <p class="cat-note">Премиксы для сетов шотов: без шейкера и льда, вода заменяет растаявший лёд. Перед розливом бутылку встряхнуть, хранить в холодильнике, подавать ледяным.</p>
@@ -535,6 +533,7 @@
 
 <button type="button" class="calc-reset" id="calcReset">Сбросить</button>
 </section>
+<div class="ing-empty" id="ingEmpty" hidden>Такого ингредиента нет ни в одной позиции</div>
 </main>
 <footer>
   <div class="foot-date">Актуально на 05.10.2026</div>
@@ -839,13 +838,12 @@
 </div></div>
 <script>
 (function(){
-  // ---------- Поиск по ингредиенту: какие позиции затронет, если он закончится ----------
-  var inp=document.getElementById('ingSearch'), box=document.getElementById('ingList'), cnt=document.getElementById('ingN');
+  // ---------- Поиск по ингредиенту: карточки фильтруются прямо на месте, как в чайной ----------
+  var inp=document.getElementById('ingSearch'), empty=document.getElementById('ingEmpty');
   if(!inp) return;
-  var TYPE={sets:'Сет',cocktail:'Коктейль',premix:'Премикс'}, items=[];
   function norm(s){ return (s||'').toLowerCase().replace(/ё/g,'е'); }
-  document.querySelectorAll('.demo-panel[data-cat]').forEach(function(panel){
-    var cat=panel.getAttribute('data-cat'); if(!TYPE[cat]) return;
+  var items=[], panels=document.querySelectorAll('.demo-panel[data-cat]');
+  panels.forEach(function(panel){
     panel.querySelectorAll('details.card').forEach(function(card){
       var c=card.querySelector('.card-name').cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
       var rows=[];
@@ -862,33 +860,23 @@
         var n=a.textContent.trim(); if(/^(премикс|подача)$/i.test(n)) return;
         rows.push({n:n, a:'в сборке '+(v?v.textContent.trim():'')});
       });
-      items.push({card:card,cat:cat,name:c.textContent.trim(),rows:rows,color:getComputedStyle(card).getPropertyValue('--dot').trim()});
+      items.push({card:card, name:norm(c.textContent), rows:rows});
     });
   });
   function render(){
-    var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0;
-    document.body.classList.toggle('ing-on',on); box.innerHTML=''; cnt.textContent='';
-    if(!on) return;
-    var total=0;
+    var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0, any=false;
+    document.body.classList.toggle('ing-on',on);
     items.forEach(function(it){
+      var nm=it.card.querySelector('.card-name'), old=nm.querySelector('.hit'); if(old) old.remove();
+      if(!on){ it.card.classList.remove('js-hidden'); return; }
       var hits=it.rows.filter(function(r){ var s=norm(r.n); return tokens.every(function(t){ return s.indexOf(t)>-1; }); });
-      if(!hits.length) return; total++;
-      var b=document.createElement('button'); b.type='button'; b.className='ing-hit'; if(it.color) b.style.setProperty('--dot',it.color);
-      var top=document.createElement('span'); top.className='ing-hit-top';
-      var nm=document.createElement('span'); nm.className='ing-hit-name'; nm.textContent=it.name;
-      var ty=document.createElement('span'); ty.className='ing-hit-type'; ty.textContent=TYPE[it.cat];
-      top.appendChild(nm); top.appendChild(ty); b.appendChild(top);
-      hits.forEach(function(h){ var l=document.createElement('span'); l.className='ing-hit-line'; l.textContent=h.n+' — '+h.a; b.appendChild(l); });
-      b.addEventListener('click',function(){ go(it); });
-      box.appendChild(b);
+      var byName=tokens.every(function(t){ return it.name.indexOf(t)>-1; }), ok=byName||hits.length>0;
+      it.card.classList.toggle('js-hidden',!ok);
+      if(ok){ any=true; }
+      if(hits.length){ var h=document.createElement('span'); h.className='hit'; h.textContent='В составе: '+hits.map(function(r){ return r.n+' — '+r.a; }).join(' · '); nm.appendChild(h); }
     });
-    cnt.textContent=total;
-    if(!total){ var e=document.createElement('div'); e.className='ing-empty'; e.textContent='Такого ингредиента нет ни в одной позиции'; box.appendChild(e); }
-  }
-  function go(it){
-    inp.value=''; render();
-    var r=document.getElementById('tab-'+it.cat); if(r){ r.checked=true; r.dispatchEvent(new Event('change',{bubbles:true})); }
-    setTimeout(function(){ if(!it.card.open){ var s=it.card.querySelector('summary'); if(s) s.click(); } it.card.scrollIntoView({block:'start',behavior:'smooth'}); },90);
+    panels.forEach(function(p){ p.classList.toggle('js-empty', on && !p.querySelector('details.card:not(.js-hidden)')); });
+    if(empty) empty.hidden=!(on&&!any);
   }
   inp.addEventListener('input',render);
   inp.addEventListener('focus',function(){ if(inp.value){ inp.value=''; render(); } });
