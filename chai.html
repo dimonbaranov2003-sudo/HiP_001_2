@@ -1254,6 +1254,31 @@
   }
   function dropVeil(v){ if(v && v.parentNode) v.parentNode.removeChild(v); }
 
+  // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
+  // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
+  // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
+  var SLIDE_MS = 420;
+  function slideOut(to, dir, done){
+    var v = makeVeil(to), st = v.style;
+    v.classList.add('nav-sheet');
+    st.opacity = '1'; st.pointerEvents = 'auto';
+    st.transform = 'translateX(' + (dir * 100) + '%)';
+    st.boxShadow = (dir > 0 ? '-14px' : '14px') + ' 0 30px rgba(0,0,0,.28)';
+    var b = document.body;
+    b.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1), filter ' + SLIDE_MS + 'ms ease';
+    void v.offsetHeight;
+    st.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1)';
+    requestAnimationFrame(function(){
+      st.transform = 'translateX(0)';
+      b.style.transform = 'translateX(' + (-dir * 26) + '%)'; b.style.filter = 'brightness(.72)';
+    });
+    setTimeout(done, SLIDE_MS + 40);
+  }
+  function resetBody(){
+    var bd = document.body; bd.style.transition = 'none'; bd.style.transform = ''; bd.style.filter = '';
+    void bd.offsetHeight; bd.style.transition = '';
+  }
+
   // ----- Приход -----
   var flag = null;
   try{ flag = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); }catch(e){}
@@ -1290,15 +1315,10 @@
     if(leaving) return;
     leaving = true;
     var href = a.getAttribute('href');
-    var veil = makeVeil(to);
-    veil.style.pointerEvents = 'auto';
     if(themeMeta) themeMeta.setAttribute('content', SKINS[to].theme);
     try{ sessionStorage.setItem(KEY, to + '|' + Date.now()); if(to !== 'home') sessionStorage.setItem('lastCard', to); }catch(err){}
-    void veil.offsetHeight;
-    veil.style.transition = 'opacity ' + FADE_IN + 'ms ease';
-    requestAnimationFrame(function(){ veil.style.opacity = '1'; });
     // между картами — replace: в истории остаётся «главная → карта», и стрелка «назад» всегда ведёт на главную
-    setTimeout(function(){ if(to === 'home'){ window.location.href = href; } else { window.location.replace(href); } }, FADE_IN + 40);
+    slideOut(to, to === 'home' ? -1 : 1, function(){ if(to === 'home'){ window.location.href = href; } else { window.location.replace(href); } });
   }
   var links = document.querySelectorAll('a[data-nav]:not(#backBtn)');
   for(var i = 0; i < links.length; i++){ links[i].addEventListener('click', onNavClick); }
@@ -1326,7 +1346,7 @@
   // плавно убираем его и возвращаем свой цвет системной шторки.
   window.addEventListener('pageshow', function(ev){
     if(!ev.persisted) return;
-    leaving = false;
+    leaving = false; resetBody();
     try{ sessionStorage.removeItem(KEY); }catch(err){}
     if(themeMeta && ownTheme) themeMeta.setAttribute('content', ownTheme);
     var old = document.querySelectorAll('.nav-veil');

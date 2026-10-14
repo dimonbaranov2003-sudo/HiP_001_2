@@ -217,47 +217,6 @@
   .ix-tea{--bg:#F4ECDF; --surface:#FBF9F8; --surface-2:#F3EDEC; --ink:#332C2C; --muted:#6D6262; --line:#DED4D2; --accent:#B7A8A8; --accent-ink:#6B5858;}
   .ix-bar{--bg:#241611; --surface:#241811; --surface-2:#2C2015; --ink:#F4ECDF; --muted:#B49C89; --line:rgba(200,138,78,0.28); --accent:#C88A4E; --accent-ink:#E8B57E;}
   .ix-tea, .ix-bar{color:var(--ink);}
-  #ixResults details.card{opacity:1;}
-  #ixResults details.card {display:block; background:var(--surface); border:1px solid var(--line);
-    border-left:4px solid var(--dot); border-radius:8px; margin-bottom:9px; overflow:hidden;
-    transition:box-shadow .18s ease, transform .18s ease;}
-  #ixResults summary.card-head {display:flex; align-items:center; justify-content:space-between; gap:10px;
-    cursor:pointer; padding:12px 12px 10px; list-style:none;}
-  #ixResults summary.card-head::-webkit-details-marker {display:none;}
-  #ixResults summary.card-head::marker {content:'';}
-  #ixResults .card-name {font-family:'Fraunces',serif; font-size:1.02rem; font-weight:500; line-height:1.25;}
-  #ixResults .prep-note {font-family:'Manrope',sans-serif; font-size:.76rem; font-weight:400; color:var(--muted); font-style:italic;}
-  #ixResults .chev {font-family:'IBM Plex Mono',monospace; color:var(--muted); font-size:.85rem;
-    transition:transform .15s ease; flex:0 0 auto;}
-  #ixResults details.card[open] .chev {transform:rotate(180deg);}
-  #ixResults .card-content {height:0; overflow:hidden;
-    transition:height .32s cubic-bezier(.4,0,.2,1);}
-  #ixResults details.card[open] .card-content {height:auto;}
-  #ixResults .card-content-inner {overflow:hidden; contain:content;}
-  #ixResults .badges {display:flex; flex-wrap:wrap; gap:5px; padding:0 12px 11px;}
-  #ixResults .badge {font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600;
-    color:var(--dot); border:1px solid var(--dot); border-radius:4px; padding:2px 7px;
-    background:color-mix(in srgb, var(--dot) 8%, transparent);}
-  #ixResults .ing-table {width:100%; border-collapse:collapse; font-size:.86rem;}
-  #ixResults .ing-table th {text-align:right; font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:.66rem;
-    color:var(--muted); padding:6px 10px; border-top:1px solid var(--line);
-    background:var(--surface-2); white-space:nowrap;}
-  #ixResults .ing-table th:first-child {text-align:left;}
-  #ixResults .ing-table td {padding:8px 10px; border-top:1px solid var(--line); vertical-align:top;}
-  #ixResults .ing-table tr:nth-child(odd) td {background:rgba(0,0,0,0.015);}
-  #ixResults .decor-box {margin:0 12px 12px; padding:9px 11px; background:var(--surface-2); border-radius:6px; border:1px solid var(--line);}
-  #ixResults .decor-title {font-family:'IBM Plex Mono',monospace; font-size:.64rem; font-weight:600;
-    color:var(--dot); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;}
-  #ixResults .decor-list {list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px;}
-  #ixResults .decor-list li {display:flex; justify-content:space-between; gap:10px; font-size:.83rem; line-height:1.4;}
-  #ixResults .decor-name {color:var(--ink);}
-  #ixResults .decor-val {font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--muted);
-    white-space:nowrap; text-align:right; flex:0 0 auto;}
-  #ixResults .card-name .hit {display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
-  #ixResults summary.card-head {padding:var(--sp-3) 14px;}
-  #ixResults .badges {padding:0 14px var(--sp-3);}
-  #ixResults .decor-box {margin:0 14px 14px;}
-  #ixResults .card-name .hit{display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
 </style>
 </head>
 <body>
@@ -278,14 +237,14 @@
 <div class="search-row ix-search"><input id="ixSearch" type="text" autocomplete="off" placeholder="Найти чай или коктейль…"/></div>
 <div id="ixResults" class="ix-results" hidden></div>
 <div class="cards" id="cardsBox">
-<a class="card card-tea card-hero" data-nav="chai" href="chai.html" data-final-logo-height="31" data-final-logo-top="20" data-tile-width="460">
+<a class="card card-tea card-hero" href="chai.html" data-final-logo-height="31" data-final-logo-top="20" data-tile-width="460">
 <span class="card-text-center">
 <img class="tea-logo" src="logo-chai-wide.png" alt="Чайная карта"/>
 <span class="card-date">27.07.2026</span>
 <span class="card-arrow-corner card-open">Открыть <i>→</i></span>
 </span>
 </a>
-<a class="card card-bar card-hero" data-nav="bar" href="bar.html" data-final-logo-height="27" data-final-logo-top="22" data-tile-width="420">
+<a class="card card-bar card-hero" href="bar.html" data-final-logo-height="27" data-final-logo-top="22" data-tile-width="420">
 <span class="card-text-center">
 <img class="bar-logo" src="logo-bar-wide-light.png" alt="Барная карта"/>
 <span class="card-date">05.10.2026</span>
@@ -517,8 +476,8 @@
     });
   }
 
-  var flyLinks = document.querySelectorAll('a.card.card-tea, a.card.card-bar');
-  // вылет карточки на весь экран отключён: переходы идут через плавную смену темы (см. скрипт ниже)
+  var flyLinks = document.querySelectorAll('a.card.card-hero');
+  for(var i = 0; i < flyLinks.length; i++){ attachFly(flyLinks[i]); }
 
   // ---------- Возврат назад без перезагрузки ----------
   // Если браузер восстанавливает эту страницу из bfcache (кнопка "назад" после
@@ -805,6 +764,31 @@
   }
   function dropVeil(v){ if(v && v.parentNode) v.parentNode.removeChild(v); }
 
+  // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
+  // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
+  // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
+  var SLIDE_MS = 420;
+  function slideOut(to, dir, done){
+    var v = makeVeil(to), st = v.style;
+    v.classList.add('nav-sheet');
+    st.opacity = '1'; st.pointerEvents = 'auto';
+    st.transform = 'translateX(' + (dir * 100) + '%)';
+    st.boxShadow = (dir > 0 ? '-14px' : '14px') + ' 0 30px rgba(0,0,0,.28)';
+    var b = document.body;
+    b.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1), filter ' + SLIDE_MS + 'ms ease';
+    void v.offsetHeight;
+    st.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1)';
+    requestAnimationFrame(function(){
+      st.transform = 'translateX(0)';
+      b.style.transform = 'translateX(' + (-dir * 26) + '%)'; b.style.filter = 'brightness(.72)';
+    });
+    setTimeout(done, SLIDE_MS + 40);
+  }
+  function resetBody(){
+    var bd = document.body; bd.style.transition = 'none'; bd.style.transform = ''; bd.style.filter = '';
+    void bd.offsetHeight; bd.style.transition = '';
+  }
+
   // ----- Приход -----
   var flag = null;
   try{ flag = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); }catch(e){}
@@ -843,23 +827,27 @@
     if(leaving) return;
     leaving = true;
     var href = a.getAttribute('href');
-    var veil = makeVeil(to);
-    veil.style.pointerEvents = 'auto';
     if(themeMeta) themeMeta.setAttribute('content', SKINS[to].theme);
     try{ sessionStorage.setItem(KEY, to + '|' + Date.now()); }catch(err){}
-    void veil.offsetHeight;
-    veil.style.transition = 'opacity ' + FADE_IN + 'ms ease';
-    requestAnimationFrame(function(){ veil.style.opacity = '1'; });
-    setTimeout(function(){ window.location.href = href; }, FADE_IN + 40);
+    slideOut(to, 1, function(){ window.location.href = href; });
   }
   var links = document.querySelectorAll('a[data-nav]');
   for(var i = 0; i < links.length; i++){ links[i].addEventListener('click', onNavClick); }
 
   // Кнопка «назад» вернула страницу из кэша браузера, пока поверх был цвет —
   // плавно убираем его и возвращаем свой цвет системной шторки.
+  window.addEventListener('pagehide', function(ev){
+    if(!ev.persisted) return;
+    var sh = document.querySelectorAll('.nav-sheet'), h = SKINS.home;
+    for(var q = 0; q < sh.length; q++){
+      sh[q].style.backgroundColor = h.bg;
+      sh[q].style.backgroundImage = 'linear-gradient(' + h.tint + ',' + h.tint + '), url("' + h.img + '")';
+      sh[q].style.backgroundSize = h.size + ', ' + h.size;
+    }
+  });
   window.addEventListener('pageshow', function(ev){
     if(!ev.persisted) return;
-    leaving = false;
+    leaving = false; resetBody();
     try{ sessionStorage.removeItem(KEY); }catch(err){}
     if(themeMeta && ownTheme) themeMeta.setAttribute('content', ownTheme);
     var old = document.querySelectorAll('.nav-veil');
@@ -879,7 +867,22 @@
   // ---------- Быстрый поиск по чайной и барной картам: результаты прямо здесь, без перехода ----------
   var inp=document.getElementById('ixSearch'), box=document.getElementById('ixResults');
   if(!inp||!box) return;
-  var DB=null, loading=null;
+  var DB=null, loading=null, CSSB={}, SHEETS={};
+  // Карточка рисуется в изолированной оболочке (Shadow DOM) со стилями самой страницы —
+  // поэтому выглядит ровно так же, как в чайной и барной картах.
+  function cardCss(css){
+    var bm=css.match(/(?:^|[}\s])body\s*\{([^}]*)\}/), base='';
+    if(bm){ base=bm[1].split(';').filter(function(d){ return /^\s*(font-family|font-size|line-height|color|font-weight|letter-spacing)\s*:/.test(d); }).join(';'); }
+    return ':host{display:block;'+base+'} *,*::before,*::after{box-sizing:border-box;} '+css.replace(/:root/g,':host');
+  }
+  function mount(kind, card){
+    var host=document.createElement('div'), sr=host.attachShadow({mode:'open'}), css=CSSB[kind]||'';
+    try{
+      if(!SHEETS[kind] && window.CSSStyleSheet && CSSStyleSheet.prototype.replaceSync){ SHEETS[kind]=new CSSStyleSheet(); SHEETS[kind].replaceSync(css); }
+      if(!SHEETS[kind]) throw 0; sr.adoptedStyleSheets=[SHEETS[kind]];
+    }catch(e){ var st=document.createElement('style'); st.textContent=css; sr.appendChild(st); }
+    sr.appendChild(card); return host;
+  }
   function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }
   function load(){
     if(DB) return Promise.resolve(DB); if(loading) return loading;
@@ -887,6 +890,7 @@
       DB=[];
       txts.forEach(function(t,i){
         var doc=new DOMParser().parseFromString(t,'text/html'), kind=i?'bar':'tea';
+        var stEl=doc.querySelector('style'); CSSB[kind]=cardCss(stEl?stEl.textContent:'');
         doc.querySelectorAll('details.card').forEach(function(card){
           var nm=card.querySelector('.card-name'); if(!nm) return;
           var c=nm.cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
@@ -919,7 +923,7 @@
       found.forEach(function(it){
         var el=document.importNode(it.card,true); el.removeAttribute('open'); el.classList.remove('js-hidden');
         if(it.dot) el.style.setProperty('--dot',it.dot);
-        wrap.appendChild(el);
+        wrap.appendChild(mount(kind, el));
       });
       box.appendChild(wrap);
     });
