@@ -745,20 +745,20 @@
   // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
   // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
   // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
-  var SLIDE_MS = 420;
+  var SLIDE_MS = 560;
   function slideOut(to, dir, done){
     var v = makeVeil(to), st = v.style;
     v.classList.add('nav-sheet');
     st.opacity = '1'; st.pointerEvents = 'auto';
     st.transform = 'translateX(' + (dir * 100) + '%)';
-    st.boxShadow = (dir > 0 ? '-14px' : '14px') + ' 0 30px rgba(0,0,0,.28)';
+    st.boxShadow = (dir > 0 ? '-14px' : '14px') + ' 0 36px rgba(0,0,0,.18)';
     var b = document.body;
-    b.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1), filter ' + SLIDE_MS + 'ms ease';
+    b.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.32,.08,.24,1), filter ' + SLIDE_MS + 'ms ease';
     void v.offsetHeight;
-    st.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1)';
+    st.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.32,.08,.24,1)';
     requestAnimationFrame(function(){
       st.transform = 'translateX(0)';
-      b.style.transform = 'translateX(' + (-dir * 26) + '%)'; b.style.filter = 'brightness(.72)';
+      b.style.transform = 'translateX(' + (-dir * 20) + '%)'; b.style.filter = 'brightness(.86)';
     });
     setTimeout(done, SLIDE_MS + 40);
   }
@@ -889,10 +889,11 @@
     items.forEach(function(it){
       var nm=it.card.querySelector('.card-name'), old=nm.querySelector('.hit'); if(old) old.remove();
       if(!on){ it.card.classList.remove('js-hidden'); return; }
-      var hits=it.rows.filter(function(r){ var s=norm(r.n); return tokens.every(function(t){ return s.indexOf(t)>-1; }); });
-      var byName=tokens.every(function(t){ return it.name.indexOf(t)>-1; }), ok=byName||hits.length>0;
+      var hay=it.name+' '+it.rows.map(function(r){ return norm(r.n); }).join(' ');
+      var ok=tokens.every(function(t){ return hay.indexOf(t)>-1; });
       it.card.classList.toggle('js-hidden',!ok);
-      if(ok){ any=true; }
+      if(!ok) return; any=true;
+      var hits=it.rows.filter(function(r){ var k=norm(r.n); return tokens.some(function(t){ return k.indexOf(t)>-1; }); });
       if(hits.length){ var h=document.createElement('span'); h.className='hit'; h.textContent='В составе: '+hits.map(function(r){ return r.n+' — '+r.a; }).join(' · '); nm.appendChild(h); }
     });
     panels.forEach(function(p){ p.classList.toggle('js-empty', on && !p.querySelector('details.card:not(.js-hidden)')); });

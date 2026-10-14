@@ -767,20 +767,20 @@
   // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
   // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
   // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
-  var SLIDE_MS = 420;
+  var SLIDE_MS = 560;
   function slideOut(to, dir, done){
     var v = makeVeil(to), st = v.style;
     v.classList.add('nav-sheet');
     st.opacity = '1'; st.pointerEvents = 'auto';
     st.transform = 'translateX(' + (dir * 100) + '%)';
-    st.boxShadow = (dir > 0 ? '-14px' : '14px') + ' 0 30px rgba(0,0,0,.28)';
+    st.boxShadow = (dir > 0 ? '-14px' : '14px') + ' 0 36px rgba(0,0,0,.18)';
     var b = document.body;
-    b.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1), filter ' + SLIDE_MS + 'ms ease';
+    b.style.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.32,.08,.24,1), filter ' + SLIDE_MS + 'ms ease';
     void v.offsetHeight;
-    st.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.22,.9,.25,1)';
+    st.transition = 'transform ' + SLIDE_MS + 'ms cubic-bezier(.32,.08,.24,1)';
     requestAnimationFrame(function(){
       st.transform = 'translateX(0)';
-      b.style.transform = 'translateX(' + (-dir * 26) + '%)'; b.style.filter = 'brightness(.72)';
+      b.style.transform = 'translateX(' + (-dir * 20) + '%)'; b.style.filter = 'brightness(.86)';
     });
     setTimeout(done, SLIDE_MS + 40);
   }
