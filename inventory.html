@@ -6,8 +6,7 @@
 <meta content="#241611" name="theme-color"/>
 <title>Инвента</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&amp;family=Manrope:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&amp;family=Manrope:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --bg:#241611; --surface:#241811; --surface-2:#2C2015; --ink:#F4ECDF; --muted:#B49C89;
@@ -351,7 +350,7 @@
   .kp-sum{font-size:1.15rem; font-weight:700; white-space:nowrap;}
   body.kp-open main{padding-bottom:340px;}
   .inv-sheet .hint{font-size:.76rem; color:var(--muted); margin:0;}
-  .brand-title{font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; line-height:30px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF;}
+  .brand-title{font-family:'Manrope',sans-serif; font-weight:800; font-size:20px; line-height:30px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF;}
 
   /* ================= ДИЗАЙН-СИСТЕМА: общая для всех страниц ================= */
   :root{--sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:28px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --h-ctl:46px; --h-pill:30px; --pad-x:16px;}
@@ -616,7 +615,7 @@
   // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
   // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
   // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
-  var SLIDE_MS = 560;
+  var SLIDE_MS = 520;
   function slideOut(to, dir, done){
     var v = makeVeil(to), st = v.style;
     v.classList.add('nav-sheet');

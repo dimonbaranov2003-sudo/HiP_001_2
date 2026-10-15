@@ -6,8 +6,7 @@
 <meta content="#B39B85" name="theme-color"/>
 <title>Wish Ember · Хачо и Пури / Пхали-Хинкали</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&amp;family=Manrope:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&amp;family=Manrope:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --page-bg:#B39B85;
@@ -173,7 +172,7 @@
   /* Кнопки главной чуть прозрачные + без стрелок справа */
   a.card{opacity:0.86;}
   /* Чай + инвента — единый светлый блок, как бар + банкет */
-  .card-title-text{display:block; font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; line-height:32px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF; text-align:center;}
+  .card-title-text{display:block; font-family:'Manrope',sans-serif; font-weight:800; font-size:20px; line-height:32px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF; text-align:center;}
   /* ================= Новый вид кнопок (по концепту) + общая система ================= */
   :root{--sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:28px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px;}
   .rest-panel{border-radius:var(--r-xl); padding:var(--sp-5) var(--sp-4) var(--sp-4);}
@@ -199,10 +198,10 @@
   .tiles a.card.card-tile{flex:0 0 calc(50% - 6px); scroll-snap-align:start; min-height:68px; padding:0 30px 0 46px; justify-content:flex-start;}
   .tiles a.card.card-tile .card-text-center{align-items:flex-start; width:100%;}
   .tile-fade{display:block;}
-  .tile-label{display:block; font-family:'Montserrat',sans-serif; font-weight:800; font-size:11px; line-height:1.3; letter-spacing:.03em; text-transform:uppercase; color:#F4ECDF;}
+  .tile-label{display:block; font-family:'Manrope',sans-serif; font-weight:800; font-size:11px; line-height:1.3; letter-spacing:.03em; text-transform:uppercase; color:#F4ECDF;}
   a.card.card-tile .card-date{left:12px;}
   a.card.card-tile .card-arrow-corner{right:12px; font-size:.9rem;}
-  .fly-title{font-family:'Montserrat',sans-serif; font-weight:800; font-size:20px; line-height:32px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF; text-align:center;}
+  .fly-title{font-family:'Manrope',sans-serif; font-weight:800; font-size:20px; line-height:32px; letter-spacing:.02em; text-transform:uppercase; color:#F4ECDF; text-align:center;}
   .ix-search{position:relative; margin:0 0 var(--sp-3);}
   .ix-search::before{content:'⌕'; position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:1.2rem; font-weight:700; color:#6B5858; pointer-events:none;}
   #ixSearch{width:100%; height:46px; padding:0 14px 0 42px; border-radius:var(--r-md); border:1.5px solid rgba(200,138,78,.55); background:#F4ECDF; color:#332C2C; font:600 1rem 'Manrope',sans-serif; box-sizing:border-box; outline:none; -webkit-appearance:none; appearance:none;}
@@ -767,7 +766,7 @@
   // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
   // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
   // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
-  var SLIDE_MS = 560;
+  var SLIDE_MS = 520;
   function slideOut(to, dir, done){
     var v = makeVeil(to), st = v.style;
     v.classList.add('nav-sheet');

@@ -357,6 +357,26 @@
   .inv-sheet button{height:var(--h-ctl); padding:0 14px;}
   .inv-sheet, .sc-sheet{border-radius:var(--r-xl) var(--r-xl) 0 0;}
   .brand{--logo-h:31px;}
+  /* ================= Плитки разделов ================= */
+  @keyframes tilesIn{from{opacity:0; transform:scale(.97) translateY(6px);} to{opacity:1; transform:none;}}
+  @keyframes secIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
+  .pills{display:none;}
+  .pill{position:relative; flex-direction:column; justify-content:space-between; align-items:flex-start; height:auto; padding:14px; border-radius:var(--r-lg); box-sizing:border-box; text-align:left; font:500 1.02rem/1.2 'Fraunces',serif; letter-spacing:-.01em; color:var(--ink); border:1px solid color-mix(in srgb, var(--dot, var(--accent)) 38%, var(--line)); background:linear-gradient(160deg, color-mix(in srgb, var(--dot, var(--accent)) 12%, var(--surface)), var(--surface)); box-shadow:0 10px 22px -14px color-mix(in srgb, var(--dot, var(--accent)) 75%, #000), inset 0 1px 0 rgba(255,255,255,.75); transition:transform .15s ease, box-shadow .15s ease; -webkit-tap-highlight-color:transparent;}
+  .pill:active{transform:scale(.97);}
+  .pill .n{position:absolute; top:14px; right:14px; margin:0; padding:0; background:none; border:none; color:var(--muted); font:600 .75rem 'IBM Plex Mono',monospace;}
+  .tile-ico{display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:12px; color:var(--dot, var(--accent)); background:color-mix(in srgb, var(--dot, var(--accent)) 16%, transparent);}
+  .tile-ico svg{width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+  .back-chip{display:none; align-items:center; gap:6px; height:34px; padding:0 14px; margin:0 0 var(--sp-3); border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface); color:var(--ink); font:700 .78rem 'Manrope',sans-serif; -webkit-tap-highlight-color:transparent;}
+  main .category, main .demo-panel{animation:secIn .3s cubic-bezier(.2,.8,.2,1) both;}
+  @media (prefers-reduced-motion:reduce){ .pills, .pill, main .category, main .demo-panel{animation:none !important;} }
+  #tab-all:checked ~ header .pills{display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:minmax(104px,1fr); gap:12px; min-height:calc(100dvh - 300px); padding:4px 0 8px; animation:tilesIn .32s cubic-bezier(.2,.8,.2,1) both;}
+  body.searching .pills{display:none !important;}
+  label.pill[for="tab-all"]{display:none !important;}
+  #tab-all:checked ~ #scroll-area main .category{display:none;}
+  body.searching #tab-all:checked ~ #scroll-area main .category{display:block;}
+  .category.js-hidden{display:none !important;}
+  #count{display:none;} body.searching #count{display:block;}
+  #tab-all:not(:checked) ~ #scroll-area main .back-chip{display:inline-flex;}
 </style>
 </head>
 <body>
@@ -400,6 +420,7 @@
 <div id="scroll-area">
 <noscript><p style="margin:14px 14px 0;">Поиск работает только с включённым JavaScript. Категории вверху и раскрытие карточек работают в любом просмотрщике, JS для них не нужен.</p></noscript>
 <main id="app">
+<label class="back-chip" for="tab-all">‹ Все разделы</label>
 <section class="category" data-cat="cold" style="--dot:var(--c-cold)">
 <div class="cat-head">
 <span class="dot"></span>
@@ -1257,7 +1278,7 @@
   // ----- Горизонтальное смещение (как открытие чата в Telegram) -----
   // Поверх страницы въезжает «лист» с цветом и узором целевой страницы, а сама страница
   // чуть уезжает в противоположную сторону и темнеет. dir: 1 — лист едет справа, -1 — слева.
-  var SLIDE_MS = 560;
+  var SLIDE_MS = 520;
   function slideOut(to, dir, done){
     var v = makeVeil(to), st = v.style;
     v.classList.add('nav-sheet');
@@ -1385,6 +1406,27 @@
   s.addEventListener('input',upd);
   s.addEventListener('focus',function(){ setTimeout(upd,0); });
   document.querySelectorAll('input.tab-radio').forEach(function(r){ r.addEventListener('change',function(){ setTimeout(upd,0); }); });
+})();
+</script>
+<script>
+(function(){
+  // Плитки разделов: иконки и цвета, переход вверх к началу при смене раздела
+  var ICONS={"cold": "<path d=\"M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9\"/><path d=\"M9.5 4.8 12 6.5l2.5-1.7M9.5 19.2 12 17.5l2.5 1.7\"/>", "detox": "<path d=\"M5 19c0-9 5-14 14-14 0 9-5 14-14 14z\"/><path d=\"M5 19c3-4 6-7 10-10\"/>", "fruit": "<circle cx=\"8\" cy=\"16\" r=\"3.5\"/><circle cx=\"16\" cy=\"15\" r=\"3.5\"/><path d=\"M8 12.5C9 8 11 6 14 4M16 11.5c0-3-1-5-2-7.5\"/>", "milk": "<path d=\"M7 4h10l-1.2 15a1.5 1.5 0 0 1-1.5 1.4H9.7a1.5 1.5 0 0 1-1.5-1.4z\"/><path d=\"M7.4 9h9.2\"/>", "classic": "<path d=\"M4 9h13v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z\"/><path d=\"M17 10h1.5a2.5 2.5 0 0 1 0 5H16.5\"/><path d=\"M8 4c0 1.5 1.5 1.5 1.5 3M12 4c0 1.5 1.5 1.5 1.5 3\"/>", "summer": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4\"/>", "autumn": "<path d=\"M12 3c4 3 6 6 6 10a6 6 0 0 1-12 0c0-4 2-7 6-10z\"/><path d=\"M12 21v-9\"/>", "toppings": "<circle cx=\"7\" cy=\"8\" r=\"2\"/><circle cx=\"16\" cy=\"7\" r=\"2.5\"/><circle cx=\"12\" cy=\"15\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"1.5\"/>", "sets": "<path d=\"M9 3h3v4l1.5 2.5V20a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V9.5L9 7z\"/><path d=\"M16 12h4l-.7 8h-2.6z\"/>", "cocktail": "<path d=\"M4 5h16l-8 9z\"/><path d=\"M12 14v6M8 20h8\"/>", "premix": "<path d=\"M10 3h4M11 3v5l-5 9a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-5-9V3\"/><path d=\"M8.5 14h7\"/>", "calc": "<rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2\"/><path d=\"M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18h.01M12 18h.01\"/>"}, COLORS={};
+  document.querySelectorAll('.pills label.pill').forEach(function(l){
+    var id=(l.getAttribute('for')||'').replace('tab-',''), ic=ICONS[id]; if(!ic) return;
+    var sp=document.createElement('span'); sp.className='tile-ico'; sp.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+ic+'</svg>'; l.insertBefore(sp,l.firstChild);
+    if(COLORS[id]) l.style.setProperty('--dot',COLORS[id]);
+    var pn=document.querySelector('.demo-panel[data-cat="'+id+'"]');
+    if(pn && !l.querySelector('.n')){ var k=pn.querySelectorAll('details.card').length; if(k){ var nn=document.createElement('span'); nn.className='n'; nn.textContent=k; l.appendChild(nn); } }
+  });
+  document.querySelectorAll('input.tab-radio').forEach(function(r){ r.addEventListener('change',function(){ window.scrollTo(0,0); }); });
+  var s=document.getElementById('search');
+  if(s){
+    function sync(){ document.body.classList.toggle('searching', s.value.trim()!==''); }
+    s.addEventListener('input',sync); s.addEventListener('focus',function(){ setTimeout(sync,0); });
+    document.querySelectorAll('input.tab-radio').forEach(function(r){ r.addEventListener('change',function(){ setTimeout(sync,0); }); });
+    sync();
+  }
 })();
 </script>
 </body>
