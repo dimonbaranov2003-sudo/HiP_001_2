@@ -7,8 +7,19 @@
 <meta content="#F4ECDF" name="theme-color"/>
 <title>Чайная карта · 2026</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="Chaynaya_Karta_Display_Draft.ttf" rel="preload" as="font" type="font/ttf" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&amp;family=Manrope:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
 <style>
+  /* Фирменный шрифт для плиток-фильтров. Файл лежит рядом со страницами. */
+  @font-face{
+    font-family:'Chaynaya Karta Display';
+    src:url('Chaynaya_Karta_Display_Draft.ttf') format('truetype');
+    font-weight:100 900;            /* в файле одно начертание — запрещаем браузеру «дорисовывать» жирность */
+    font-style:normal;
+    font-display:swap;
+    /* вертикальные метрики в файле расходятся (hhea и win) — фиксируем одни и те же на всех устройствах */
+    ascent-override:92.8%; descent-override:24.4%; line-gap-override:0%;
+  }
   :root{
     --bg:#F4ECDF;
     --surface:#FBF9F8;
@@ -361,15 +372,17 @@
   @keyframes tilesIn{from{opacity:0; transform:scale(.97) translateY(6px);} to{opacity:1; transform:none;}}
   @keyframes secIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
   .pills{display:none;}
-  .pill{position:relative; flex-direction:column; justify-content:space-between; align-items:flex-start; height:auto; padding:14px; border-radius:var(--r-lg); box-sizing:border-box; text-align:left; font:500 1.02rem/1.2 'Fraunces',serif; letter-spacing:-.01em; color:var(--ink); border:1px solid color-mix(in srgb, var(--dot, var(--accent)) 38%, var(--line)); background:linear-gradient(160deg, color-mix(in srgb, var(--dot, var(--accent)) 12%, var(--surface)), var(--surface)); box-shadow:0 10px 22px -14px color-mix(in srgb, var(--dot, var(--accent)) 75%, #000), inset 0 1px 0 rgba(255,255,255,.75); transition:transform .15s ease, box-shadow .15s ease; -webkit-tap-highlight-color:transparent;}
+  .pill{position:relative; flex-direction:column; justify-content:space-between; align-items:flex-start; height:auto; padding:14px; border-radius:var(--r-lg); box-sizing:border-box; text-align:left; font:400 1.02rem/1.2 'Chaynaya Karta Display','Fraunces',serif; letter-spacing:.07em; color:var(--ink); border:1px solid color-mix(in srgb, var(--dot, var(--accent)) 38%, var(--line)); background:linear-gradient(160deg, color-mix(in srgb, var(--dot, var(--accent)) 12%, var(--surface)), var(--surface)); box-shadow:0 10px 22px -14px color-mix(in srgb, var(--dot, var(--accent)) 75%, #000), inset 0 1px 0 rgba(255,255,255,.75); transition:transform .15s ease, box-shadow .15s ease; -webkit-tap-highlight-color:transparent;}
   .pill:active{transform:scale(.97);}
-  .pill .n{position:absolute; top:14px; right:14px; margin:0; padding:0; background:none; border:none; color:var(--muted); font:600 .75rem 'IBM Plex Mono',monospace;}
+  /* шрифт шире прежнего — длинные названия переносятся внутри плитки, а не растягивают сетку за экран */
+  .pill{white-space:normal; min-width:0; overflow-wrap:break-word; text-wrap:balance;}
+  .pill .n{position:absolute; top:14px; right:14px; margin:0; padding:0; background:none; border:none; color:var(--muted); font:600 .75rem 'IBM Plex Mono',monospace; letter-spacing:normal;}
   .tile-ico{display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:12px; color:var(--dot, var(--accent)); background:color-mix(in srgb, var(--dot, var(--accent)) 16%, transparent);}
   .tile-ico svg{width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
   .back-chip{display:none; align-items:center; gap:6px; height:34px; padding:0 14px; margin:0 0 var(--sp-3); border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface); color:var(--ink); font:700 .78rem 'Manrope',sans-serif; -webkit-tap-highlight-color:transparent;}
   main .category, main .demo-panel{animation:secIn .3s cubic-bezier(.2,.8,.2,1) both;}
   @media (prefers-reduced-motion:reduce){ .pills, .pill, main .category, main .demo-panel{animation:none !important;} }
-  #tab-all:checked ~ header .pills{display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:minmax(104px,1fr); gap:12px; min-height:calc(100dvh - 300px); padding:4px 0 8px; animation:tilesIn .32s cubic-bezier(.2,.8,.2,1) both;}
+  #tab-all:checked ~ header .pills{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-auto-rows:minmax(104px,1fr); gap:12px; min-height:calc(100dvh - 300px); padding:4px 0 8px; animation:tilesIn .32s cubic-bezier(.2,.8,.2,1) both;}
   body.searching .pills{display:none !important;}
   label.pill[for="tab-all"]{display:none !important;}
   #tab-all:checked ~ #scroll-area main .category{display:none;}
