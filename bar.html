@@ -345,23 +345,6 @@
   details.card.js-hidden{display:none !important;}
   body.ing-on .cat-note, body.ing-on .scale-btn, body.ing-on .scale-banner{display:none !important;}
   .card-name .hit{display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
-  /* ================= Плитки разделов ================= */
-  @keyframes tilesIn{from{opacity:0; transform:scale(.97) translateY(6px);} to{opacity:1; transform:none;}}
-  @keyframes secIn{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
-  .pills{display:none;}
-  .pill{position:relative; flex-direction:column; justify-content:space-between; align-items:flex-start; height:auto; padding:14px; border-radius:var(--r-lg); box-sizing:border-box; text-align:left; font:500 1.02rem/1.2 'Fraunces',serif; letter-spacing:-.01em; color:var(--ink); border:1px solid color-mix(in srgb, var(--dot, var(--accent)) 38%, var(--line)); background:linear-gradient(160deg, color-mix(in srgb, var(--dot, var(--accent)) 24%, var(--surface)), var(--surface)); box-shadow:0 10px 22px -14px color-mix(in srgb, var(--dot, var(--accent)) 75%, #000), inset 0 1px 0 rgba(255,255,255,.06); transition:transform .15s ease, box-shadow .15s ease; -webkit-tap-highlight-color:transparent;}
-  .pill:active{transform:scale(.97);}
-  .pill .n{position:absolute; top:14px; right:14px; margin:0; padding:0; background:none; border:none; color:var(--muted); font:600 .75rem 'IBM Plex Mono',monospace;}
-  .tile-ico{display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:12px; color:var(--dot, var(--accent)); background:color-mix(in srgb, var(--dot, var(--accent)) 16%, transparent);}
-  .tile-ico svg{width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
-  .back-chip{display:none; align-items:center; gap:6px; height:34px; padding:0 14px; margin:0 0 var(--sp-3); border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface); color:var(--ink); font:700 .78rem 'Manrope',sans-serif; -webkit-tap-highlight-color:transparent;}
-  main .category, main .demo-panel{animation:secIn .3s cubic-bezier(.2,.8,.2,1) both;}
-  @media (prefers-reduced-motion:reduce){ .pills, .pill, main .category, main .demo-panel{animation:none !important;} }
-  #tab-menu:checked ~ main .demo-panel{display:none;}
-  #tab-menu:checked ~ header .pills{display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:minmax(120px,1fr); gap:12px; min-height:calc(100dvh - 280px); padding:4px 0 8px; animation:tilesIn .32s cubic-bezier(.2,.8,.2,1) both;}
-  body.ing-on .pills{display:none !important;}
-  #tab-menu:not(:checked) ~ main .back-chip{display:inline-flex;}
-  body.ing-on .back-chip{display:none !important;}
 </style></style>
 </head>
 <body>
@@ -386,8 +369,7 @@
   }
 })();
 </script>
-<input checked="" class="tab-radio" id="tab-menu" name="barcat" type="radio"/>
-<input class="tab-radio" id="tab-sets" name="barcat" type="radio"/><input class="tab-radio" id="tab-cocktail" name="barcat" type="radio"/><input class="tab-radio" id="tab-calc" name="barcat" type="radio"/><input class="tab-radio" id="tab-premix" name="barcat" type="radio"/>
+<input checked="" class="tab-radio" id="tab-sets" name="barcat" type="radio"/><input class="tab-radio" id="tab-cocktail" name="barcat" type="radio"/><input class="tab-radio" id="tab-calc" name="barcat" type="radio"/><input class="tab-radio" id="tab-premix" name="barcat" type="radio"/>
 <header class="topbar">
 <div class="brand">
 <a class="back-btn" id="backBtn" href="index.html" data-nav="home" aria-label="В меню"><svg viewBox="0 0 11 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></a>
@@ -405,7 +387,6 @@
 </nav>
 </header>
 <main id="app">
-<label class="back-chip" for="tab-menu">‹ Разделы</label>
 <section class="demo-panel" data-cat="sets">
 <div class="cat-head"><span class="dot"></span><h2>Сеты</h2><span class="n">4</span></div>
 <p class="cat-note">Премиксы для сетов шотов: без шейкера и льда, вода заменяет растаявший лёд. Перед розливом бутылку встряхнуть, хранить в холодильнике, подавать ледяным.</p>
@@ -961,20 +942,6 @@
     apply(Math.max(100,Math.min(100000,Math.round(l*1000)))); close();
   });
   document.getElementById('scReset').addEventListener('click',function(){ apply(0); });
-})();
-</script>
-<script>
-(function(){
-  // Плитки разделов: иконки и цвета, переход вверх к началу при смене раздела
-  var ICONS={"cold": "<path d=\"M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9\"/><path d=\"M9.5 4.8 12 6.5l2.5-1.7M9.5 19.2 12 17.5l2.5 1.7\"/>", "detox": "<path d=\"M5 19c0-9 5-14 14-14 0 9-5 14-14 14z\"/><path d=\"M5 19c3-4 6-7 10-10\"/>", "fruit": "<circle cx=\"8\" cy=\"16\" r=\"3.5\"/><circle cx=\"16\" cy=\"15\" r=\"3.5\"/><path d=\"M8 12.5C9 8 11 6 14 4M16 11.5c0-3-1-5-2-7.5\"/>", "milk": "<path d=\"M7 4h10l-1.2 15a1.5 1.5 0 0 1-1.5 1.4H9.7a1.5 1.5 0 0 1-1.5-1.4z\"/><path d=\"M7.4 9h9.2\"/>", "classic": "<path d=\"M4 9h13v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z\"/><path d=\"M17 10h1.5a2.5 2.5 0 0 1 0 5H16.5\"/><path d=\"M8 4c0 1.5 1.5 1.5 1.5 3M12 4c0 1.5 1.5 1.5 1.5 3\"/>", "summer": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4\"/>", "autumn": "<path d=\"M12 3c4 3 6 6 6 10a6 6 0 0 1-12 0c0-4 2-7 6-10z\"/><path d=\"M12 21v-9\"/>", "toppings": "<circle cx=\"7\" cy=\"8\" r=\"2\"/><circle cx=\"16\" cy=\"7\" r=\"2.5\"/><circle cx=\"12\" cy=\"15\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"1.5\"/>", "sets": "<path d=\"M9 3h3v4l1.5 2.5V20a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V9.5L9 7z\"/><path d=\"M16 12h4l-.7 8h-2.6z\"/>", "cocktail": "<path d=\"M4 5h16l-8 9z\"/><path d=\"M12 14v6M8 20h8\"/>", "premix": "<path d=\"M10 3h4M11 3v5l-5 9a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3l-5-9V3\"/><path d=\"M8.5 14h7\"/>", "calc": "<rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2\"/><path d=\"M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18h.01M12 18h.01\"/>"}, COLORS={"sets": "#C4455A", "cocktail": "#E0A458", "premix": "#7FB08A", "calc": "#8FB7D4"};
-  document.querySelectorAll('.pills label.pill').forEach(function(l){
-    var id=(l.getAttribute('for')||'').replace('tab-',''), ic=ICONS[id]; if(!ic) return;
-    var sp=document.createElement('span'); sp.className='tile-ico'; sp.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+ic+'</svg>'; l.insertBefore(sp,l.firstChild);
-    if(COLORS[id]) l.style.setProperty('--dot',COLORS[id]);
-    var pn=document.querySelector('.demo-panel[data-cat="'+id+'"]');
-    if(pn && !l.querySelector('.n')){ var k=pn.querySelectorAll('details.card').length; if(k){ var nn=document.createElement('span'); nn.className='n'; nn.textContent=k; l.appendChild(nn); } }
-  });
-  document.querySelectorAll('input.tab-radio').forEach(function(r){ r.addEventListener('change',function(){ window.scrollTo(0,0); }); });
 })();
 </script>
 </body>
