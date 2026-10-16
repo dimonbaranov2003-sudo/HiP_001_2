@@ -875,13 +875,59 @@
     if(bm){ base=bm[1].split(';').filter(function(d){ return /^\s*(font-family|font-size|line-height|color|font-weight|letter-spacing)\s*:/.test(d); }).join(';'); }
     return ':host{display:block;'+base+'} *,*::before,*::after{box-sizing:border-box;} '+css.replace(/:root/g,':host');
   }
+  // Плавное раскрытие карточек — та же анимация, что в самих картах; одна открытая за раз
+  var rendered=[];
+  function contentOf(d){ return d.querySelector(':scope > .card-content'); }
+  function scrollCardIntoView(d){
+    var gap=10, rect=d.getBoundingClientRect(), availableH=window.innerHeight;
+    var targetTop=rect.height<=availableH ? (availableH-rect.height)/2 : gap, delta=rect.top-targetTop;
+    if(Math.abs(delta)>4) window.scrollBy({top:delta, behavior:'smooth'});
+  }
+  function closeCard(d){
+    if(!d.hasAttribute('open')) return;
+    var content=contentOf(d); if(!content){ d.removeAttribute('open'); return; }
+    var current=content.scrollHeight;
+    content.style.willChange='height'; content.style.transition='none'; content.style.height=current+'px';
+    content.getBoundingClientRect();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ content.style.transition='height .3s cubic-bezier(.4,0,.2,1)'; content.style.height='0px'; }); });
+    var onEnd=function(e){
+      if(e.target!==content||e.propertyName!=='height') return;
+      content.removeEventListener('transitionend',onEnd);
+      d.removeAttribute('open'); content.style.transition=''; content.style.height=''; content.style.willChange='';
+    };
+    content.addEventListener('transitionend',onEnd);
+  }
+  function openCard(d){
+    if(d.hasAttribute('open')) return;
+    d.setAttribute('open','');
+    var content=contentOf(d); if(!content) return;
+    content.style.willChange='height'; content.style.transition='none'; content.style.height='0px';
+    content.getBoundingClientRect();
+    var target=content.scrollHeight;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ content.style.transition='height .36s cubic-bezier(.4,0,.2,1)'; content.style.height=target+'px'; }); });
+    var onEnd=function(e){
+      if(e.target!==content||e.propertyName!=='height') return;
+      content.removeEventListener('transitionend',onEnd);
+      content.style.transition=''; content.style.height='auto'; content.style.willChange='';
+      scrollCardIntoView(d);
+    };
+    content.addEventListener('transitionend',onEnd);
+  }
+  function wire(d){
+    var summary=d.querySelector(':scope > summary'); if(!summary) return;
+    rendered.push(d);
+    summary.addEventListener('click',function(e){
+      e.preventDefault();
+      if(!d.hasAttribute('open')){ rendered.forEach(function(o){ if(o!==d) closeCard(o); }); openCard(d); } else closeCard(d);
+    });
+  }
   function mount(kind, card){
     var host=document.createElement('div'), sr=host.attachShadow({mode:'open'}), css=CSSB[kind]||'';
     try{
       if(!SHEETS[kind] && window.CSSStyleSheet && CSSStyleSheet.prototype.replaceSync){ SHEETS[kind]=new CSSStyleSheet(); SHEETS[kind].replaceSync(css); }
       if(!SHEETS[kind]) throw 0; sr.adoptedStyleSheets=[SHEETS[kind]];
     }catch(e){ var st=document.createElement('style'); st.textContent=css; sr.appendChild(st); }
-    sr.appendChild(card); return host;
+    sr.appendChild(card); wire(card); return host;
   }
   function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }
   function load(){
@@ -908,7 +954,7 @@
   var HEAD={tea:'Чайная карта', bar:'Барная карта'};
   function render(){
     var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0;
-    document.body.classList.toggle('ix-on',on); box.hidden=!on; box.innerHTML='';
+    document.body.classList.toggle('ix-on',on); box.hidden=!on; box.innerHTML=''; rendered=[];
     if(!on) return;
     if(!DB){ box.innerHTML='<div class="ix-empty">Ищу…</div>'; load().then(render,function(){ box.innerHTML='<div class="ix-empty">Не удалось загрузить карты для поиска</div>'; }); return; }
     var total=0;
