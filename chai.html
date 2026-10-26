@@ -1394,7 +1394,7 @@
   var KIND='tea', KEY='hp_recent', MAX=6, OK=/^(#[0-9a-f]{3,8}|(rgb|hsl)a?\([\d\s.,%\/deg-]+\))$/i;
   function titleOf(card){
     var nm=card.querySelector('.card-name'); if(!nm) return '';
-    var c=nm.cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
+    var c=nm.cloneNode(true); c.querySelectorAll('.prep-note,.hit').forEach(function(x){ x.remove(); });
     return c.textContent.replace(/\s+/g,' ').trim();
   }
   function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }

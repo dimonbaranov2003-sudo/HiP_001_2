@@ -980,7 +980,7 @@
   var HEAD={tea:'Чайная карта', bar:'Барная карта'};
   function render(){
     var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0;
-    recentMode=false; box.classList.remove('ix-anim');
+    recentMode=false; dropFly(); box.classList.remove('ix-anim');
     document.body.classList.toggle('ix-on',on); box.hidden=!on; box.innerHTML=''; rendered=[];
     if(!on){ rrender(); return; }
     if(!DB){ box.innerHTML='<div class="ix-empty">Ищу…</div>'; load().then(render,function(){ box.innerHTML='<div class="ix-empty">Не удалось загрузить карты для поиска</div>'; }); return; }
@@ -1022,7 +1022,7 @@
   }
   function titleOf(d){
     var nm=d.querySelector('.card-name'); if(!nm) return '';
-    var c=nm.cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
+    var c=nm.cloneNode(true); c.querySelectorAll('.prep-note,.hit').forEach(function(x){ x.remove(); });
     return c.textContent.replace(/\s+/g,' ').trim();
   }
   function rpushCard(kind,d){
@@ -1042,23 +1042,60 @@
       var b=document.createElement('button'); b.type='button'; b.className='rc rc-'+it.k; b.setAttribute('role','listitem');
       if(it.d && COLOR_OK.test(it.d)) b.style.setProperty('--rc',it.d);
       b.textContent=it.n; b.title=it.n;
-      b.addEventListener('click',function(){ openRecent(it); });
+      b.addEventListener('click',function(){ openRecent(it,b); });
       rbox.appendChild(b);
     });
     rbox.scrollLeft=0; rfade();
   }
   function exitRecent(){
-    recentMode=false; box.classList.remove('ix-anim'); box.innerHTML=''; box.hidden=true; rendered=[];
+    recentMode=false; dropFly(); box.classList.remove('ix-anim'); box.innerHTML=''; box.hidden=true; rendered=[];
     document.body.classList.remove('ix-on'); rrender();
     window.scrollTo({top:0});
   }
-  function openRecent(it){
+  // ---------- Перелёт: маленькая плашка из ленты вырастает в шапку карточки, и карточка раскрывается ----------
+  var flyEl=null, REDUCE=!!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function dropFly(){ if(flyEl){ if(flyEl.parentNode) flyEl.parentNode.removeChild(flyEl); flyEl=null; } }
+  function startFly(chip){
+    dropFly(); if(!chip || REDUCE) return null;
+    var r=chip.getBoundingClientRect(), cs=getComputedStyle(chip), f=document.createElement('div');
+    f.className='rc-fly'; f.textContent=chip.textContent;
+    f.style.cssText='position:fixed;z-index:60;pointer-events:none;box-sizing:border-box;display:flex;align-items:center;white-space:nowrap;overflow:hidden;'
+      +'left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;padding:0 12px;'
+      +'border:'+cs.borderTopWidth+' solid '+cs.borderTopColor+';border-radius:'+cs.borderTopLeftRadius+';'
+      +'background-color:'+cs.backgroundColor+';color:'+cs.color+';font-family:'+cs.fontFamily+';font-size:'+cs.fontSize+';font-weight:'+cs.fontWeight+';line-height:1;';
+    document.body.appendChild(f); flyEl=f; return f;
+  }
+  function landFly(f, el, host, done){
+    var sum=el.querySelector(':scope > summary'); if(!sum){ done(); return; }
+    var r=sum.getBoundingClientRect(), cs=getComputedStyle(el), nm=el.querySelector('.card-name'), ncs=nm?getComputedStyle(nm):null;
+    var bg=cs.backgroundColor; if(!bg||/rgba\(0,\s*0,\s*0,\s*0\)|transparent/.test(bg)) bg=getComputedStyle(sum).backgroundColor;
+    void f.offsetWidth;
+    f.style.transition=['left','top','width','height','border-radius','background-color','border-color','color','font-size','padding-left'].map(function(p){ return p+' .46s cubic-bezier(.4,0,.2,1)'; }).join(',');
+    requestAnimationFrame(function(){
+      f.style.left=r.left+'px'; f.style.top=r.top+'px'; f.style.width=r.width+'px'; f.style.height=r.height+'px';
+      f.style.borderRadius=cs.borderTopLeftRadius; f.style.backgroundColor=bg; f.style.borderColor=cs.borderTopColor;
+      if(ncs){ f.style.color=ncs.color; f.style.fontSize=ncs.fontSize; }
+      f.style.paddingLeft='14px';
+    });
+    setTimeout(function(){
+      host.style.opacity='1';                       // настоящая шапка проявилась ровно под плашкой
+      f.style.transition='opacity .14s ease'; f.style.opacity='0';
+      setTimeout(dropFly,170);
+      done();
+    },500);
+  }
+  function openRecent(it,chip){
     recentMode=true; rendered=[];
-    document.body.classList.add('ix-on'); box.hidden=false; box.innerHTML='<div class="ix-empty">Открываю…</div>';
+    var fly=startFly(chip);
+    document.body.classList.add('ix-on'); box.hidden=false; box.classList.remove('ix-anim'); box.innerHTML='<div class="ix-empty">Открываю…</div>';
     load().then(function(){
-      if(!recentMode) return;
-      var key=norm(it.n), found=null;
-      for(var i=0;i<DB.length;i++){ if(DB[i].kind===it.k && DB[i].title===key){ found=DB[i]; break; } }
+      if(!recentMode){ dropFly(); return; }
+      var key=norm(it.n), found=null, i;
+      for(i=0;i<DB.length;i++){ if(DB[i].kind===it.k && DB[i].title===key){ found=DB[i]; break; } }
+      if(!found){ // старые записи могли слипнуться с подсказкой «В составе…» — узнаём позицию по началу названия
+        for(i=0;i<DB.length;i++){ if(DB[i].kind===it.k && DB[i].title && key.indexOf(DB[i].title+'в составе')===0){ found=DB[i]; break; } }
+        if(found){ try{ rsave(rread().filter(function(x){ return !(x.k===it.k && x.n===it.n); })); }catch(e){} it={k:it.k, n:'', d:it.d}; }
+      }
       if(!found){ // позиции больше нет в карте — убираем из ленты и возвращаемся на главную
         try{ rsave(rread().filter(function(x){ return !(x.k===it.k && norm(x.n)===key); })); }catch(e){}
         exitRecent(); return;
@@ -1070,13 +1107,18 @@
       var wrap=document.createElement('div'); wrap.className='ix-'+it.k;
       var el=document.importNode(found.card,true); el.removeAttribute('open'); el.classList.remove('js-hidden');
       if(found.dot) el.style.setProperty('--dot',found.dot);
-      wrap.appendChild(mount(it.k,el)); box.appendChild(wrap);
-      box.classList.remove('ix-anim'); void box.offsetWidth; box.classList.add('ix-anim');
-      rpush(it.k,titleOf(el),it.d);
-      // карточка раскрывается той же плавной анимацией, что и в результатах поиска
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){ openCard(el); }); });
+      var host=mount(it.k,el); wrap.appendChild(host); box.appendChild(wrap);
+      var ttl=titleOf(el), dotNow=it.d; try{ dotNow=dotNow||getComputedStyle(el).getPropertyValue('--dot'); }catch(e){}
+      rpush(it.k,ttl,dotNow);
+      if(fly && flyEl===fly){
+        fly.textContent=ttl; host.style.opacity='0';
+        landFly(fly, el, host, function(){ if(recentMode) openCard(el); });
+      } else {
+        box.classList.remove('ix-anim'); void box.offsetWidth; box.classList.add('ix-anim');
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ openCard(el); }); });
+      }
     },function(){
-      box.innerHTML='<div class="ix-empty">Не удалось загрузить карту</div>';
+      dropFly(); box.innerHTML='<div class="ix-empty">Не удалось загрузить карту</div>';
     });
   }
   if(rbox){
