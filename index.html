@@ -223,7 +223,7 @@
   .ix-recent::-webkit-scrollbar{display:none;}
   .ix-recent[hidden]{display:none;}
   .ix-recent.more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);}
-  .ix-recent .rc{flex:0 0 auto; max-width:176px; height:30px; padding:0 12px; border-radius:var(--r-sm); font:700 .72rem 'Manrope',sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; box-sizing:border-box; cursor:pointer; scroll-snap-align:start; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; border:1.5px solid var(--rc,var(--rc-fb)); transition:transform .15s ease, opacity .15s ease;}
+  .ix-recent .rc{flex:0 0 auto; max-width:176px; height:30px; padding:0 12px; border-radius:var(--r-sm); font:500 .95rem/1 'Fraunces',serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; box-sizing:border-box; cursor:pointer; scroll-snap-align:start; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; border:1.5px solid var(--rc,var(--rc-fb)); transition:transform .15s ease, opacity .15s ease;}
   .ix-recent .rc:active{transform:scale(.97); opacity:.85;}
   .ix-recent .rc-tea{--rc-fb:#B7A8A8; background:#F4ECDF; color:#332C2C;}
   .ix-recent .rc-bar{--rc-fb:rgba(200,138,78,.55); background:#241611; color:#F4ECDF;}
@@ -903,6 +903,7 @@
   }
   function closeCard(d){
     if(!d.hasAttribute('open')) return;
+    d._closing=true;
     var content=contentOf(d); if(!content){ d.removeAttribute('open'); return; }
     var current=content.scrollHeight;
     content.style.willChange='height'; content.style.transition='none'; content.style.height=current+'px';
@@ -917,6 +918,7 @@
   }
   function openCard(d){
     if(d.hasAttribute('open')) return;
+    d._closing=false;
     d.setAttribute('open','');
     var content=contentOf(d); if(!content) return;
     content.style.willChange='height'; content.style.transition='none'; content.style.height='0px';
@@ -930,6 +932,12 @@
       scrollCardIntoView(d);
     };
     content.addEventListener('transitionend',onEnd);
+    // страховка: если анимация не отработала (transitionend не пришёл) — просто раскрываем карточку целиком
+    setTimeout(function(){
+      if(d._closing || !d.hasAttribute('open') || content.style.height==='auto') return;
+      content.removeEventListener('transitionend',onEnd);
+      content.style.transition=''; content.style.height='auto'; content.style.willChange='';
+    },900);
   }
   function wire(d,kind){
     var summary=d.querySelector(':scope > summary'); if(!summary) return;
