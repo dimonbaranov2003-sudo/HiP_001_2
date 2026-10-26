@@ -348,7 +348,7 @@
   .item{padding:var(--sp-3) 14px;}
   .group-title{padding:var(--sp-3) 14px 4px;}
   .badges{padding:0 14px var(--sp-3);}
-  .decor-box{margin:0 14px 14px;}
+  .decor-box{margin:14px 14px 14px;}
   .ing-table th:first-child, .ing-table td:first-child, .group th:first-child, .group td:first-child{padding-left:14px;}
   .ing-table th:last-child, .ing-table td:last-child, .group th:last-child, .group td:last-child{padding-right:14px;}
   .inv-send, .sc-go{height:var(--h-ctl); padding:0 20px; border-radius:var(--r-md); font:700 .9rem 'Manrope',sans-serif;}
@@ -1386,6 +1386,30 @@
   s.addEventListener('input',upd);
   s.addEventListener('focus',function(){ setTimeout(upd,0); });
   document.querySelectorAll('input.tab-radio').forEach(function(r){ r.addEventListener('change',function(){ setTimeout(upd,0); }); });
+})();
+</script>
+<script>
+(function(){
+  // Запоминаем открытые позиции для ленты «Недавно открывал» на главной (хранится на этом телефоне).
+  var KIND='tea', KEY='hp_recent', MAX=6, OK=/^(#[0-9a-f]{3,8}|(rgb|hsl)a?\([\d\s.,%\/deg-]+\))$/i;
+  function titleOf(card){
+    var nm=card.querySelector('.card-name'); if(!nm) return '';
+    var c=nm.cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
+    return c.textContent.replace(/\s+/g,' ').trim();
+  }
+  function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }
+  document.addEventListener('click',function(e){
+    try{
+      var s=e.target.closest&&e.target.closest('summary.card-head'); if(!s) return;
+      var card=s.parentElement; if(!card||card.hasAttribute('open')) return; // пишем только момент раскрытия
+      var name=titleOf(card); if(!name) return;
+      var dot=(getComputedStyle(card).getPropertyValue('--dot')||'').trim(), key=norm(name), list=[];
+      try{ list=JSON.parse(localStorage.getItem(KEY)||'[]'); if(!Array.isArray(list)) list=[]; }catch(err){ list=[]; }
+      list=list.filter(function(x){ return x&&x.n&&!(x.k===KIND&&norm(x.n)===key); });
+      list.unshift({k:KIND,n:name,d:OK.test(dot)?dot:''});
+      localStorage.setItem(KEY,JSON.stringify(list.slice(0,MAX)));
+    }catch(err){}
+  },true);
 })();
 </script>
 </body>

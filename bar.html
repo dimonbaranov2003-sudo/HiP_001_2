@@ -328,7 +328,7 @@
   .item{padding:var(--sp-3) 14px;}
   .group-title{padding:var(--sp-3) 14px 4px;}
   .badges{padding:0 14px var(--sp-3);}
-  .decor-box{margin:0 14px 14px;}
+  .decor-box{margin:14px 14px 14px;}
   .ing-table th:first-child, .ing-table td:first-child, .group th:first-child, .group td:first-child{padding-left:14px;}
   .ing-table th:last-child, .ing-table td:last-child, .group th:last-child, .group td:last-child{padding-right:14px;}
   .inv-send, .sc-go{height:var(--h-ctl); padding:0 20px; border-radius:var(--r-md); font:700 .9rem 'Manrope',sans-serif;}
@@ -345,7 +345,11 @@
   details.card.js-hidden{display:none !important;}
   body.ing-on .cat-note, body.ing-on .scale-btn, body.ing-on .scale-banner{display:none !important;}
   .card-name .hit{display:block; margin-top:3px; font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; font-style:normal; color:var(--accent-ink); line-height:1.35;}
-</style></style>
+  /* метка «сезонный» */
+  .season-tag{flex:0 0 auto; display:inline-flex; align-items:center; height:20px; margin:0 var(--sp-2); padding:0 var(--sp-2); border-radius:var(--r-sm); background:var(--dot); color:var(--bg); font:700 .62rem/1 'Manrope',sans-serif; letter-spacing:.06em; text-transform:uppercase;}
+  .badge.season{background:var(--dot); color:var(--bg);}
+  .prep-note.stack{display:block; margin-top:2px;}
+</style>
 </head>
 <body>
 <script>
@@ -421,7 +425,7 @@
 </div></div></details>
 </section>
 <section class="demo-panel" data-cat="cocktail">
-<div class="cat-head"><span class="dot"></span><h2>Коктейли</h2><span class="n">3</span></div>
+<div class="cat-head"><span class="dot"></span><h2>Коктейли</h2><span class="n">4</span></div>
 <p class="cat-note">Премиксы для коктейлей по ТТК из iiko. Хранить в холодильнике, перед розливом бутылку встряхнуть.</p>
 <details class="card" style="--dot:#7FB08A">
 <summary class="card-head"><span class="card-name">Грузинский лонг<span class="prep-note"> · 850 мл = 5 порций</span></span><span class="chev">⌄</span></summary>
@@ -444,6 +448,14 @@
 <table class="ing-table"><thead><tr><th>Ингредиент</th><th>На 1 коктейль</th><th>На бутылку</th></tr></thead><tbody><tr><td class="ing-name">Джин Барристер/Нива</td><td class="ing-amt">15мл</td><td class="ing-amt">150мл</td></tr><tr><td class="ing-name">Ром Барсело/Каладос Уайт</td><td class="ing-amt">15мл</td><td class="ing-amt">150мл</td></tr><tr><td class="ing-name">Ликёр Трипл Сек</td><td class="ing-amt">15мл</td><td class="ing-amt">150мл</td></tr><tr><td class="ing-name">Хаски</td><td class="ing-amt">15мл</td><td class="ing-amt">150мл</td></tr><tr><td class="ing-name">Буэн Амиго Сильвер</td><td class="ing-amt">15мл</td><td class="ing-amt">150мл</td></tr><tr><td class="ing-name">Лимонная основа</td><td class="ing-amt">10мл</td><td class="ing-amt">100мл</td></tr><tr><td class="ing-name">Сахарный сироп ПФ</td><td class="ing-amt">10мл</td><td class="ing-amt">100мл</td></tr><tr class="total"><td class="ing-name">Итого премикса</td><td class="ing-amt">95мл</td><td class="ing-amt">950мл</td></tr></tbody></table>
 <div class="decor-box"><div class="decor-title">Сборка 1 коктейля</div><ul class="decor-list"><li><span class="decor-name">Премикс</span><span class="decor-val">95 мл</span></li><li><span class="decor-name">Лёд п/ф (в хайбол)</span><span class="decor-val">100 г</span></li><li><span class="decor-name">Лимонад ПЭТ д/коктейлей (кола)</span><span class="decor-val">150 мл</span></li><li><span class="decor-name">Лимон (украшение)</span><span class="decor-val">15 г</span></li></ul></div>
 <p class="card-note">Хайбол со льдом, налить премикс, долить колу доверху, аккуратно размешать коктейльной ложкой, украсить лимоном.</p>
+</div></div></details>
+<details class="card" style="--dot:#C45B7A" data-tags="сезонный">
+<summary class="card-head"><span class="card-name">Имбирно-гранатовый сауэр<span class="prep-note stack">950 мл = 10 порций</span></span><span class="season-tag">Сезонный</span><span class="chev">⌄</span></summary>
+<div class="card-content"><div class="card-content-inner">
+<div class="badges"><span class="badge">Бутылка 1000мл</span><span class="badge">В шейкер</span><span class="badge">Пенообразователь в шейкер</span><span class="badge season">Сезонный</span></div>
+<table class="ing-table"><thead><tr><th>Ингредиент</th><th>На 1 коктейль</th><th>На бутылку</th></tr></thead><tbody><tr><td class="ing-name">Джин Хопперс Мандарин и Розмарин</td><td class="ing-amt">45мл</td><td class="ing-amt">450мл</td></tr><tr><td class="ing-name">Ликёр Трипл Сек</td><td class="ing-amt">15мл</td><td class="ing-amt">150мл</td></tr><tr><td class="ing-name">Сироп Монин гранатовый</td><td class="ing-amt">10мл</td><td class="ing-amt">100мл</td></tr><tr><td class="ing-name">Наршараб микс ПФ</td><td class="ing-amt">10мл</td><td class="ing-amt">100мл</td></tr><tr><td class="ing-name">Сироп Монин имбирный</td><td class="ing-amt">5мл</td><td class="ing-amt">50мл</td></tr><tr><td class="ing-name">Лимонная основа</td><td class="ing-amt">10мл</td><td class="ing-amt">100мл</td></tr><tr class="total"><td class="ing-name">Итого премикса</td><td class="ing-amt">95мл</td><td class="ing-amt">950мл</td></tr></tbody></table>
+<div class="decor-box"><div class="decor-title">Сборка 1 коктейля</div><ul class="decor-list"><li><span class="decor-name">Премикс</span><span class="decor-val">95 мл</span></li><li><span class="decor-name">Пенообразователь пищевой (в шейкер)</span><span class="decor-val">10 г</span></li><li><span class="decor-name">Шейкер</span><span class="decor-val">взбить</span></li><li><span class="decor-name">Подача</span><span class="decor-val">коктейльная рюмка</span></li><li><span class="decor-name">Украшение</span><span class="decor-val">нет</span></li></ul></div>
+<p class="card-note">В шейкер налить 95 мл премикса, добавить 10 г пенообразователя прямо перед шейком, взбить и подать в коктейльной рюмке, без украшения. Пенообразователь в премикс не добавлять. Перед розливом бутылку встряхнуть. Срок хранения подобрать пробой.</p>
 </div></div></details>
 </section>
 <section class="demo-panel" data-cat="premix">
@@ -880,7 +892,7 @@
         var n=a.textContent.trim(); if(/^(премикс|подача)$/i.test(n)) return;
         rows.push({n:n, a:'в сборке '+(v?v.textContent.trim():'')});
       });
-      items.push({card:card, name:norm(c.textContent), rows:rows});
+      items.push({card:card, name:norm(c.textContent+' '+(card.getAttribute('data-tags')||'')), rows:rows});
     });
   });
   function render(){
@@ -942,6 +954,30 @@
     apply(Math.max(100,Math.min(100000,Math.round(l*1000)))); close();
   });
   document.getElementById('scReset').addEventListener('click',function(){ apply(0); });
+})();
+</script>
+<script>
+(function(){
+  // Запоминаем открытые позиции для ленты «Недавно открывал» на главной (хранится на этом телефоне).
+  var KIND='bar', KEY='hp_recent', MAX=6, OK=/^(#[0-9a-f]{3,8}|(rgb|hsl)a?\([\d\s.,%\/deg-]+\))$/i;
+  function titleOf(card){
+    var nm=card.querySelector('.card-name'); if(!nm) return '';
+    var c=nm.cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
+    return c.textContent.replace(/\s+/g,' ').trim();
+  }
+  function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }
+  document.addEventListener('click',function(e){
+    try{
+      var s=e.target.closest&&e.target.closest('summary.card-head'); if(!s) return;
+      var card=s.parentElement; if(!card||card.hasAttribute('open')) return; // пишем только момент раскрытия
+      var name=titleOf(card); if(!name) return;
+      var dot=(getComputedStyle(card).getPropertyValue('--dot')||'').trim(), key=norm(name), list=[];
+      try{ list=JSON.parse(localStorage.getItem(KEY)||'[]'); if(!Array.isArray(list)) list=[]; }catch(err){ list=[]; }
+      list=list.filter(function(x){ return x&&x.n&&!(x.k===KIND&&norm(x.n)===key); });
+      list.unshift({k:KIND,n:name,d:OK.test(dot)?dot:''});
+      localStorage.setItem(KEY,JSON.stringify(list.slice(0,MAX)));
+    }catch(err){}
+  },true);
 })();
 </script>
 </body>
