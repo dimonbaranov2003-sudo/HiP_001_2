@@ -301,7 +301,7 @@
   .item{padding:var(--sp-3) 14px;}
   .group-title{padding:var(--sp-3) 14px 4px;}
   .badges{padding:0 14px var(--sp-3);}
-  .decor-box{margin:14px 14px 14px;}
+  .decor-box{margin:0 14px 14px;}
   .ing-table th:first-child, .ing-table td:first-child, .group th:first-child, .group td:first-child{padding-left:14px;}
   .ing-table th:last-child, .ing-table td:last-child, .group th:last-child, .group td:last-child{padding-right:14px;}
   .inv-send, .sc-go{height:var(--h-ctl); padding:0 20px; border-radius:var(--r-md); font:700 .9rem 'Manrope',sans-serif;}
@@ -311,6 +311,96 @@
   .inv-sheet button{height:var(--h-ctl); padding:0 14px;}
   .inv-sheet, .sc-sheet{border-radius:var(--r-xl) var(--r-xl) 0 0;}
   .brand{--logo-h:22px;}
+
+  /* ================= Предстоящие банкеты ================= */
+  .bq-open{display:flex; align-items:center; justify-content:center; gap:10px; width:100%; height:var(--h-ctl); margin:0 0 var(--sp-3); padding:0 var(--sp-4); border:1.5px solid var(--accent); border-radius:var(--r-md); background:color-mix(in srgb, var(--accent) 14%, var(--surface)); color:var(--accent-ink); font:700 .86rem 'Manrope',sans-serif; letter-spacing:.01em; -webkit-tap-highlight-color:transparent; transition:opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);}
+  .bq-open svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+  .bq-open i{font-style:normal; font-family:'IBM Plex Mono',monospace; font-size:1rem;}
+  html.entry-veil .bq-open{opacity:0; transform:translateY(10px);}
+  html.bq-lock{overflow:hidden;}
+  .bq{position:fixed; inset:0; z-index:200; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; background-color:var(--bg); background-image:linear-gradient(rgba(27,18,13,0.55), rgba(27,18,13,0.55)), url("bg-banquet-dark.jpg"); background-size:620px auto, 620px auto; background-position:top center, top center; animation:bqIn .28s cubic-bezier(.2,.8,.2,1) both;}
+  .bq[hidden]{display:none;}
+  .bq-add{z-index:210;}
+  @keyframes bqIn{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){ .bq{animation:none;} }
+  .bq-top{position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:var(--sp-2); padding:var(--sp-2) var(--pad-x); background:color-mix(in srgb, var(--bg) 94%, transparent); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  .bq-top h2{margin:0; flex:1; text-align:center; font-size:1.08rem; font-weight:600; letter-spacing:-.01em;}
+  .bq-x{width:44px; height:44px; margin-left:-10px; display:flex; align-items:center; justify-content:center; border:0; background:none; color:var(--accent-ink); -webkit-tap-highlight-color:transparent;}
+  .bq-x svg{width:11px; height:19px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+  .bq-top .sp{width:34px;}
+  .bq-wrap{max-width:560px; margin:0 auto; padding:var(--sp-4) var(--pad-x) calc(var(--sp-6) + env(safe-area-inset-bottom,0px));}
+  .bq-hint{margin:0 2px var(--sp-4); font-size:.78rem; line-height:1.45; color:var(--muted);}
+  .bq-foot{margin:var(--sp-2) 2px 0; font-size:.7rem; line-height:1.45; color:var(--muted); text-align:center;}
+  .bq-in{display:block; width:100%; height:var(--h-ctl); padding:0 14px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface-2); color:var(--ink); font:600 1rem 'Manrope',sans-serif; -webkit-appearance:none; appearance:none; outline:none; box-sizing:border-box; min-width:0;}
+  .bq-in:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);}
+  .bq-in::placeholder{color:var(--muted); font-weight:500;}
+  .bq-in::-webkit-search-cancel-button,.bq-in::-webkit-search-decoration{-webkit-appearance:none; appearance:none; display:none;}
+  input[type=date].bq-in{color-scheme:dark;}
+  select.bq-in{padding-right:10px;}
+  .bq-lbl{display:flex; flex-direction:column; gap:6px; font:600 .72rem 'Manrope',sans-serif; color:var(--muted); letter-spacing:.02em;}
+  .bq-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:var(--h-ctl); padding:0 var(--sp-4); border-radius:var(--r-md); border:1.5px solid var(--accent); background:none; color:var(--accent-ink); font:700 .86rem 'Manrope',sans-serif; -webkit-tap-highlight-color:transparent;}
+  .bq-btn.pri{background:var(--accent); color:var(--bg);}
+  .bq-btn.dng{border-color:rgba(224,104,79,.55); color:#E8917E;}
+  .bq-btn.wide{width:100%;}
+  .bq-btn:active{transform:scale(.985);}
+  .bq-row{display:flex; gap:var(--sp-2); flex-wrap:wrap;}
+  .bq-row > *{flex:1 1 auto;}
+  .bq-form{border:1px solid var(--line); border-radius:var(--r-lg); background:var(--surface); padding:var(--sp-4); display:flex; flex-direction:column; gap:var(--sp-3); margin-bottom:var(--sp-4);}
+  .bq-form h3{margin:0; font-size:1rem; font-weight:600;}
+  .bq-grid2{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+  .bq-empty{text-align:center; color:var(--muted); font-size:.85rem; line-height:1.5; padding:26px 12px;}
+  .bq-sec{margin:var(--sp-5) 2px var(--sp-3); font:700 .72rem 'IBM Plex Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink);}
+  details.bq-past > summary{list-style:none; cursor:pointer; margin:var(--sp-5) 2px var(--sp-3); font:700 .72rem 'IBM Plex Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);}
+  details.bq-past > summary::-webkit-details-marker{display:none;}
+  .bq-ev{border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:var(--r-md); background:var(--surface); margin-bottom:var(--sp-4); overflow:hidden;}
+  .bq-ev.past{opacity:.78; border-left-color:var(--muted);}
+  .bq-ev-h{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:var(--sp-3) 14px 4px;}
+  .bq-date{position:relative; display:inline-flex; flex-direction:column; gap:3px; padding:2px 0;}
+  .bq-date b{font:600 1.12rem/1.2 'Fraunces',serif; color:var(--ink);}
+  .bq-date input{position:absolute; inset:0; width:100%; height:100%; opacity:0; border:0; padding:0; font-size:16px; -webkit-appearance:none; appearance:none;}
+  .bq-when{flex:0 0 auto; margin-top:3px; font:600 .66rem 'IBM Plex Mono',monospace; letter-spacing:.04em; color:var(--accent-ink); border:1px solid var(--accent); border-radius:4px; padding:2px 7px; white-space:nowrap;}
+  .bq-title{display:block; width:calc(100% - 28px); margin:2px 14px 10px; height:34px; padding:0 2px; border:0; border-bottom:1px dashed var(--line); background:transparent; color:var(--ink); font:500 .9rem 'Manrope',sans-serif; outline:none; border-radius:0; -webkit-appearance:none;}
+  .bq-title:focus{border-bottom-color:var(--accent);}
+  .bq-title::placeholder{color:var(--muted);}
+  .bq-it{display:grid; grid-template-columns:1fr auto; gap:4px 10px; padding:var(--sp-3) 14px; border-top:1px solid var(--line);}
+  .bq-it .nm{font:500 .98rem/1.25 'Fraunces',serif; color:var(--ink); overflow-wrap:anywhere;}
+  .bq-it .sb{grid-column:1; font-size:.7rem; line-height:1.4; color:var(--muted);}
+  .bq-it .ctl{grid-column:2; grid-row:1 / span 2; display:flex; flex-direction:column; align-items:flex-end; gap:6px;}
+  .bq-it .pr{font:600 .78rem 'IBM Plex Mono',monospace; color:var(--accent-ink); white-space:nowrap;}
+  .bq-it .pr.none{color:var(--muted); font-weight:500;}
+  .bq-it .ft{grid-column:1 / -1; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .bq-tags{display:flex; flex-wrap:wrap; gap:5px;}
+  .bq-tag{font:600 .62rem 'IBM Plex Mono',monospace; color:var(--accent-ink); border:1px solid var(--accent); border-radius:4px; padding:2px 6px;}
+  .bq-tag.own{color:var(--muted); border-color:var(--line);}
+  .bq-step{display:inline-flex; align-items:center; border:1.5px solid var(--line); border-radius:var(--r-sm); overflow:hidden; background:var(--surface-2);}
+  .bq-step button{width:36px; height:36px; border:0; background:none; color:var(--accent-ink); font:600 1.15rem 'IBM Plex Mono',monospace; -webkit-tap-highlight-color:transparent;}
+  .bq-step input{width:46px; height:36px; padding:0; text-align:center; border:0; background:transparent; color:var(--ink); font:600 .95rem 'IBM Plex Mono',monospace; outline:none; -webkit-appearance:none; appearance:none; -moz-appearance:textfield;}
+  .bq-rm{height:28px; padding:0 8px; border:0; background:none; color:var(--muted); font:600 .7rem 'Manrope',sans-serif; text-decoration:underline; -webkit-tap-highlight-color:transparent;}
+  .bq-sum{display:flex; flex-direction:column; gap:4px; padding:var(--sp-3) 14px; border-top:1px solid var(--line); background:var(--surface-2); font-size:.84rem;}
+  .bq-sum div{display:flex; justify-content:space-between; gap:10px;}
+  .bq-sum span:last-child{font-family:'IBM Plex Mono',monospace; font-weight:600; white-space:nowrap;}
+  .bq-sum .t{font-weight:700; color:var(--accent-ink); font-size:.92rem;}
+  .bq-sum .m{color:var(--muted); font-size:.72rem;}
+  .bq-act{display:flex; flex-wrap:wrap; gap:var(--sp-2); padding:var(--sp-3) 14px 14px;}
+  .bq-act .bq-btn{flex:1 1 auto;}
+  .bq-search{position:relative; margin-bottom:var(--sp-3);}
+  .bq-search::before{content:'⌕'; position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:1.2rem; font-weight:700; color:var(--accent-ink); pointer-events:none;}
+  .bq-search .bq-in{padding-left:42px; border-color:var(--accent);}
+  .bq-chips{display:flex; gap:var(--sp-2); overflow-x:auto; scrollbar-width:none; margin:0 0 var(--sp-3); padding-bottom:2px;}
+  .bq-chips::-webkit-scrollbar{display:none;}
+  .bq-chip{flex:0 0 auto; height:var(--h-pill); padding:0 12px; border-radius:var(--r-sm); border:1.5px solid var(--line); background:var(--surface); color:var(--ink); font:700 .72rem 'Manrope',sans-serif; -webkit-tap-highlight-color:transparent;}
+  .bq-chip.on{background:var(--accent); border-color:var(--accent); color:var(--bg);}
+  .bq-res{display:flex; width:100%; align-items:flex-start; justify-content:space-between; gap:12px; text-align:left; padding:var(--sp-3) 14px; margin-bottom:8px; border:1px solid var(--line); border-left:4px solid var(--dot,var(--accent)); border-radius:var(--r-md); background:var(--surface); color:var(--ink); -webkit-tap-highlight-color:transparent;}
+  .bq-res:active{background:var(--surface-2);}
+  .bq-res .mn{display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .bq-res .mn b{font:500 .98rem/1.25 'Fraunces',serif; overflow-wrap:anywhere;}
+  .bq-res .mn small{font-size:.7rem; line-height:1.35; color:var(--muted);}
+  .bq-res .sd{display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex:0 0 auto;}
+  .bq-res .sd em{font:600 .86rem 'IBM Plex Mono',monospace; font-style:normal; color:var(--accent-ink); white-space:nowrap;}
+  .bq-res .cnt{font:700 .66rem 'IBM Plex Mono',monospace; color:var(--bg); background:var(--accent); border-radius:10px; padding:2px 8px;}
+  .bq-toast{position:fixed; left:50%; bottom:calc(22px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:400; display:flex; align-items:center; gap:12px; max-width:calc(100% - 32px); padding:11px 16px; border-radius:var(--r-md); background:#F4ECDF; color:#2b1d14; font:600 .84rem 'Manrope',sans-serif; box-shadow:0 8px 24px rgba(0,0,0,.4);}
+  .bq-toast[hidden]{display:none;}
+  .bq-toast button{border:0; background:none; color:#8a4f1f; font:800 .84rem 'Manrope',sans-serif; text-decoration:underline; padding:2px 0;}
 </style>
 </head>
 <body>
@@ -340,6 +430,7 @@
 <a class="back-btn" id="backBtn" href="index.html" data-nav="home" aria-label="В меню"><svg viewBox="0 0 11 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></a>
 <h1><img alt="Банкетное меню" class="brand-logo" src="logo-banquet-wide-light.png"/></h1>
 </div>
+<button class="bq-open" id="bqOpen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Предстоящие банкеты</span><i>→</i></button>
 <div class="search"><input id="q" type="search" placeholder="Поиск: название, страна, поставщик" autocomplete="off" enterkeyhint="search"/></div>
 <nav class="pills scroll" id="pills">
 <button class="pill on" type="button" data-cat="all">Все</button>
@@ -464,6 +555,287 @@
     <a class="sig-tg" href="https://t.me/wish_adc" target="_blank" rel="noopener">@wish_adc</a>
   </div>
 </footer>
+<div class="bq" id="bq" hidden role="dialog" aria-label="Предстоящие банкеты">
+  <div class="bq-top"><button class="bq-x" id="bqClose" type="button" aria-label="Назад к меню"><svg viewBox="0 0 11 19" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></button><h2>Предстоящие банкеты</h2><span class="sp"></span></div>
+  <div class="bq-wrap" id="bqBody"></div>
+</div>
+<div class="bq bq-add" id="bqAdd" hidden role="dialog" aria-label="Добавить алкоголь">
+  <div class="bq-top"><button class="bq-x" id="bqAddClose" type="button" aria-label="Назад"><svg viewBox="0 0 11 19" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></button><h2 id="bqAddTitle">Добавить алкоголь</h2><span class="sp"></span></div>
+  <div class="bq-wrap" id="bqAddBody"></div>
+</div>
+<div class="bq-toast" id="bqToast" hidden></div>
+<datalist id="bqSup"></datalist><datalist id="bqCountry"></datalist>
+<script>
+(function(){
+  // ---------- Предстоящие банкеты: список хранится в браузере этого устройства ----------
+  var KEY='bqEvents1', SERVICE=0.10;
+  var MONTHS=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  var DAYS=['вс','пн','вт','ср','чт','пт','сб'];
+  var EXTRA_KINDS=['Розовые вина','Оранжевые вина','Пиво','Ликёр','Настойка','Безалкогольное','Другое'];
+  var $=function(id){ return document.getElementById(id); };
+  var openBtn=$('bqOpen'), L=$('bq'), LB=$('bqBody'), A=$('bqAdd'), AB=$('bqAddBody'), TOAST=$('bqToast');
+  if(!openBtn||!L||!A) return;
+  var root=document.documentElement;
+
+  function norm(s){ return (s||'').toLowerCase().replace(/ё/g,'е'); }
+  function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+  function p2(n){ return n<10?'0'+n:''+n; }
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+  function money(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽'; }
+  function num(v){ var s=String(v==null?'':v).replace(/\s/g,'').replace(',','.'); if(s==='') return null; var n=parseFloat(s); return (isFinite(n)&&n>=0)?n:null; }
+  function cap(s){ s=(s||'').trim(); return s? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+
+  // ----- даты -----
+  function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); }
+  function parseD(s){ var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m? new Date(+m[1],+m[2]-1,+m[3]) : null; }
+  function fmtDate(s){ var d=parseD(s); return d? d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear()+' · '+DAYS[d.getDay()] : 'Дата не указана'; }
+  function daysTo(s){ var d=parseD(s), t=parseD(todayStr()); return d? Math.round((d-t)/86400000) : null; }
+  function whenLabel(s){ var n=daysTo(s); if(n===null) return ''; if(n===0) return 'сегодня'; if(n===1) return 'завтра'; if(n>1) return 'через '+n+' дн.'; return 'прошёл'; }
+
+  // ----- хранение -----
+  var memOnly=false;
+  function clean(list){
+    if(!Array.isArray(list)) return [];
+    return list.filter(function(e){ return e && typeof e==='object'; }).map(function(e){
+      return { id:e.id||uid(), date:e.date||'', title:e.title||'', items:(Array.isArray(e.items)?e.items:[]).filter(function(i){ return i&&i.name; }).map(function(i){
+        return { id:i.id||uid(), name:String(i.name), sup:i.sup||'', kind:i.kind||'', country:i.country||'', vol:i.vol||null, price:(typeof i.price==='number')?i.price:null, qty:Math.max(1,parseInt(i.qty,10)||1), src:i.src==='menu'?'menu':'custom', note:i.note||'' };
+      }) };
+    });
+  }
+  function load(){ try{ return clean(JSON.parse(localStorage.getItem(KEY)||'[]')); }catch(e){ return []; } }
+  var EV=load();
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(EV)); }
+    catch(e){ if(!memOnly){ memOnly=true; toast('Браузер не даёт сохранить список — он пропадёт при закрытии страницы'); } }
+  }
+
+  // ----- меню берём прямо со страницы: что поменяешь в меню, то и подхватится -----
+  var MENU=[], KINDS=[], CHIPS=[], SUPS={}, COUNTRIES={};
+  (function(){
+    var pillLabel={}; document.querySelectorAll('#pills .pill[data-cat]').forEach(function(b){ pillLabel[b.getAttribute('data-cat')]=b.textContent.trim(); });
+    document.querySelectorAll('.demo-panel').forEach(function(p){
+      var h=p.querySelector('.cat-head h2'); if(!h) return;
+      var kind=h.textContent.trim(), cat=p.getAttribute('data-cat'), dot=p.style.getPropertyValue('--dot').trim();
+      KINDS.push(kind); CHIPS.push({label:pillLabel[cat]||kind, kind:kind});
+      p.querySelectorAll('.item').forEach(function(it){
+        function t(c){ var n=it.querySelector(c); return n? n.textContent.trim() : ''; }
+        var parts=t('.it-sub').split('·').map(function(x){ return x.trim(); }).filter(Boolean), country='', vol=null;
+        parts.forEach(function(x){ var m=/^(\d+)\s*мл/i.exec(x); if(m) vol=+m[1]; else country=x; });
+        var price=num(t('.it-price').replace(/[^\d]/g,'')), item={ name:t('.it-name'), sup:t('.it-sup'), kind:kind, country:country, vol:vol, price:price, note:t('.it-note'), src:'menu', dot:dot };
+        item.hay=norm([item.name,item.sup,item.country,item.vol,kind].join(' '));
+        MENU.push(item); if(item.sup) SUPS[item.sup]=1; if(country) COUNTRIES[country]=1;
+      });
+    });
+    EXTRA_KINDS.forEach(function(k){ if(KINDS.indexOf(k)<0) KINDS.push(k); });
+    var ds=$('bqSup'), dc=$('bqCountry');
+    Object.keys(SUPS).forEach(function(s){ var o=el('option'); o.value=s; ds.appendChild(o); });
+    Object.keys(COUNTRIES).forEach(function(s){ var o=el('option'); o.value=s; dc.appendChild(o); });
+  })();
+  function kindOrder(k){ var i=KINDS.indexOf(k); return i<0? 999 : i; }
+  function itemKey(i){ return norm(i.name)+'|'+norm(i.sup)+'|'+(i.vol||''); }
+  function customCatalog(){
+    var seen={}, out=[];
+    EV.forEach(function(e){ e.items.forEach(function(i){
+      if(i.src!=='custom') return; var k=itemKey(i); if(seen[k]) return; seen[k]=1;
+      var c={ name:i.name, sup:i.sup, kind:i.kind, country:i.country, vol:i.vol, price:i.price, note:i.note, src:'custom', dot:'' };
+      c.hay=norm([c.name,c.sup,c.country,c.vol,c.kind].join(' ')); out.push(c);
+    }); });
+    return out;
+  }
+  function subLine(i, withKind){ return [withKind&&i.kind, i.sup, i.country, i.vol? i.vol+' мл' : ''].filter(Boolean).join(' · '); }
+
+  // ----- уведомление -----
+  var toastTimer=null;
+  function toast(msg, actLabel, act){
+    TOAST.textContent=''; TOAST.appendChild(el('span',null,msg));
+    if(actLabel){ var b=el('button',null,actLabel); b.type='button'; b.addEventListener('click',function(){ TOAST.hidden=true; if(act) act(); }); TOAST.appendChild(b); }
+    TOAST.hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(function(){ TOAST.hidden=true; }, actLabel? 5000 : 2200);
+  }
+
+  // ----- слои и кнопка «назад» -----
+  var layer=0, pushed=0, selfPop=false;
+  function lock(){ root.classList.toggle('bq-lock', layer>0); }
+  function push(n){ try{ history.pushState({bq:n},''); pushed++; }catch(e){} }
+  function uiBack(){ if(pushed>0){ pushed--; selfPop=true; try{ history.back(); return; }catch(e){ selfPop=false; } } popLayer(); }
+  function popLayer(){ if(layer===2){ A.hidden=true; layer=1; lock(); render(); } else if(layer===1){ L.hidden=true; layer=0; lock(); } }
+  window.addEventListener('popstate',function(){ if(!selfPop && pushed>0) pushed--; selfPop=false; popLayer(); });
+  $('bqClose').addEventListener('click',uiBack);
+  $('bqAddClose').addEventListener('click',uiBack);
+  openBtn.addEventListener('click',function(){ newOpen=false; L.hidden=false; layer=1; lock(); render(); L.scrollTop=0; push(1); });
+
+  // ----- итоги и текст для копирования -----
+  function totals(ev){
+    var sum=0, miss=0, cnt=0;
+    ev.items.forEach(function(i){ cnt+=i.qty; if(i.price==null) miss++; else sum+=i.price*i.qty; });
+    return { sum:sum, miss:miss, cnt:cnt, svc:Math.round(sum*SERVICE) };
+  }
+  function evText(ev){
+    var tt=totals(ev), lines=[];
+    lines.push('Банкет · '+fmtDate(ev.date)+(ev.title? ' · '+ev.title : ''));
+    sorted(ev).forEach(function(i,n){
+      lines.push((n+1)+'. '+i.name+(subLine(i,false)? ' ('+subLine(i,false)+')' : '')+' — '+i.qty+' шт'+(i.price!=null? ' × '+money(i.price)+' = '+money(i.price*i.qty) : ', цена не задана')+(i.note? ' ['+i.note+']' : ''));
+    });
+    lines.push('Всего бутылок: '+tt.cnt);
+    if(tt.sum>0){ lines.push('Сумма по меню: '+money(tt.sum)); lines.push('+10% за услугу: '+money(tt.svc)); lines.push('Итого: '+money(tt.sum+tt.svc)); }
+    if(tt.miss) lines.push('У '+tt.miss+' поз. цена не задана — в сумму не входят');
+    return lines.join('\n');
+  }
+  function copyText(t){
+    if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+    return new Promise(function(res,rej){
+      var ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px';
+      document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0,t.length);
+      var ok=false; try{ ok=document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); ok? res() : rej();
+    });
+  }
+  function sorted(ev){ return ev.items.map(function(i,n){ return {i:i,n:n}; }).sort(function(a,b){ return (kindOrder(a.i.kind)-kindOrder(b.i.kind)) || (a.n-b.n); }).map(function(x){ return x.i; }); }
+  function byId(id){ for(var k=0;k<EV.length;k++) if(EV[k].id===id) return EV[k]; return null; }
+
+  // ----- экран со списком банкетов -----
+  var newOpen=false, lastRemoved=null;
+  function render(){
+    var st=L.scrollTop; LB.textContent='';
+    if(newOpen) LB.appendChild(newForm());
+    else { var nb=el('button','bq-btn pri wide','+ Новый банкет'); nb.type='button'; nb.addEventListener('click',function(){ newOpen=true; render(); var d=LB.querySelector('input[type=date]'); if(d) d.focus(); }); nb.style.marginBottom='var(--sp-4)'; LB.appendChild(nb); }
+
+    var today=todayStr(), up=EV.filter(function(e){ return !e.date || e.date>=today; }), past=EV.filter(function(e){ return e.date && e.date<today; });
+    up.sort(function(a,b){ return (a.date||'9999').localeCompare(b.date||'9999'); });
+    past.sort(function(a,b){ return b.date.localeCompare(a.date); });
+    if(!EV.length) LB.appendChild(el('p','bq-empty','Пока ни одного банкета.\nНажми «Новый банкет», выбери дату — и добавляй алкоголь: из меню или своё.'));
+    up.forEach(function(e){ LB.appendChild(evCard(e,false)); });
+    if(past.length){
+      var d=el('details','bq-past'); d.appendChild(el('summary',null,'Прошедшие · '+past.length));
+      past.forEach(function(e){ d.appendChild(evCard(e,true)); }); LB.appendChild(d);
+    }
+    LB.appendChild(el('p','bq-foot','Список хранится в браузере этого телефона. Чтобы отправить его в чат — «Скопировать».'));
+    L.scrollTop=st;
+  }
+  function newForm(){
+    var f=el('div','bq-form'); f.appendChild(el('h3',null,'Новый банкет'));
+    var l1=el('label','bq-lbl','Дата'), d=el('input','bq-in'); d.type='date'; d.value=''; d.min='2020-01-01'; l1.appendChild(d); f.appendChild(l1);
+    var l2=el('label','bq-lbl','Название или заметка (необязательно)'), t=el('input','bq-in'); t.type='text'; t.placeholder='Например, свадьба, 40 гостей'; t.maxLength=80; l2.appendChild(t); f.appendChild(l2);
+    var r=el('div','bq-row'), ok=el('button','bq-btn pri','Создать'), no=el('button','bq-btn','Отмена'); ok.type=no.type='button'; r.appendChild(ok); r.appendChild(no); f.appendChild(r);
+    no.addEventListener('click',function(){ newOpen=false; render(); });
+    ok.addEventListener('click',function(){
+      if(!d.value){ d.focus(); toast('Выбери дату банкета'); return; }
+      var ev={ id:uid(), date:d.value, title:t.value.trim(), items:[] }; EV.push(ev); save(); newOpen=false; render(); toast('Банкет создан — добавь алкоголь');
+    });
+    return f;
+  }
+  function evCard(ev,past){
+    var c=el('section','bq-ev'+(past?' past':'')), h=el('div','bq-ev-h');
+    var dl=el('label','bq-date'); dl.appendChild(el('b',null,fmtDate(ev.date)));
+    var di=el('input'); di.type='date'; di.value=ev.date; di.setAttribute('aria-label','Изменить дату'); dl.appendChild(di);
+    di.addEventListener('change',function(){ if(di.value){ ev.date=di.value; save(); render(); } });
+    h.appendChild(dl); var w=whenLabel(ev.date); if(w) h.appendChild(el('span','bq-when',w)); c.appendChild(h);
+    var ti=el('input','bq-title'); ti.type='text'; ti.value=ev.title; ti.placeholder='Название или заметка'; ti.maxLength=80; ti.setAttribute('aria-label','Название банкета');
+    ti.addEventListener('change',function(){ ev.title=ti.value.trim(); save(); }); c.appendChild(ti);
+
+    sorted(ev).forEach(function(i){ c.appendChild(itemRow(ev,i)); });
+    if(!ev.items.length){ var e0=el('div','bq-empty','Позиций пока нет'); e0.style.borderTop='1px solid var(--line)'; e0.style.padding='18px 12px'; c.appendChild(e0); }
+    else {
+      var tt=totals(ev), s=el('div','bq-sum');
+      function line(a,b,cls){ var d=el('div',cls); d.appendChild(el('span',null,a)); d.appendChild(el('span',null,b)); s.appendChild(d); }
+      line('Бутылок',String(tt.cnt));
+      if(tt.sum>0){ line('Сумма по меню',money(tt.sum)); line('+10% за услугу',money(tt.svc)); line('Итого',money(tt.sum+tt.svc),'t'); }
+      if(tt.miss) s.appendChild(el('div','m','У '+tt.miss+' поз. цена не задана — в сумму не входит'));
+      c.appendChild(s);
+    }
+    var act=el('div','bq-act'), add=el('button','bq-btn pri','+ Добавить алкоголь'), cp=el('button','bq-btn','Скопировать'), del=el('button','bq-btn dng','Удалить');
+    add.type=cp.type=del.type='button'; add.style.flexBasis='100%'; act.appendChild(add); if(ev.items.length) act.appendChild(cp); act.appendChild(del); c.appendChild(act);
+    add.addEventListener('click',function(){ openAdd(ev); });
+    cp.addEventListener('click',function(){ copyText(evText(ev)).then(function(){ toast('Список скопирован'); },function(){ toast('Не получилось скопировать'); }); });
+    var armed=null; del.addEventListener('click',function(){
+      if(armed){ clearTimeout(armed); EV=EV.filter(function(x){ return x!==ev; }); save(); render(); toast('Банкет удалён'); return; }
+      del.textContent='Точно удалить?'; armed=setTimeout(function(){ armed=null; del.textContent='Удалить'; },3000);
+    });
+    return c;
+  }
+  function itemRow(ev,i){
+    var r=el('div','bq-it'); r.appendChild(el('div','nm',i.name)); r.appendChild(el('div','sb',subLine(i,true)));
+    var ctl=el('div','ctl'), st=el('div','bq-step'), mi=el('button',null,'−'), inp=el('input'), pl=el('button',null,'+');
+    mi.type=pl.type='button'; inp.type='text'; inp.inputMode='numeric'; inp.value=i.qty; inp.setAttribute('aria-label','Количество');
+    function setQ(n){ i.qty=Math.max(1,Math.min(999,n||1)); save(); render(); }
+    mi.addEventListener('click',function(){ setQ(i.qty-1); }); pl.addEventListener('click',function(){ setQ(i.qty+1); });
+    inp.addEventListener('focus',function(){ inp.select(); }); inp.addEventListener('change',function(){ setQ(parseInt(inp.value,10)); });
+    st.appendChild(mi); st.appendChild(inp); st.appendChild(pl); ctl.appendChild(st);
+    var pr=el('div','pr'+(i.price==null?' none':''), i.price==null? 'цена не задана' : money(i.price*i.qty)); ctl.appendChild(pr); r.appendChild(ctl);
+    var ft=el('div','ft'), tags=el('div','bq-tags');
+    if(i.note) tags.appendChild(el('span','bq-tag',i.note)); if(i.src==='custom') tags.appendChild(el('span','bq-tag own','своё'));
+    ft.appendChild(tags); var rm=el('button','bq-rm','убрать'); rm.type='button'; ft.appendChild(rm); r.appendChild(ft);
+    rm.addEventListener('click',function(){
+      var idx=ev.items.indexOf(i); ev.items.splice(idx,1); lastRemoved={ev:ev,item:i,idx:idx}; save(); render();
+      toast('Убрано: '+i.name,'Вернуть',function(){ if(lastRemoved&&byId(lastRemoved.ev.id)){ lastRemoved.ev.items.splice(lastRemoved.idx,0,lastRemoved.item); save(); render(); } });
+    });
+    return r;
+  }
+
+  // ----- экран «Добавить алкоголь» -----
+  var addEv=null, kindF='', qStr='';
+  function addTo(ev,src){
+    var k=itemKey(src), ex=null; ev.items.forEach(function(i){ if(itemKey(i)===k) ex=i; });
+    if(ex) ex.qty=Math.min(999,ex.qty+1);
+    else ev.items.push({ id:uid(), name:src.name, sup:src.sup||'', kind:src.kind||'', country:src.country||'', vol:src.vol||null, price:(typeof src.price==='number')?src.price:null, qty:src.qty||1, src:src.src==='menu'?'menu':'custom', note:src.note||'' });
+    save();
+  }
+  function countIn(ev,src){ var k=itemKey(src), n=0; ev.items.forEach(function(i){ if(itemKey(i)===k) n+=i.qty; }); return n; }
+  function openAdd(ev){
+    addEv=ev; kindF=''; qStr=''; A.hidden=false; layer=2; lock(); A.scrollTop=0; push(2);
+    $('bqAddTitle').textContent='Добавить алкоголь'; buildSearch();
+  }
+  function buildSearch(){
+    AB.textContent='';
+    AB.appendChild(el('p','bq-hint','Банкет: '+fmtDate(addEv.date)+(addEv.title? ' · '+addEv.title : '')));
+    var sw=el('div','bq-search'), inp=el('input','bq-in'); inp.type='search'; inp.placeholder='Название, поставщик или страна…'; inp.autocomplete='off'; inp.setAttribute('enterkeyhint','search'); inp.value=qStr; sw.appendChild(inp); AB.appendChild(sw);
+    var chips=el('div','bq-chips'); CHIPS.forEach(function(c){ var b=el('button','bq-chip'+(kindF===c.kind?' on':''),c.label); b.type='button'; b.addEventListener('click',function(){ kindF=(kindF===c.kind)?'':c.kind; Array.prototype.forEach.call(chips.children,function(x){ x.classList.remove('on'); }); if(kindF) b.classList.add('on'); list(); }); chips.appendChild(b); }); AB.appendChild(chips);
+    var res=el('div'); AB.appendChild(res);
+    var own=el('button','bq-btn wide','+ Добавить своё (нет в меню)'); own.type='button'; own.style.marginTop='var(--sp-3)'; AB.appendChild(own);
+    own.addEventListener('click',function(){ buildForm(cap(inp.value)); });
+    inp.addEventListener('input',function(){ qStr=inp.value; list(); });
+    function list(){
+      res.textContent='';
+      var toks=norm(qStr).split(/\s+/).filter(Boolean);
+      if(!toks.length && !kindF){ res.appendChild(el('p','bq-empty','Начни вводить название — найду в банкетном меню.\nИли выбери вид сверху.')); return; }
+      var pool=MENU.concat(customCatalog()), found=pool.filter(function(i){ return (!kindF||i.kind===kindF) && toks.every(function(t){ return i.hay.indexOf(t)>-1; }); });
+      function rk(i){ var n=norm(i.name), s=0; toks.forEach(function(t){ var p=n.indexOf(t); s+= p===0 ? 0 : (p>0 && /[\s\-«"(]/.test(n.charAt(p-1)) ? 1 : (p>0 ? 2 : 4)); }); return s; }
+      found.sort(function(a,b){ return (rk(a)-rk(b)) || (kindOrder(a.kind)-kindOrder(b.kind)); });
+      found.slice(0,40).forEach(function(i){
+        var b=el('button','bq-res'); b.type='button'; if(i.dot) b.style.setProperty('--dot',i.dot);
+        var mn=el('span','mn'); mn.appendChild(el('b',null,i.name)); var sl=subLine(i,false); if(sl) mn.appendChild(el('small',null,sl)); if(i.note) mn.appendChild(el('small',null,'⚑ '+i.note));
+        var sd=el('span','sd'); sd.appendChild(el('em',null,i.price!=null? money(i.price) : '—')); var n0=countIn(addEv,i); if(n0) sd.appendChild(el('span','cnt','×'+n0));
+        b.appendChild(mn); b.appendChild(sd);
+        b.addEventListener('click',function(){ addTo(addEv,i); var n=countIn(addEv,i); toast('Добавлено: '+i.name+(n>1? ' (×'+n+')' : '')); list(); });
+        res.appendChild(b);
+      });
+      if(!found.length) res.appendChild(el('p','bq-empty','В меню такого нет.\nМожно добавить своё — кнопка ниже.'));
+      else if(found.length>40) res.appendChild(el('p','bq-empty','Показаны первые 40 — уточни запрос'));
+    }
+    list();
+  }
+  function buildForm(prefill){
+    AB.textContent=''; $('bqAddTitle').textContent='Своя позиция';
+    var f=el('div','bq-form');
+    function field(label,node){ var l=el('label','bq-lbl',label); l.appendChild(node); return l; }
+    function input(type,ph,attrs){ var i=el('input','bq-in'); i.type=type; if(ph) i.placeholder=ph; if(attrs) for(var k in attrs) i.setAttribute(k,attrs[k]); return i; }
+    var name=input('text','Например, Просекко Брют'); name.value=prefill||''; name.maxLength=100;
+    var kind=el('select','bq-in'); var o0=el('option',null,'— выбери вид —'); o0.value=''; kind.appendChild(o0); KINDS.forEach(function(k){ var o=el('option',null,k); o.value=k; kind.appendChild(o); });
+    var sup=input('text','Кто поставляет',{list:'bqSup'}), country=input('text','Страна',{list:'bqCountry'});
+    var vol=input('text','750',{inputmode:'numeric'}), price=input('text','если известна',{inputmode:'decimal'}), qty=input('text','1',{inputmode:'numeric'}), note=input('text','Например, привезут к 15-му'); qty.value='1'; vol.value='750';
+    f.appendChild(field('Название *',name)); f.appendChild(field('Вид',kind)); f.appendChild(field('Поставщик',sup)); f.appendChild(field('Страна',country));
+    var g=el('div','bq-grid2'); g.appendChild(field('Объём, мл',vol)); g.appendChild(field('Количество, шт',qty)); f.appendChild(g);
+    f.appendChild(field('Цена за бутылку, ₽',price)); f.appendChild(field('Заметка',note));
+    var r=el('div','bq-row'), ok=el('button','bq-btn pri','Добавить в банкет'), no=el('button','bq-btn','Назад к поиску'); ok.type=no.type='button'; r.appendChild(ok); r.appendChild(no); f.appendChild(r); AB.appendChild(f);
+    no.addEventListener('click',function(){ $('bqAddTitle').textContent='Добавить алкоголь'; buildSearch(); });
+    ok.addEventListener('click',function(){
+      var nm=name.value.trim(); if(!nm){ name.focus(); toast('Впиши название'); return; }
+      var q=parseInt(qty.value,10); q=(isFinite(q)&&q>0)? Math.min(q,999) : 1;
+      addTo(addEv,{ name:cap(nm), sup:sup.value.trim(), kind:kind.value, country:country.value.trim(), vol:num(vol.value)||null, price:num(price.value), note:note.value.trim(), src:'custom', qty:q });
+      toast('Добавлено: '+cap(nm)); qStr=''; $('bqAddTitle').textContent='Добавить алкоголь'; buildSearch();
+    });
+    setTimeout(function(){ name.focus(); },60);
+  }
+})();
+</script>
 <script>
 (function(){
   var q=document.getElementById('q'), pills=document.querySelectorAll('#pills .pill'), empty=document.getElementById('empty');
