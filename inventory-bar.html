@@ -396,17 +396,19 @@
   .fld2{display:flex; align-items:center; gap:6px; flex:0 0 auto;}
   .inv-in{width:84px; height:34px; padding:0 9px; font-size:.9rem; border-radius:var(--r-sm);}
   .u{flex:0 0 26px; font:600 .68rem 'IBM Plex Mono',monospace; color:var(--muted);}
-  .split-btn{margin-top:3px; padding:0; background:none; border:none; color:var(--accent-ink); font:600 .72rem 'Manrope',sans-serif; text-decoration:underline; text-underline-offset:2px;}
+  .split-btn{align-self:flex-start; text-align:left; margin-top:3px; padding:0; background:none; border:none; color:var(--accent-ink); font:600 .72rem 'Manrope',sans-serif; text-decoration:underline; text-underline-offset:2px;}
   .item.grp{display:block; padding:8px 10px 10px 14px;}
   .grp-head{display:flex; align-items:center; gap:8px;}
   .tot-v{min-width:84px; text-align:right; font:600 .95rem 'IBM Plex Mono',monospace; color:var(--accent-ink);}
   .subs{display:flex; flex-direction:column; gap:6px; margin-top:8px;}
-  .sub{display:flex; align-items:center; flex-wrap:wrap; gap:6px;}
-  .sub-n{flex:1 1 120px; min-width:0; height:34px; padding:0 10px; font:500 .88rem 'Manrope',sans-serif; color:var(--ink); background:var(--bg); border:1.5px solid var(--line); border-radius:var(--r-sm); -webkit-appearance:none; appearance:none;}
+  .sub{display:grid; grid-template-columns:1fr 30px; align-items:center; gap:4px 6px; padding-bottom:6px; border-bottom:1px dashed var(--line);}
+  .sub:last-child{border-bottom:none; padding-bottom:0;}
+  .sub-line{grid-column:1 / -1; display:flex; align-items:center; gap:6px;}
+  .sub-n{min-width:0; width:100%; height:34px; padding:0 10px; font:500 .88rem 'Manrope',sans-serif; color:var(--ink); background:var(--bg); border:1.5px solid var(--line); border-radius:var(--r-sm); -webkit-appearance:none; appearance:none;}
   .sub-n:focus{outline:none; border-color:var(--accent-ink);}
   .sub-n::placeholder{color:var(--muted); opacity:.7;}
   .sub-x{flex:0 0 30px; height:34px; padding:0; background:none; border:none; color:var(--muted); font:400 1.3rem/1 'Manrope',sans-serif;}
-  .sub-expr{flex:1 0 100%; font:600 .72rem 'IBM Plex Mono',monospace; color:var(--accent-ink); line-height:1.3; padding-left:2px;}
+  .sub-expr{flex:1 1 auto; padding-left:6px; font:600 .72rem 'IBM Plex Mono',monospace; color:var(--accent-ink); line-height:1.3; padding-left:2px;}
   .sub-expr:empty{display:none;}
   .grp-actions{display:flex; gap:16px; margin-top:8px;}
   .grp-actions button{padding:2px 0; background:none; border:none; color:var(--accent-ink); font:600 .74rem 'Manrope',sans-serif; text-decoration:underline; text-underline-offset:2px;}
@@ -550,10 +552,11 @@
   }
   function subRow(it,r,draw,upd){
     var row=el('div','sub'), n=el('input','sub-n'), v=el('input','inv-in sub-v'), x=el('button','sub-x','×'), ex=el('span','sub-expr');
-    n.type='text'; n.placeholder='Название: вкус, марка'; n.setAttribute('list','ttk-names'); n.setAttribute('autocomplete','off'); n.value=r.n||'';
+    n.type='text'; n.placeholder='Вкус или марка'; n.setAttribute('list','ttk-names'); n.setAttribute('autocomplete','off'); n.value=r.n||'';
     v.setAttribute('inputmode','text'); v.setAttribute('autocapitalize','off'); v.setAttribute('autocorrect','off'); v.setAttribute('spellcheck','false'); v.setAttribute('autocomplete','off'); v.setAttribute('enterkeyhint','next'); v.value=r.v||'';
     x.type='button'; x.setAttribute('aria-label','Удалить строку');
-    row.appendChild(n); row.appendChild(v); row.appendChild(el('span','u',it.u)); row.appendChild(x); row.appendChild(ex);
+    var line=el('div','sub-line'); line.appendChild(v); line.appendChild(el('span','u',it.u)); line.appendChild(ex);
+    row.appendChild(n); row.appendChild(x); row.appendChild(line);
     function sx(){ var p=parse(v.value); ex.textContent=(isExpr(v.value)&&p!==null)?pretty(v.value)+' = '+fmt(p)+' '+it.u:''; v.classList.toggle('has',p!==null); }
     sx();
     n.addEventListener('input',function(){ r.n=n.value; save(); });
@@ -567,7 +570,7 @@
     main.appendChild(el('span','it-name',it.n)); main.appendChild(info); tot.appendChild(tv); tot.appendChild(el('span','u',it.u));
     head.appendChild(main); head.appendChild(tot); row.appendChild(head);
     var subs=el('div','subs'); row.appendChild(subs);
-    function upd(){ var v=itemVal(it), a=S.split[it.c]; tv.textContent=v===null?'—':fmt(v); info.textContent='разделено: '+a.length+' поз., заполнено '+a.filter(function(r){ return parse(r.v)!==null; }).length; }
+    function upd(){ var v=itemVal(it), a=S.split[it.c]; tv.textContent=v===null?'—':fmt(v); info.textContent='заполнено '+a.filter(function(r){ return parse(r.v)!==null; }).length+' из '+a.length; }
     function draw(){ subs.innerHTML=''; S.split[it.c].forEach(function(r){ subs.appendChild(subRow(it,r,draw,upd)); }); }
     var act=el('div','grp-actions'), add=el('button','','+ Добавить'), un=el('button','','Убрать разбивку'); add.type='button'; un.type='button';
     add.addEventListener('click',function(){ S.split[it.c].push({n:'',v:''}); save(); draw(); var ins=subs.querySelectorAll('.sub-n'); if(ins.length) ins[ins.length-1].focus(); });
