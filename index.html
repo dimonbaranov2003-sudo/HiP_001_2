@@ -208,7 +208,7 @@
   #ixSearch{width:100%; height:46px; padding:0 14px 0 42px; border-radius:var(--r-md); border:1.5px solid rgba(200,138,78,.55); background:#F4ECDF; color:#332C2C; font:600 1rem 'Manrope',sans-serif; box-sizing:border-box; outline:none; -webkit-appearance:none; appearance:none;}
   #ixSearch::placeholder{color:#6D6262; font-weight:500;}
   #ixSearch:focus{border-color:#C88A4E; box-shadow:0 0 0 3px rgba(200,138,78,.3);}
-  body.ix-on #cardsBox, body.ix-on #tiles, body.ix-on #ixRecent{display:none;}
+  body.ix-on #cardsBox, body.ix-on #tiles{display:none;}
   .ix-results[hidden]{display:none;}
   .ix-head{display:flex; align-items:center; gap:var(--sp-2); margin:var(--sp-4) 2px var(--sp-3); font-size:1.02rem; font-weight:700; color:#F4ECDF;}
   .ix-head:first-child{margin-top:var(--sp-1);}
@@ -217,20 +217,6 @@
   .ix-tea{--bg:#F4ECDF; --surface:#FBF9F8; --surface-2:#F3EDEC; --ink:#332C2C; --muted:#6D6262; --line:#DED4D2; --accent:#B7A8A8; --accent-ink:#6B5858;}
   .ix-bar{--bg:#241611; --surface:#241811; --surface-2:#2C2015; --ink:#F4ECDF; --muted:#B49C89; --line:rgba(200,138,78,0.28); --accent:#C88A4E; --accent-ink:#E8B57E;}
   .ix-tea, .ix-bar{color:var(--ink);}
-
-  /* ---------- «Недавно открывал»: лента из последних позиций, размер как у фильтров в картах ---------- */
-  .ix-recent{display:flex; gap:var(--sp-2); margin:0 0 var(--sp-3); padding:1px 0; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
-  .ix-recent::-webkit-scrollbar{display:none;}
-  .ix-recent[hidden]{display:none;}
-  .ix-recent.more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);}
-  .ix-recent .rc{flex:0 0 auto; max-width:176px; height:30px; padding:0 12px; border-radius:var(--r-sm); font:500 .95rem/1 'Fraunces',serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; box-sizing:border-box; cursor:pointer; scroll-snap-align:start; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; border:1.5px solid var(--rc,var(--rc-fb)); transition:transform .15s ease, opacity .15s ease;}
-  .ix-recent .rc:active{transform:scale(.97); opacity:.85;}
-  .ix-recent .rc-tea{--rc-fb:#B7A8A8; background:#F4ECDF; color:#332C2C;}
-  .ix-recent .rc-bar{--rc-fb:rgba(200,138,78,.55); background:#241611; color:#F4ECDF;}
-  .ix-head .ix-back{margin-left:auto; height:30px; padding:0 12px; border-radius:var(--r-sm); border:1px solid rgba(244,236,223,.45); background:transparent; color:#F4ECDF; font:700 .72rem 'Manrope',sans-serif; cursor:pointer; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent;}
-  .ix-results.ix-anim{animation:ixIn .32s cubic-bezier(.22,1,.36,1);}
-  @keyframes ixIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
-  @media (prefers-reduced-motion:reduce){ .ix-results.ix-anim{animation:none;} }
 </style>
 </head>
 <body>
@@ -250,7 +236,6 @@
 <div class="divider"></div>
 <div class="search-row ix-search"><input id="ixSearch" type="text" autocomplete="off" placeholder="Найти чай или коктейль…"/></div>
 <div id="ixResults" class="ix-results" hidden></div>
-<div id="ixRecent" class="ix-recent" role="list" aria-label="Недавно открывал" hidden></div>
 <div class="cards" id="cardsBox">
 <a class="card card-tea card-hero" href="chai.html" data-final-logo-height="31" data-final-logo-top="20" data-tile-width="460">
 <span class="card-text-center">
@@ -392,7 +377,6 @@
       for(var pf = 0; pf < otherPanelsFwd.length; pf++) fadeOutTargets.push(otherPanelsFwd[pf]);
       if(sigFooterFwd) fadeOutTargets.push(sigFooterFwd);
       var ixSearchFwd = document.getElementById('ixSearch'); if(ixSearchFwd && ixSearchFwd.parentElement) fadeOutTargets.push(ixSearchFwd.parentElement);
-      var ixRecentFwd = document.getElementById('ixRecent'); if(ixRecentFwd && !ixRecentFwd.hidden) fadeOutTargets.push(ixRecentFwd);
 
       for(var k = 0; k < fadeOutTargets.length; k++){
         var elOut = fadeOutTargets[k];
@@ -526,7 +510,6 @@
       for(var po = 0; po < otherPanels.length; po++) targets.push(otherPanels[po]);
       if(sigFooter) targets.push(sigFooter);
       var ixs = document.querySelector('.ix-search'); if(ixs) targets.push(ixs);
-      var ixr = document.getElementById('ixRecent'); if(ixr && !ixr.hidden) targets.push(ixr);
 
       for(var k = 0; k < targets.length; k++){
         var el = targets[k];
@@ -885,7 +868,6 @@
   var inp=document.getElementById('ixSearch'), box=document.getElementById('ixResults');
   if(!inp||!box) return;
   var DB=null, loading=null, CSSB={}, SHEETS={};
-  var RKEY='hp_recent', RMAX=6, rbox=document.getElementById('ixRecent'), recentMode=false;
   // Карточка рисуется в изолированной оболочке (Shadow DOM) со стилями самой страницы —
   // поэтому выглядит ровно так же, как в чайной и барной картах.
   function cardCss(css){
@@ -903,7 +885,6 @@
   }
   function closeCard(d){
     if(!d.hasAttribute('open')) return;
-    d._closing=true;
     var content=contentOf(d); if(!content){ d.removeAttribute('open'); return; }
     var current=content.scrollHeight;
     content.style.willChange='height'; content.style.transition='none'; content.style.height=current+'px';
@@ -918,7 +899,6 @@
   }
   function openCard(d){
     if(d.hasAttribute('open')) return;
-    d._closing=false;
     d.setAttribute('open','');
     var content=contentOf(d); if(!content) return;
     content.style.willChange='height'; content.style.transition='none'; content.style.height='0px';
@@ -932,19 +912,13 @@
       scrollCardIntoView(d);
     };
     content.addEventListener('transitionend',onEnd);
-    // страховка: если анимация не отработала (transitionend не пришёл) — просто раскрываем карточку целиком
-    setTimeout(function(){
-      if(d._closing || !d.hasAttribute('open') || content.style.height==='auto') return;
-      content.removeEventListener('transitionend',onEnd);
-      content.style.transition=''; content.style.height='auto'; content.style.willChange='';
-    },900);
   }
-  function wire(d,kind){
+  function wire(d){
     var summary=d.querySelector(':scope > summary'); if(!summary) return;
     rendered.push(d);
     summary.addEventListener('click',function(e){
       e.preventDefault();
-      if(!d.hasAttribute('open')){ rpushCard(kind,d); rendered.forEach(function(o){ if(o!==d) closeCard(o); }); openCard(d); } else closeCard(d);
+      if(!d.hasAttribute('open')){ rendered.forEach(function(o){ if(o!==d) closeCard(o); }); openCard(d); } else closeCard(d);
     });
   }
   function mount(kind, card){
@@ -953,7 +927,7 @@
       if(!SHEETS[kind] && window.CSSStyleSheet && CSSStyleSheet.prototype.replaceSync){ SHEETS[kind]=new CSSStyleSheet(); SHEETS[kind].replaceSync(css); }
       if(!SHEETS[kind]) throw 0; sr.adoptedStyleSheets=[SHEETS[kind]];
     }catch(e){ var st=document.createElement('style'); st.textContent=css; sr.appendChild(st); }
-    sr.appendChild(card); wire(card,kind); return host;
+    sr.appendChild(card); wire(card); return host;
   }
   function norm(x){ return (x||'').toLowerCase().replace(/ё/g,'е'); }
   function load(){
@@ -970,7 +944,7 @@
           card.querySelectorAll('.ing-table tbody tr').forEach(function(tr){ var tds=tr.querySelectorAll('td'); if(tds.length<2||tr.classList.contains('total')) return; rows.push({n:tds[0].textContent.trim(), a:tds[1].textContent.trim()}); });
           card.querySelectorAll('.decor-list li').forEach(function(li){ var a=li.querySelector('.decor-name'), v=li.querySelector('.decor-val'); if(a&&!/^(премикс|подача)$/i.test(a.textContent.trim())) rows.push({n:a.textContent.trim(), a:v?v.textContent.trim():''}); });
           var holder=card.closest('[style*="--dot"]'), dot=card.style.getPropertyValue('--dot')||(holder?holder.style.getPropertyValue('--dot'):'');
-          DB.push({kind:kind, card:card, title:norm(c.textContent.replace(/\s+/g,' ').trim()), name:norm(c.textContent+' '+(card.getAttribute('data-tags')||'')), rows:rows, dot:dot.trim()});
+          DB.push({kind:kind, card:card, name:norm(c.textContent+' '+(card.getAttribute('data-tags')||'')), rows:rows, dot:dot.trim()});
         });
       });
       return DB;
@@ -980,9 +954,8 @@
   var HEAD={tea:'Чайная карта', bar:'Барная карта'};
   function render(){
     var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0;
-    recentMode=false; dropFly(); box.classList.remove('ix-anim');
     document.body.classList.toggle('ix-on',on); box.hidden=!on; box.innerHTML=''; rendered=[];
-    if(!on){ rrender(); return; }
+    if(!on) return;
     if(!DB){ box.innerHTML='<div class="ix-empty">Ищу…</div>'; load().then(render,function(){ box.innerHTML='<div class="ix-empty">Не удалось загрузить карты для поиска</div>'; }); return; }
     var total=0;
     ['tea','bar'].forEach(function(kind){
@@ -1003,131 +976,7 @@
     if(!total) box.innerHTML='<div class="ix-empty">Ничего не найдено</div>';
   }
   inp.addEventListener('input',render);
-  inp.addEventListener('focus',function(){ if(inp.value){ inp.value=''; render(); } else if(recentMode){ exitRecent(); } });
-
-  // ---------- «Недавно открывал»: последние 6 позиций из чайной и барной ----------
-  // Список лежит в localStorage (его пишут и сами карты, и поиск здесь) — у каждого свой, на его телефоне.
-  var COLOR_OK=/^(#[0-9a-f]{3,8}|(rgb|hsl)a?\([\d\s.,%\/deg-]+\))$/i;
-  function rread(){
-    try{
-      var a=JSON.parse(localStorage.getItem(RKEY)||'[]'); if(!Array.isArray(a)) return [];
-      return a.filter(function(x){ return x && typeof x.n==='string' && x.n && (x.k==='tea'||x.k==='bar'); }).slice(0,RMAX);
-    }catch(e){ return []; }
-  }
-  function rsave(list){ try{ localStorage.setItem(RKEY, JSON.stringify(list.slice(0,RMAX))); }catch(e){} }
-  function rpush(kind,name,dot){
-    name=(name||'').replace(/\s+/g,' ').trim(); if(!name) return;
-    var key=norm(name), list=rread().filter(function(x){ return !(x.k===kind && norm(x.n)===key); });
-    dot=(dot||'').trim(); list.unshift({k:kind, n:name, d:COLOR_OK.test(dot)?dot:''}); rsave(list);
-  }
-  function titleOf(d){
-    var nm=d.querySelector('.card-name'); if(!nm) return '';
-    var c=nm.cloneNode(true); c.querySelectorAll('.prep-note,.hit').forEach(function(x){ x.remove(); });
-    return c.textContent.replace(/\s+/g,' ').trim();
-  }
-  function rpushCard(kind,d){
-    var dot=''; try{ dot=getComputedStyle(d).getPropertyValue('--dot'); }catch(e){}
-    rpush(kind,titleOf(d),dot);
-  }
-  function rfade(){
-    if(!rbox) return;
-    rbox.classList.toggle('more', rbox.scrollWidth>rbox.clientWidth+2 && rbox.scrollLeft+rbox.clientWidth<rbox.scrollWidth-2);
-  }
-  function rrender(){
-    if(!rbox) return;
-    var list=rread(); rbox.innerHTML='';
-    if(!list.length){ rbox.hidden=true; rbox.classList.remove('more'); return; }
-    rbox.hidden=false;
-    list.forEach(function(it){
-      var b=document.createElement('button'); b.type='button'; b.className='rc rc-'+it.k; b.setAttribute('role','listitem');
-      if(it.d && COLOR_OK.test(it.d)) b.style.setProperty('--rc',it.d);
-      b.textContent=it.n; b.title=it.n;
-      b.addEventListener('click',function(){ openRecent(it,b); });
-      rbox.appendChild(b);
-    });
-    rbox.scrollLeft=0; rfade();
-  }
-  function exitRecent(){
-    recentMode=false; dropFly(); box.classList.remove('ix-anim'); box.innerHTML=''; box.hidden=true; rendered=[];
-    document.body.classList.remove('ix-on'); rrender();
-    window.scrollTo({top:0});
-  }
-  // ---------- Перелёт: маленькая плашка из ленты вырастает в шапку карточки, и карточка раскрывается ----------
-  var flyEl=null, REDUCE=!!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-  function dropFly(){ if(flyEl){ if(flyEl.parentNode) flyEl.parentNode.removeChild(flyEl); flyEl=null; } }
-  function startFly(chip){
-    dropFly(); if(!chip || REDUCE) return null;
-    var r=chip.getBoundingClientRect(), cs=getComputedStyle(chip), f=document.createElement('div');
-    f.className='rc-fly'; f.textContent=chip.textContent;
-    f.style.cssText='position:fixed;z-index:60;pointer-events:none;box-sizing:border-box;display:flex;align-items:center;white-space:nowrap;overflow:hidden;'
-      +'left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;padding:0 12px;'
-      +'border:'+cs.borderTopWidth+' solid '+cs.borderTopColor+';border-radius:'+cs.borderTopLeftRadius+';'
-      +'background-color:'+cs.backgroundColor+';color:'+cs.color+';font-family:'+cs.fontFamily+';font-size:'+cs.fontSize+';font-weight:'+cs.fontWeight+';line-height:1;';
-    document.body.appendChild(f); flyEl=f; return f;
-  }
-  function landFly(f, el, host, done){
-    var sum=el.querySelector(':scope > summary'); if(!sum){ done(); return; }
-    var r=sum.getBoundingClientRect(), cs=getComputedStyle(el), nm=el.querySelector('.card-name'), ncs=nm?getComputedStyle(nm):null;
-    var bg=cs.backgroundColor; if(!bg||/rgba\(0,\s*0,\s*0,\s*0\)|transparent/.test(bg)) bg=getComputedStyle(sum).backgroundColor;
-    void f.offsetWidth;
-    f.style.transition=['left','top','width','height','border-radius','background-color','border-color','color','font-size','padding-left'].map(function(p){ return p+' .46s cubic-bezier(.4,0,.2,1)'; }).join(',');
-    requestAnimationFrame(function(){
-      f.style.left=r.left+'px'; f.style.top=r.top+'px'; f.style.width=r.width+'px'; f.style.height=r.height+'px';
-      f.style.borderRadius=cs.borderTopLeftRadius; f.style.backgroundColor=bg; f.style.borderColor=cs.borderTopColor;
-      if(ncs){ f.style.color=ncs.color; f.style.fontSize=ncs.fontSize; }
-      f.style.paddingLeft='14px';
-    });
-    setTimeout(function(){
-      host.style.opacity='1';                       // настоящая шапка проявилась ровно под плашкой
-      f.style.transition='opacity .14s ease'; f.style.opacity='0';
-      setTimeout(dropFly,170);
-      done();
-    },500);
-  }
-  function openRecent(it,chip){
-    recentMode=true; rendered=[];
-    var fly=startFly(chip);
-    document.body.classList.add('ix-on'); box.hidden=false; box.classList.remove('ix-anim'); box.innerHTML='<div class="ix-empty">Открываю…</div>';
-    load().then(function(){
-      if(!recentMode){ dropFly(); return; }
-      var key=norm(it.n), found=null, i;
-      for(i=0;i<DB.length;i++){ if(DB[i].kind===it.k && DB[i].title===key){ found=DB[i]; break; } }
-      if(!found){ // старые записи могли слипнуться с подсказкой «В составе…» — узнаём позицию по началу названия
-        for(i=0;i<DB.length;i++){ if(DB[i].kind===it.k && DB[i].title && key.indexOf(DB[i].title+'в составе')===0){ found=DB[i]; break; } }
-        if(found){ try{ rsave(rread().filter(function(x){ return !(x.k===it.k && x.n===it.n); })); }catch(e){} it={k:it.k, n:'', d:it.d}; }
-      }
-      if(!found){ // позиции больше нет в карте — убираем из ленты и возвращаемся на главную
-        try{ rsave(rread().filter(function(x){ return !(x.k===it.k && norm(x.n)===key); })); }catch(e){}
-        exitRecent(); return;
-      }
-      box.innerHTML=''; rendered=[];
-      var h=document.createElement('div'); h.className='ix-head';
-      h.innerHTML='<span></span><button type="button" class="ix-back">← Назад</button>';
-      h.firstChild.textContent=HEAD[it.k]; h.lastChild.addEventListener('click',exitRecent); box.appendChild(h);
-      var wrap=document.createElement('div'); wrap.className='ix-'+it.k;
-      var el=document.importNode(found.card,true); el.removeAttribute('open'); el.classList.remove('js-hidden');
-      if(found.dot) el.style.setProperty('--dot',found.dot);
-      var host=mount(it.k,el); wrap.appendChild(host); box.appendChild(wrap);
-      var ttl=titleOf(el), dotNow=it.d; try{ dotNow=dotNow||getComputedStyle(el).getPropertyValue('--dot'); }catch(e){}
-      rpush(it.k,ttl,dotNow);
-      if(fly && flyEl===fly){
-        fly.textContent=ttl; host.style.opacity='0';
-        landFly(fly, el, host, function(){ if(recentMode) openCard(el); });
-      } else {
-        box.classList.remove('ix-anim'); void box.offsetWidth; box.classList.add('ix-anim');
-        requestAnimationFrame(function(){ requestAnimationFrame(function(){ openCard(el); }); });
-      }
-    },function(){
-      dropFly(); box.innerHTML='<div class="ix-empty">Не удалось загрузить карту</div>';
-    });
-  }
-  if(rbox){
-    rbox.addEventListener('scroll',rfade,{passive:true});
-    window.addEventListener('resize',rfade);
-    window.addEventListener('pageshow',function(){ if(!recentMode && !document.body.classList.contains('ix-on')) rrender(); });
-    document.addEventListener('visibilitychange',function(){ if(!document.hidden && !recentMode && !document.body.classList.contains('ix-on')) rrender(); });
-    rrender();
-  }
+  inp.addEventListener('focus',function(){ if(inp.value){ inp.value=''; render(); } });
   setTimeout(function(){ load().catch(function(){}); },900);
 })();
 </script>
