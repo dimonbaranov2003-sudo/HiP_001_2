@@ -416,6 +416,88 @@
   .bq-toast[hidden]{display:none;}
   .bq-toast button{border:0; background:none; color:#8a4f1f; font:800 .84rem 'Manrope',sans-serif; text-decoration:underline; padding:2px 0;}
 </style>
+<style id="notion">
+  /* ===== Preview: стиль Notion (тёмная тема) поверх прежней вёрстки. Фоны-текстуры остаются. ===== */
+  :root{
+    --nf:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --ink:rgba(255,255,255,.88); --muted:rgba(255,255,255,.46); --line:rgba(255,255,255,.1);
+    --surface:rgba(25,25,25,.80); --surface-2:rgba(255,255,255,.06);
+    --accent:#2383e2; --accent-ink:rgba(255,255,255,.7);
+    --blue:#2383e2; --tag-bg:rgba(255,255,255,.1); --tag-ink:rgba(255,255,255,.7);
+    --orange-bg:rgba(255,163,68,.2); --orange:#ffa344; --blue-bg:rgba(82,156,202,.2); --blue-ink:#6bb3e6;
+    --r-sm:4px; --r-md:6px; --r-lg:8px; --h-ctl:40px; --h-pill:28px;
+  }
+  *{font-family:var(--nf) !important; letter-spacing:normal;}
+  body{background-image:linear-gradient(rgba(25,25,25,.62), rgba(25,25,25,.62)), url("bg-banquet-dark.jpg");}
+  .bq{background-image:linear-gradient(rgba(25,25,25,.62), rgba(25,25,25,.62)), url("bg-banquet-dark.jpg");}
+  header.topbar{border-bottom:1px solid var(--line);}
+
+  /* поиск и кнопка «Предстоящие банкеты» */
+  #search, #ingSearch, .search input{height:40px; border:0; border-radius:6px; background:rgba(255,255,255,.06); box-shadow:inset 0 0 0 1px var(--line); font-weight:400; font-size:.95rem; color:var(--ink);}
+  .search input:focus{box-shadow:0 0 0 2px var(--blue); border:0;}
+  .search::before{color:var(--muted); font-weight:400;}
+  .bq-open{justify-content:flex-start; gap:10px; height:40px; border:1px solid var(--line); border-radius:6px; background:rgba(255,255,255,.06); color:var(--ink); font-weight:500; font-size:.92rem;}
+  .bq-open svg{stroke:var(--muted); stroke-width:1.5;}
+  .bq-open i{margin-left:auto; color:var(--muted); font-size:.95rem;}
+
+  /* фильтры — «теги» */
+  .pill, button.pill{height:28px; padding:0 10px; border:0; border-radius:4px; background:rgba(255,255,255,.06); color:var(--tag-ink); font-weight:500; font-size:.8rem;}
+  .pill.on{background:rgba(255,255,255,.16); color:#fff;}
+
+  /* разделы и позиции меню — как строки базы данных */
+  .cat-head h2{font-size:1.2rem; font-weight:700; letter-spacing:-.01em; color:var(--ink);}
+  .cat-head .n{font-family:var(--nf); font-size:.8rem; color:var(--muted);}
+  .item{background:transparent; border:0; border-bottom:1px solid var(--line); border-radius:0; padding:9px 2px; margin:0; gap:14px; align-items:center;}
+  .it-main{gap:2px;}
+  .it-name{font-weight:500; font-size:.98rem; color:var(--ink);}
+  .it-sup{display:inline-block; align-self:flex-start; margin-top:2px; padding:0 6px; border-radius:3px; background:var(--tag-bg); color:var(--tag-ink); font-weight:500; font-size:.72rem; line-height:1.5;}
+  .it-sub{font-size:.72rem; color:var(--muted); opacity:1;}
+  .it-note{margin-top:3px; padding:0 6px; border:0; border-radius:3px; background:var(--orange-bg); color:var(--orange); font-weight:500; font-size:.68rem; line-height:1.55;}
+  .it-price{font-weight:500; font-size:.9rem; color:var(--muted); font-variant-numeric:tabular-nums;}
+  .empty{color:var(--muted);}
+
+  /* кнопки, поля, карточки в «Предстоящих банкетах» */
+  .bq-top{border-bottom:1px solid var(--line); background:rgba(25,25,25,.86);}
+  .bq-top h2{font-weight:600; font-size:.95rem; text-transform:none; letter-spacing:0; color:var(--ink);}
+  .bq-x{color:var(--muted);}
+  .bq-btn{height:36px; padding:0 12px; border:1px solid var(--line); border-radius:6px; background:rgba(255,255,255,.06); color:var(--ink); font-weight:500; font-size:.9rem;}
+  .bq-btn.pri{background:var(--blue); border-color:transparent; color:#fff;}
+  .bq-btn.dng{background:transparent; border-color:rgba(235,87,87,.35); color:#eb7b7b;}
+  .bq-in, .bq-datebox{border:1px solid var(--line); border-radius:6px; background:rgba(255,255,255,.05); color:var(--ink); font-weight:400; font-size:.95rem; height:40px;}
+  .bq-in:focus, .bq-datebox:focus-within{border-color:var(--blue); box-shadow:0 0 0 2px rgba(35,131,226,.35);}
+  .bq-datebox svg{stroke:var(--muted);}
+  .bq-lbl{font-weight:500; font-size:.74rem; color:var(--muted);}
+  .bq-form{border-radius:6px; background:var(--surface);}
+  .bq-form h3{font-weight:600;}
+  .bq-ev{border:1px solid var(--line); border-radius:6px; background:var(--surface);}
+  .bq-ev.past{border-left-color:var(--line);}
+  .bq-ev-h .d{font-weight:600; font-size:1rem;}
+  .bq-ev-h .tt{font-weight:400; color:var(--ink);}
+  .bq-ev-h .c{font-weight:400; font-size:.78rem; color:var(--muted);}
+  .bq-ev-h .c.none{color:var(--muted);}
+  .bq-when{border:0; border-radius:3px; background:var(--blue-bg); color:var(--blue-ink); font-weight:500; font-size:.7rem; padding:1px 6px;}
+  .bq-chev{stroke:var(--muted);}
+  .bq-grp{padding:10px 14px 3px; font-weight:500; font-size:.78rem; letter-spacing:0; text-transform:none; color:var(--muted);}
+  .bq-it .nm{font-weight:500; font-size:.95rem;}
+  .bq-it .sb{color:var(--muted);}
+  .bq-it .sb b{color:var(--orange); font-weight:500;}
+  .bq-qty{min-width:0; padding:0 7px; border:0; border-radius:4px; background:var(--tag-bg); color:var(--ink); font-weight:500; font-size:.82rem; line-height:1.6; font-variant-numeric:tabular-nums;}
+  .bq-step{border-radius:6px; border:1px solid var(--line); background:rgba(255,255,255,.05);}
+  .bq-step button{color:var(--ink);}
+  .bq-rm{color:var(--muted);}
+  .bq-chip{height:28px; padding:0 10px; border:0; border-radius:4px; background:rgba(255,255,255,.06); color:var(--tag-ink); font-weight:500; font-size:.8rem;}
+  .bq-chip.on{background:rgba(255,255,255,.16); color:#fff;}
+  .bq-search .bq-in{border-color:var(--line); padding-left:42px;}
+  .bq-search::before{color:var(--muted); font-weight:400;}
+  .bq-res{border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; padding:9px 2px; margin:0;}
+  .bq-res:active{background:rgba(255,255,255,.06);}
+  .bq-res .mn b{font-weight:500;}
+  .bq-res .cnt{border-radius:4px; background:var(--tag-bg); color:var(--ink); font-weight:500;}
+  .bq-toast{border-radius:6px; background:#2f2f2f; color:var(--ink); font-weight:500; box-shadow:0 0 0 1px rgba(255,255,255,.1), 0 8px 24px rgba(0,0,0,.5);}
+  .bq-toast button{color:#6bb3e6; text-decoration:none;}
+  .bq-empty{color:var(--muted);}
+  details.bq-past > summary{font-weight:500; font-size:.78rem; letter-spacing:0; text-transform:none; color:var(--muted);}
+</style>
 </head>
 <body>
 <script>
