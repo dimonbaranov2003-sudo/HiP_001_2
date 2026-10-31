@@ -6,7 +6,7 @@
 <meta content="#241611" name="theme-color"/>
 <title>Банкетное меню</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&amp;family=Manrope:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&amp;family=Manrope:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=Montserrat:wght@800&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --bg:#241611;
@@ -318,24 +318,50 @@
   .bq-open i{font-style:normal; font-family:'IBM Plex Mono',monospace; font-size:1rem;}
   html.entry-veil .bq-open{opacity:0; transform:translateY(10px);}
   html.bq-lock{overflow:hidden;}
-  .bq{position:fixed; inset:0; z-index:200; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; background-color:var(--bg); background-image:linear-gradient(rgba(27,18,13,0.55), rgba(27,18,13,0.55)), url("bg-banquet-dark.jpg"); background-size:620px auto, 620px auto; background-position:top center, top center; animation:bqIn .28s cubic-bezier(.2,.8,.2,1) both;}
+  /* --- слои: «лист» выезжает справа, как переход между картами --- */
+  .bq{--bq-ext:160px; color:var(--ink); font-family:'Manrope',system-ui,sans-serif; -webkit-font-smoothing:antialiased; position:fixed; top:calc(-1 * var(--bq-ext)); left:0; right:0; bottom:0; z-index:200; background-color:var(--bg); background-image:linear-gradient(rgba(27,18,13,0.55), rgba(27,18,13,0.55)), url("bg-banquet-dark.jpg"); background-size:620px auto, 620px auto; background-position:top center, top center;}
   .bq[hidden]{display:none;}
   .bq-add{z-index:210;}
-  @keyframes bqIn{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;}}
-  @media (prefers-reduced-motion:reduce){ .bq{animation:none;} }
+  .bq-sc{position:absolute; top:var(--bq-ext); left:0; right:0; bottom:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;}
+  .bq-top h2{margin:0; flex:1; min-width:0; text-align:center; font:800 clamp(.74rem,3.7vw,.95rem)/1.2 'Montserrat','Manrope',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  /* --- поле даты: своё оформление, текст ровно по центру --- */
+  .bq-datebox{position:relative; display:flex; align-items:center; justify-content:space-between; gap:10px; height:var(--h-ctl); padding:0 14px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface-2); color:var(--ink); font:600 1rem/1.2 'Manrope',sans-serif; overflow:hidden; text-align:left;}
+  .bq-datebox .v{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .bq-datebox .v.ph{color:var(--muted); font-weight:500;}
+  .bq-datebox svg{flex:0 0 auto; width:20px; height:20px; fill:none; stroke:var(--accent-ink); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+  .bq-datebox input{color-scheme:dark; position:absolute; inset:0; width:100%; height:100%; margin:0; padding:0; border:0; opacity:0; font-size:16px; -webkit-appearance:none; appearance:none; min-width:0;}
+  .bq-datebox:focus-within{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);}
+  /* --- карточка банкета: свёрнута — только итог, раскрыта — состав и кнопки --- */
+  .bq-ev{border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:var(--r-md); background:var(--surface); margin-bottom:var(--sp-3); overflow:hidden;}
+  .bq-ev.past{opacity:.78; border-left-color:var(--muted);}
+  .bq-ev-h{display:flex; width:100%; align-items:center; justify-content:space-between; gap:12px; padding:var(--sp-3) 14px; margin:0; border:0; background:none; color:var(--ink); text-align:left; font:inherit; -webkit-tap-highlight-color:transparent;}
+  .bq-ev-h .l{min-width:0; flex:1; display:flex; flex-direction:column; gap:3px;}
+  .bq-ev-h .d{font:600 1.08rem/1.2 'Fraunces',serif;}
+  .bq-ev-h .tt{font:500 .86rem/1.3 'Manrope',sans-serif; color:var(--ink); opacity:.92; overflow-wrap:anywhere;}
+  .bq-ev-h .c{font:600 .72rem/1.35 'IBM Plex Mono',monospace; color:var(--accent-ink);}
+  .bq-ev-h .c.none{color:var(--muted); font-weight:500;}
+  .bq-ev-h .r{flex:0 0 auto; display:flex; align-items:center; gap:10px;}
+  .bq-when{flex:0 0 auto; font:600 .66rem 'IBM Plex Mono',monospace; letter-spacing:.04em; color:var(--accent-ink); border:1px solid var(--accent); border-radius:4px; padding:2px 7px; white-space:nowrap;}
+  .bq-chev{width:14px; height:14px; fill:none; stroke:var(--accent-ink); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .32s cubic-bezier(.22,1,.36,1);}
+  .bq-ev.open .bq-chev{transform:rotate(180deg);}
+  .bq-col{display:grid; grid-template-rows:0fr; transition:grid-template-rows .34s cubic-bezier(.22,1,.36,1);}
+  .bq-ev.open .bq-col{grid-template-rows:1fr;}
+  .bq-col > div{min-height:0; overflow:hidden; visibility:hidden; transition:visibility 0s linear .34s;}
+  .bq-ev.open .bq-col > div{visibility:visible; transition-delay:0s;}
+  .bq-edit{display:flex; flex-direction:column; gap:var(--sp-3); padding:var(--sp-3) 14px; border-top:1px solid var(--line);}
+  .bq-col .bq-act{padding-top:var(--sp-3); padding-bottom:var(--sp-3);}
+  .bq-col .bq-edit + .bq-act{padding-top:0;}
+  @media (prefers-reduced-motion:reduce){ .bq-col,.bq-col > div,.bq-chev{transition:none;} }
   .bq-top{position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:var(--sp-2); padding:var(--sp-2) var(--pad-x); background:color-mix(in srgb, var(--bg) 94%, transparent); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
-  .bq-top h2{margin:0; flex:1; text-align:center; font-size:1.08rem; font-weight:600; letter-spacing:-.01em;}
   .bq-x{width:44px; height:44px; margin-left:-10px; display:flex; align-items:center; justify-content:center; border:0; background:none; color:var(--accent-ink); -webkit-tap-highlight-color:transparent;}
   .bq-x svg{width:11px; height:19px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
   .bq-top .sp{width:34px;}
   .bq-wrap{max-width:560px; margin:0 auto; padding:var(--sp-4) var(--pad-x) calc(var(--sp-6) + env(safe-area-inset-bottom,0px));}
   .bq-hint{margin:0 2px var(--sp-4); font-size:.78rem; line-height:1.45; color:var(--muted);}
-  .bq-foot{margin:var(--sp-2) 2px 0; font-size:.7rem; line-height:1.45; color:var(--muted); text-align:center;}
   .bq-in{display:block; width:100%; height:var(--h-ctl); padding:0 14px; border-radius:var(--r-md); border:1.5px solid var(--line); background:var(--surface-2); color:var(--ink); font:600 1rem 'Manrope',sans-serif; -webkit-appearance:none; appearance:none; outline:none; box-sizing:border-box; min-width:0;}
   .bq-in:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);}
   .bq-in::placeholder{color:var(--muted); font-weight:500;}
   .bq-in::-webkit-search-cancel-button,.bq-in::-webkit-search-decoration{-webkit-appearance:none; appearance:none; display:none;}
-  input[type=date].bq-in{color-scheme:dark;}
   select.bq-in{padding-right:10px;}
   .bq-lbl{display:flex; flex-direction:column; gap:6px; font:600 .72rem 'Manrope',sans-serif; color:var(--muted); letter-spacing:.02em;}
   .bq-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:var(--h-ctl); padding:0 var(--sp-4); border-radius:var(--r-md); border:1.5px solid var(--accent); background:none; color:var(--accent-ink); font:700 .86rem 'Manrope',sans-serif; -webkit-tap-highlight-color:transparent;}
@@ -352,16 +378,6 @@
   .bq-sec{margin:var(--sp-5) 2px var(--sp-3); font:700 .72rem 'IBM Plex Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink);}
   details.bq-past > summary{list-style:none; cursor:pointer; margin:var(--sp-5) 2px var(--sp-3); font:700 .72rem 'IBM Plex Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);}
   details.bq-past > summary::-webkit-details-marker{display:none;}
-  .bq-ev{border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:var(--r-md); background:var(--surface); margin-bottom:var(--sp-4); overflow:hidden;}
-  .bq-ev.past{opacity:.78; border-left-color:var(--muted);}
-  .bq-ev-h{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:var(--sp-3) 14px 4px;}
-  .bq-date{position:relative; display:inline-flex; flex-direction:column; gap:3px; padding:2px 0;}
-  .bq-date b{font:600 1.12rem/1.2 'Fraunces',serif; color:var(--ink);}
-  .bq-date input{position:absolute; inset:0; width:100%; height:100%; opacity:0; border:0; padding:0; font-size:16px; -webkit-appearance:none; appearance:none;}
-  .bq-when{flex:0 0 auto; margin-top:3px; font:600 .66rem 'IBM Plex Mono',monospace; letter-spacing:.04em; color:var(--accent-ink); border:1px solid var(--accent); border-radius:4px; padding:2px 7px; white-space:nowrap;}
-  .bq-title{display:block; width:calc(100% - 28px); margin:2px 14px 10px; height:34px; padding:0 2px; border:0; border-bottom:1px dashed var(--line); background:transparent; color:var(--ink); font:500 .9rem 'Manrope',sans-serif; outline:none; border-radius:0; -webkit-appearance:none;}
-  .bq-title:focus{border-bottom-color:var(--accent);}
-  .bq-title::placeholder{color:var(--muted);}
   .bq-it{display:grid; grid-template-columns:1fr auto; gap:4px 10px; padding:var(--sp-3) 14px; border-top:1px solid var(--line);}
   .bq-it .nm{font:500 .98rem/1.25 'Fraunces',serif; color:var(--ink); overflow-wrap:anywhere;}
   .bq-it .sb{grid-column:1; font-size:.7rem; line-height:1.4; color:var(--muted);}
@@ -555,14 +571,14 @@
     <a class="sig-tg" href="https://t.me/wish_adc" target="_blank" rel="noopener">@wish_adc</a>
   </div>
 </footer>
-<div class="bq" id="bq" hidden role="dialog" aria-label="Предстоящие банкеты">
+<div class="bq" id="bq" hidden role="dialog" aria-label="Предстоящие банкеты"><div class="bq-sc" id="bqSc">
   <div class="bq-top"><button class="bq-x" id="bqClose" type="button" aria-label="Назад к меню"><svg viewBox="0 0 11 19" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></button><h2>Предстоящие банкеты</h2><span class="sp"></span></div>
   <div class="bq-wrap" id="bqBody"></div>
-</div>
-<div class="bq bq-add" id="bqAdd" hidden role="dialog" aria-label="Добавить алкоголь">
+</div></div>
+<div class="bq bq-add" id="bqAdd" hidden role="dialog" aria-label="Добавить алкоголь"><div class="bq-sc" id="bqAddSc">
   <div class="bq-top"><button class="bq-x" id="bqAddClose" type="button" aria-label="Назад"><svg viewBox="0 0 11 19" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></button><h2 id="bqAddTitle">Добавить алкоголь</h2><span class="sp"></span></div>
   <div class="bq-wrap" id="bqAddBody"></div>
-</div>
+</div></div>
 <div class="bq-toast" id="bqToast" hidden></div>
 <datalist id="bqSup"></datalist><datalist id="bqCountry"></datalist>
 <script>
@@ -576,6 +592,9 @@
   var openBtn=$('bqOpen'), L=$('bq'), LB=$('bqBody'), A=$('bqAdd'), AB=$('bqAddBody'), TOAST=$('bqToast');
   if(!openBtn||!L||!A) return;
   var root=document.documentElement;
+  var SC=$('bqSc'), ASC=$('bqAddSc');
+  // слои и уведомление живут прямо в <html>: тогда «сдвиг» страницы при выезде листа их не задевает
+  root.appendChild(L); root.appendChild(A); root.appendChild(TOAST);
 
   function norm(s){ return (s||'').toLowerCase().replace(/ё/g,'е'); }
   function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
@@ -589,6 +608,7 @@
   function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()); }
   function parseD(s){ var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m? new Date(+m[1],+m[2]-1,+m[3]) : null; }
   function fmtDate(s){ var d=parseD(s); return d? d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear()+' · '+DAYS[d.getDay()] : 'Дата не указана'; }
+  function fmtShort(s){ var d=parseD(s); if(!d) return 'Дата не указана'; return d.getDate()+' '+MONTHS[d.getMonth()]+(d.getFullYear()!==new Date().getFullYear()? ' '+d.getFullYear() : '')+' · '+DAYS[d.getDay()]; }
   function daysTo(s){ var d=parseD(s), t=parseD(todayStr()); return d? Math.round((d-t)/86400000) : null; }
   function whenLabel(s){ var n=daysTo(s); if(n===null) return ''; if(n===0) return 'сегодня'; if(n===1) return 'завтра'; if(n>1) return 'через '+n+' дн.'; return 'прошёл'; }
 
@@ -653,15 +673,55 @@
   }
 
   // ----- слои и кнопка «назад» -----
+  // Переход — тот же слайд, что между картами: новый лист выезжает справа, а то, что под ним,
+  // чуть уезжает влево и темнеет. Назад — наоборот.
   var layer=0, pushed=0, selfPop=false;
+  var SLIDE=520, EASE='cubic-bezier(.32,.08,.24,1)', SHADOW='-14px 0 36px rgba(0,0,0,.18)', anim=null;
+  function reduce(){ return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function lock(){ root.classList.toggle('bq-lock', layer>0); }
+  function reset(e){ e.style.transition=''; e.style.transform=''; e.style.filter=''; e.style.boxShadow=''; }
+  function settle(){ if(anim){ var f=anim; anim=null; clearTimeout(f.t); f.fin(); } }
+  function slideIn(sheet, below){
+    settle(); sheet.hidden=false;
+    if(reduce()){ below.style.visibility='hidden'; return; }
+    reset(below); below.style.visibility='';
+    sheet.style.transition='none'; sheet.style.transform='translateX(100%)'; sheet.style.boxShadow=SHADOW;
+    void sheet.offsetHeight;
+    var f={ fin:function(){ reset(sheet); reset(below); below.style.visibility='hidden'; } };
+    anim=f; f.t=setTimeout(function(){ if(anim===f){ anim=null; f.fin(); } }, SLIDE+40);
+    requestAnimationFrame(function(){
+      if(anim!==f) return;
+      sheet.style.transition='transform '+SLIDE+'ms '+EASE;
+      below.style.transition='transform '+SLIDE+'ms '+EASE+', filter '+SLIDE+'ms ease';
+      sheet.style.transform='translateX(0)'; below.style.transform='translateX(-20%)'; below.style.filter='brightness(.86)';
+    });
+  }
+  function slideOut(sheet, below, after){
+    settle();
+    function end(){ sheet.hidden=true; reset(sheet); reset(below); below.style.visibility=''; if(after) after(); }
+    if(reduce()){ end(); return; }
+    below.style.transition='none'; below.style.visibility=''; below.style.transform='translateX(-20%)'; below.style.filter='brightness(.86)';
+    sheet.style.transition='none'; sheet.style.transform='translateX(0)'; sheet.style.boxShadow=SHADOW;
+    void sheet.offsetHeight;
+    var f={ fin:end };
+    anim=f; f.t=setTimeout(function(){ if(anim===f){ anim=null; f.fin(); } }, SLIDE+40);
+    requestAnimationFrame(function(){
+      if(anim!==f) return;
+      sheet.style.transition='transform '+SLIDE+'ms '+EASE;
+      below.style.transition='transform '+SLIDE+'ms '+EASE+', filter '+SLIDE+'ms ease';
+      sheet.style.transform='translateX(100%)'; below.style.transform='translateX(0)'; below.style.filter='brightness(1)';
+    });
+  }
   function push(n){ try{ history.pushState({bq:n},''); pushed++; }catch(e){} }
   function uiBack(){ if(pushed>0){ pushed--; selfPop=true; try{ history.back(); return; }catch(e){ selfPop=false; } } popLayer(); }
-  function popLayer(){ if(layer===2){ A.hidden=true; layer=1; lock(); render(); } else if(layer===1){ L.hidden=true; layer=0; lock(); } }
+  function popLayer(){
+    if(layer===2){ layer=1; render(); slideOut(A, L); }
+    else if(layer===1){ layer=0; slideOut(L, document.body, lock); }
+  }
   window.addEventListener('popstate',function(){ if(!selfPop && pushed>0) pushed--; selfPop=false; popLayer(); });
   $('bqClose').addEventListener('click',uiBack);
   $('bqAddClose').addEventListener('click',uiBack);
-  openBtn.addEventListener('click',function(){ newOpen=false; L.hidden=false; layer=1; lock(); render(); L.scrollTop=0; push(1); });
+  openBtn.addEventListener('click',function(){ if(layer) return; newOpen=false; layer=1; lock(); slideIn(L, document.body); render(); SC.scrollTop=0; push(1); });
 
   // ----- итоги и текст для копирования -----
   function totals(ev){
@@ -692,11 +752,21 @@
   function byId(id){ for(var k=0;k<EV.length;k++) if(EV[k].id===id) return EV[k]; return null; }
 
   // ----- экран со списком банкетов -----
-  var newOpen=false, lastRemoved=null;
+  var newOpen=false, lastRemoved=null, OPEN={};
+  function plural(n,f){ var a=n%100, b=n%10; return n+' '+((a>10&&a<15)? f[2] : b===1? f[0] : (b>1&&b<5)? f[1] : f[2]); }
+  var CAL='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+  function dateBox(val,onch){
+    var box=el('label','bq-datebox'), v=el('span','v'), inp=el('input'), ic=el('span'); ic.innerHTML=CAL; ic.style.display='flex';
+    inp.type='date'; inp.min='2020-01-01'; inp.value=val||''; inp.setAttribute('aria-label','Дата банкета');
+    function sync(){ if(inp.value){ v.textContent=fmtDate(inp.value); v.className='v'; } else { v.textContent='Выбрать дату'; v.className='v ph'; } }
+    sync(); inp.addEventListener('input',sync); inp.addEventListener('change',function(){ sync(); if(onch) onch(inp.value); });
+    box.appendChild(v); box.appendChild(ic); box.appendChild(inp);
+    return { box:box, input:inp };
+  }
   function render(){
-    var st=L.scrollTop; LB.textContent='';
+    var st=SC.scrollTop; LB.textContent='';
     if(newOpen) LB.appendChild(newForm());
-    else { var nb=el('button','bq-btn pri wide','+ Новый банкет'); nb.type='button'; nb.addEventListener('click',function(){ newOpen=true; render(); var d=LB.querySelector('input[type=date]'); if(d) d.focus(); }); nb.style.marginBottom='var(--sp-4)'; LB.appendChild(nb); }
+    else { var nb=el('button','bq-btn pri wide','+ Новый банкет'); nb.type='button'; nb.addEventListener('click',function(){ newOpen=true; render(); }); nb.style.marginBottom='var(--sp-4)'; LB.appendChild(nb); }
 
     var today=todayStr(), up=EV.filter(function(e){ return !e.date || e.date>=today; }), past=EV.filter(function(e){ return e.date && e.date<today; });
     up.sort(function(a,b){ return (a.date||'9999').localeCompare(b.date||'9999'); });
@@ -707,46 +777,58 @@
       var d=el('details','bq-past'); d.appendChild(el('summary',null,'Прошедшие · '+past.length));
       past.forEach(function(e){ d.appendChild(evCard(e,true)); }); LB.appendChild(d);
     }
-    LB.appendChild(el('p','bq-foot','Список хранится в браузере этого телефона. Чтобы отправить его в чат — «Скопировать».'));
-    L.scrollTop=st;
+    SC.scrollTop=st;
   }
   function newForm(){
     var f=el('div','bq-form'); f.appendChild(el('h3',null,'Новый банкет'));
-    var l1=el('label','bq-lbl','Дата'), d=el('input','bq-in'); d.type='date'; d.value=''; d.min='2020-01-01'; l1.appendChild(d); f.appendChild(l1);
-    var l2=el('label','bq-lbl','Название или заметка (необязательно)'), t=el('input','bq-in'); t.type='text'; t.placeholder='Например, свадьба, 40 гостей'; t.maxLength=80; l2.appendChild(t); f.appendChild(l2);
+    var l1=el('div','bq-lbl'), dd=dateBox('',null); l1.appendChild(el('span',null,'Дата')); l1.appendChild(dd.box); f.appendChild(l1);
+    var l2=el('label','bq-lbl'), t=el('input','bq-in'); l2.appendChild(el('span',null,'Название или заметка (необязательно)')); t.type='text'; t.placeholder='Например, свадьба, 40 гостей'; t.maxLength=80; l2.appendChild(t); f.appendChild(l2);
     var r=el('div','bq-row'), ok=el('button','bq-btn pri','Создать'), no=el('button','bq-btn','Отмена'); ok.type=no.type='button'; r.appendChild(ok); r.appendChild(no); f.appendChild(r);
     no.addEventListener('click',function(){ newOpen=false; render(); });
     ok.addEventListener('click',function(){
-      if(!d.value){ d.focus(); toast('Выбери дату банкета'); return; }
-      var ev={ id:uid(), date:d.value, title:t.value.trim(), items:[] }; EV.push(ev); save(); newOpen=false; render(); toast('Банкет создан — добавь алкоголь');
+      if(!dd.input.value){ dd.box.style.borderColor='var(--accent)'; toast('Выбери дату банкета'); return; }
+      var ev={ id:uid(), date:dd.input.value, title:t.value.trim(), items:[] }; EV.push(ev); OPEN[ev.id]=1; save(); newOpen=false; render(); toast('Банкет создан — добавь алкоголь');
     });
     return f;
   }
   function evCard(ev,past){
-    var c=el('section','bq-ev'+(past?' past':'')), h=el('div','bq-ev-h');
-    var dl=el('label','bq-date'); dl.appendChild(el('b',null,fmtDate(ev.date)));
-    var di=el('input'); di.type='date'; di.value=ev.date; di.setAttribute('aria-label','Изменить дату'); dl.appendChild(di);
-    di.addEventListener('change',function(){ if(di.value){ ev.date=di.value; save(); render(); } });
-    h.appendChild(dl); var w=whenLabel(ev.date); if(w) h.appendChild(el('span','bq-when',w)); c.appendChild(h);
-    var ti=el('input','bq-title'); ti.type='text'; ti.value=ev.title; ti.placeholder='Название или заметка'; ti.maxLength=80; ti.setAttribute('aria-label','Название банкета');
-    ti.addEventListener('change',function(){ ev.title=ti.value.trim(); save(); }); c.appendChild(ti);
+    var c=el('section','bq-ev'+(past?' past':'')+(OPEN[ev.id]?' open':''));
+    // ----- шапка: дата, название, итог. Нажал — раскрылось -----
+    var hd=el('button','bq-ev-h'); hd.type='button'; hd.setAttribute('aria-expanded', OPEN[ev.id]?'true':'false');
+    var l=el('span','l'); l.appendChild(el('span','d',fmtShort(ev.date)));
+    var tt=el('span','tt',ev.title); if(!ev.title) tt.hidden=true; l.appendChild(tt);
+    var tc=totals(ev);
+    l.appendChild(el('span','c'+(ev.items.length?'':' none'), ev.items.length? plural(ev.items.length,['позиция','позиции','позиций'])+' · '+plural(tc.cnt,['бутылка','бутылки','бутылок']) : 'Позиций пока нет'));
+    hd.appendChild(l);
+    var rr=el('span','r'), w=whenLabel(ev.date); if(w) rr.appendChild(el('span','bq-when',w));
+    rr.insertAdjacentHTML('beforeend','<svg class="bq-chev" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 4.5 7 9.5l5-5"/></svg>'); hd.appendChild(rr); c.appendChild(hd);
+    hd.addEventListener('click',function(){ var o=c.classList.toggle('open'); hd.setAttribute('aria-expanded',o?'true':'false'); if(o) OPEN[ev.id]=1; else delete OPEN[ev.id]; });
 
-    sorted(ev).forEach(function(i){ c.appendChild(itemRow(ev,i)); });
-    if(!ev.items.length){ var e0=el('div','bq-empty','Позиций пока нет'); e0.style.borderTop='1px solid var(--line)'; e0.style.padding='18px 12px'; c.appendChild(e0); }
+    // ----- раскрывающаяся часть -----
+    var col=el('div','bq-col'), body=el('div'); col.appendChild(body); c.appendChild(col);
+    sorted(ev).forEach(function(i){ body.appendChild(itemRow(ev,i)); });
+    if(!ev.items.length){ var e0=el('div','bq-empty','Позиций пока нет'); e0.style.borderTop='1px solid var(--line)'; e0.style.padding='18px 12px'; body.appendChild(e0); }
     else {
-      var tt=totals(ev), s=el('div','bq-sum');
+      var s=el('div','bq-sum');
       function line(a,b,cls){ var d=el('div',cls); d.appendChild(el('span',null,a)); d.appendChild(el('span',null,b)); s.appendChild(d); }
-      line('Бутылок',String(tt.cnt));
-      if(tt.sum>0){ line('Сумма по меню',money(tt.sum)); line('+10% за услугу',money(tt.svc)); line('Итого',money(tt.sum+tt.svc),'t'); }
-      if(tt.miss) s.appendChild(el('div','m','У '+tt.miss+' поз. цена не задана — в сумму не входит'));
-      c.appendChild(s);
+      line('Бутылок',String(tc.cnt));
+      if(tc.sum>0){ line('Сумма по меню',money(tc.sum)); line('+10% за услугу',money(tc.svc)); line('Итого',money(tc.sum+tc.svc),'t'); }
+      if(tc.miss) s.appendChild(el('div','m','У '+tc.miss+' поз. цена не задана — в сумму не входит'));
+      body.appendChild(s);
     }
-    var act=el('div','bq-act'), add=el('button','bq-btn pri','+ Добавить алкоголь'), cp=el('button','bq-btn','Скопировать'), del=el('button','bq-btn dng','Удалить');
-    add.type=cp.type=del.type='button'; add.style.flexBasis='100%'; act.appendChild(add); if(ev.items.length) act.appendChild(cp); act.appendChild(del); c.appendChild(act);
+    // добавлять алкоголь можно только отсюда — из раскрытой карточки
+    var ar=el('div','bq-act'), add=el('button','bq-btn pri wide','+ Добавить алкоголь'); add.type='button'; ar.appendChild(add); body.appendChild(ar);
+    var ed=el('div','bq-edit');
+    var ld=el('div','bq-lbl'), dd=dateBox(ev.date,function(v){ if(v){ ev.date=v; save(); render(); } }); ld.appendChild(el('span',null,'Дата')); ld.appendChild(dd.box); ed.appendChild(ld);
+    var lt=el('label','bq-lbl'), ti=el('input','bq-in'); ti.type='text'; ti.value=ev.title; ti.placeholder='Например, свадьба, 40 гостей'; ti.maxLength=80; lt.appendChild(el('span',null,'Название или заметка')); lt.appendChild(ti); ed.appendChild(lt);
+    ti.addEventListener('change',function(){ ev.title=ti.value.trim(); save(); tt.textContent=ev.title; tt.hidden=!ev.title; });
+    body.appendChild(ed);
+    var act=el('div','bq-act'), cp=el('button','bq-btn','Скопировать'), del=el('button','bq-btn dng','Удалить');
+    cp.type=del.type='button'; if(ev.items.length) act.appendChild(cp); act.appendChild(del); body.appendChild(act);
     add.addEventListener('click',function(){ openAdd(ev); });
     cp.addEventListener('click',function(){ copyText(evText(ev)).then(function(){ toast('Список скопирован'); },function(){ toast('Не получилось скопировать'); }); });
     var armed=null; del.addEventListener('click',function(){
-      if(armed){ clearTimeout(armed); EV=EV.filter(function(x){ return x!==ev; }); save(); render(); toast('Банкет удалён'); return; }
+      if(armed){ clearTimeout(armed); EV=EV.filter(function(x){ return x!==ev; }); delete OPEN[ev.id]; save(); render(); toast('Банкет удалён'); return; }
       del.textContent='Точно удалить?'; armed=setTimeout(function(){ armed=null; del.textContent='Удалить'; },3000);
     });
     return c;
@@ -780,8 +862,9 @@
   }
   function countIn(ev,src){ var k=itemKey(src), n=0; ev.items.forEach(function(i){ if(itemKey(i)===k) n+=i.qty; }); return n; }
   function openAdd(ev){
-    addEv=ev; kindF=''; qStr=''; A.hidden=false; layer=2; lock(); A.scrollTop=0; push(2);
-    $('bqAddTitle').textContent='Добавить алкоголь'; buildSearch();
+    if(layer!==1) return;
+    addEv=ev; kindF=''; qStr=''; layer=2; lock(); push(2); ASC.scrollTop=0;
+    $('bqAddTitle').textContent='Добавить алкоголь'; buildSearch(); slideIn(A, L);
   }
   function buildSearch(){
     AB.textContent='';
