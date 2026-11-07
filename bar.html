@@ -350,6 +350,351 @@
   .badge.season{background:var(--dot); color:var(--bg);}
   .prep-note.stack{display:block; margin-top:2px;}
 </style>
+<style id="nx">
+  /* ===== Вид «как в Notion»: плоские строки, чёткие разделители, маленькие скругления. Цвета и фоны — прежние. ===== */
+  :root{
+    --nf:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:10px; --h-ctl:40px; --h-pill:28px;
+    --row:rgba(244,236,223,.05); --row-line:rgba(232,181,126,.26); --field:rgba(244,236,223,.07);
+  }
+  *{font-family:var(--nf) !important; letter-spacing:normal;}
+  body{font-variant-numeric:tabular-nums;}
+  header.topbar{border-bottom:1px solid var(--row-line);}
+
+  /* поиск */
+  #search, #ingSearch, .search input{height:40px; padding-top:0; padding-bottom:0; border:0; border-radius:6px; background:var(--field); box-shadow:inset 0 0 0 1px var(--row-line); font-weight:400; font-size:.95rem; color:var(--ink);}
+  #search:focus, #ingSearch:focus, .search input:focus{border:0; box-shadow:0 0 0 2px var(--accent);}
+  #search::placeholder, #ingSearch::placeholder, .search input::placeholder{font-weight:400;}
+  .search::before, .search-row::before{color:var(--muted); font-weight:400;}
+
+  /* фильтры — «теги» */
+  .pill, button.pill{height:28px; padding:0 11px; border:0; border-radius:4px; background:var(--field); color:var(--ink); font-weight:500; font-size:.8rem; display:inline-flex; align-items:center;}
+  .pill.on{background:var(--accent); color:var(--bg);}
+  #tab-sets:checked ~ header label[for="tab-sets"], #tab-cocktail:checked ~ header label[for="tab-cocktail"], #tab-calc:checked ~ header label[for="tab-calc"], #tab-premix:checked ~ header label[for="tab-premix"]{border:0;}
+
+  /* разделы */
+  .cat-head{margin:6px 2px 8px;}
+  .cat-head h2{font-size:1.2rem; font-weight:700; letter-spacing:-.01em;}
+  .cat-head .dot{width:8px; height:8px;}
+  .cat-head .n{font-size:.8rem;}
+  .cat-note{margin:0 2px 10px;}
+
+  /* строки списка: сплошные, с отчётливой линией между ними и цветной меткой слева */
+  details.card, .item{background:var(--row); border:0; border-bottom:1px solid var(--row-line); border-left:3px solid var(--dot,var(--accent)); border-radius:0; margin:0; box-shadow:none; transform:none;}
+  details.card:hover{box-shadow:none; transform:none;}
+  .demo-panel{margin-bottom:22px;}
+  .demo-panel > :is(details.card,.item):first-of-type{border-top:1px solid var(--row-line); border-top-left-radius:6px;}
+  .cat-head ~ :is(details.card,.item):last-of-type{border-bottom-left-radius:6px;}
+  summary.card-head{padding:11px 12px;}
+  .card-name{font-weight:600; font-size:.98rem;}
+  .prep-note{font-style:normal; font-weight:400;}
+  .chev{color:var(--muted);}
+  .badges{padding:0 12px 10px;}
+  .badge{border:0; border-radius:3px; padding:1px 7px; font-weight:500; font-size:.7rem; background:color-mix(in srgb, var(--dot) 20%, transparent);}
+  .ing-table th{font-weight:500; text-transform:none; letter-spacing:0; background:rgba(244,236,223,.06); border-top:1px solid var(--row-line);}
+  .ing-table td{border-top:1px solid var(--row-line);}
+  .ing-table tr:nth-child(odd) td{background:rgba(244,236,223,.035);}
+  .decor-box{border-radius:6px; background:rgba(244,236,223,.05); border:1px solid var(--row-line);}
+  .decor-title{text-transform:none; letter-spacing:0; font-weight:600; font-size:.72rem;}
+
+  /* позиции банкетного меню */
+  .item{padding:10px 12px; gap:14px; align-items:center;}
+  .it-name{font-weight:600; font-size:.98rem; color:var(--ink);}
+  .it-sup{display:inline-block; align-self:flex-start; margin-top:2px; padding:0 6px; border-radius:3px; background:rgba(244,236,223,.1); color:var(--ink); font-weight:500; font-size:.72rem; line-height:1.5;}
+  .it-sub{font-size:.72rem; color:var(--muted); opacity:1;}
+  .it-note{margin-top:3px; padding:0 6px; border:0; border-radius:3px; background:color-mix(in srgb, var(--accent) 24%, transparent); color:var(--accent-ink); font-weight:500; font-size:.68rem; line-height:1.55;}
+  .it-price{font-weight:600; font-size:.9rem; color:var(--accent-ink);}
+
+  /* калькулятор и пересчёт */
+  .seg{border-radius:8px; background:var(--row); border-color:var(--row-line);}
+  .seg-btn{border-radius:6px; font-weight:500;}
+  .calc-box{border-radius:8px; background:var(--row); border-color:var(--row-line);}
+  .calc-label, .calc-info{text-transform:none; letter-spacing:0;}
+  .step-btn, .num-in, .size-btn, .rm-open, .add-open, .calc-reset, .scale-btn, .scale-banner, .chip{border-radius:6px; border-color:var(--row-line);}
+  .size-btn, .step-btn, .chip{background:var(--field);}
+  .result{border-radius:6px; border-color:var(--row-line);}
+  .res-num{font-weight:700;}
+  .sc-sheet{border-radius:12px 12px 0 0; border-color:var(--row-line);}
+  .sc-chip, .sc-custom input, .sc-go{border-radius:6px;}
+  .sc-chip{border-width:1px; border-color:var(--row-line); background:var(--field);}
+  .sc-chip.on{background:var(--accent); border-color:var(--accent);}
+  .sc-sheet h3{font-weight:700;}
+  .scale-btn{border-width:1px;}
+  .foot-date, .tagline{letter-spacing:0;}
+</style>
+<style id="nx2">
+  /* ===== Шаг 2: системный шрифт, ещё ближе к Notion ===== */
+  :root{--nf:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;}
+  body{line-height:1.45;}
+  /* жирное — названия; тонкое — составы и описания */
+  .card-name, .it-name, .group-title, .bq-it .nm, .bq-res .mn b, .bq-ev-h .d, .cat-head h2, .rest-name, .ix-head{font-weight:600;}
+  .prep-note, .ing-name, .ing-table td, .group td, .decor-name, .decor-list li, .it-sub, .bq-it .sb, .bq-ev-h .tt, .cat-note, .group-title .note{font-weight:400;}
+  .ing-amt, .decor-val{font-weight:500;}
+  .it-sup, .bq-grp, .bq-qty{font-weight:600;}
+  .bq-qty{font-weight:700;}
+  .badge, .it-note, .bq-when{font-weight:600;}
+
+  /* строки без цветных полос слева — как в базе Notion; цвет остаётся в заголовках и тегах */
+  details.card, .item, .group{border-left:0; border-radius:0; padding-left:0;}
+  details.card > summary.card-head{padding-left:4px;}
+  .item{padding-left:4px;}
+  .group-title{padding-left:4px;}
+  .badges{padding-left:4px;}
+  .cat-head .dot{width:10px; height:10px; border-radius:3px;}
+  .bq-res{border-left:0; padding-left:4px;}
+  .bq-ev{border-left:1px solid var(--row-line);}
+
+  /* стрелка раскрытия: ▸ → ▾ */
+  .chev{font-size:0 !important; width:18px; text-align:center;}
+  .chev::before{content:'▸'; font-size:.8rem; display:inline-block; color:var(--muted); transition:transform .15s ease;}
+  details.card[open] .chev{transform:none !important;}
+  details.card[open] .chev::before{transform:rotate(90deg);}
+
+  /* подсказки — «выноска» */
+  .cat-note{background:var(--row); border-radius:6px; padding:9px 12px; margin:0 0 10px; color:var(--muted);}
+
+  /* таблицы составов: полная сетка линий, как в таблице Notion */
+  .ing-table, .group table{border:1px solid var(--row-line); border-radius:4px; border-collapse:separate; border-spacing:0; overflow:hidden;}
+  .ing-table td, .ing-table th, .group td, .group th{border-top:0 !important; border-bottom:1px solid var(--row-line);}
+  .ing-table tr:last-child td, .group tr:last-child td{border-bottom:0;}
+  .ing-table td + td, .ing-table th + th, .group td + td, .group th + th{border-left:1px solid var(--row-line);}
+  .ing-table td:first-child{padding-left:10px;}
+  .ing-table th, .group th{font-weight:600; color:var(--muted);}
+  .ing-table tr.total td{font-weight:700;}
+  .card-content-inner{padding:0 10px 10px;}
+  .decor-box{margin:10px 0 0;}
+  .badges{padding:0 0 10px;}
+  .card-note{margin:8px 0 0;}
+
+  /* поля и кнопки: плоские, тонкая рамка */
+  .pill, button.pill{box-shadow:none;}
+  .bq-btn, .scale-btn, .seg-btn, .size-btn, .step-btn, .chip, .add-open, .calc-reset, .inv-send, .inv-sheet button{box-shadow:none;}
+  .bq-top, header.topbar{backdrop-filter:none;}
+
+  /* банкеты */
+  .bq-grp{background:transparent; padding-left:14px; color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;}
+  .bq-it .nm{font-size:.96rem;}
+  .bq-qty{background:color-mix(in srgb, var(--accent) 22%, transparent); border-radius:4px;}
+</style>
+<style id="nx3">
+  /* ===== Шаг 3: списки от края до края, как в Notion. Цвета и фоны — прежние ===== */
+  :root{--bleed:16px;}
+  details.card, .item, .group{margin-left:calc(-1 * var(--bleed)); margin-right:calc(-1 * var(--bleed)); border-left:0; border-right:0; border-radius:0;}
+  details.card > summary.card-head{padding:12px var(--bleed);}
+  details.card > summary.card-head:active{background:rgba(128,128,128,.12);}
+  .item{padding:11px var(--bleed);}
+  .group-title{padding:12px var(--bleed) 4px;}
+  .card-content-inner{padding:0 0 12px;}
+  .badges{padding:0 var(--bleed) 10px;}
+  .decor-box{margin:12px var(--bleed) 0;}
+  .card-note{margin:8px var(--bleed) 0;}
+  .ing-table, .group table{border-left:0; border-right:0; border-radius:0;}
+  .ing-table td:first-child, .ing-table th:first-child, .group td:first-child, .group th:first-child{padding-left:var(--bleed);}
+  .ing-table td:last-child, .ing-table th:last-child, .group td:last-child, .group th:last-child{padding-right:var(--bleed);}
+  .inv-tare{margin-left:0;}
+
+  /* банкеты: карточка и строки — во всю ширину */
+  .bq-ev{margin:0 calc(-1 * var(--bleed)) 12px; border-left:0; border-right:0; border-radius:0;}
+  .bq-ev-h{padding:11px var(--bleed);}
+  .bq-ev-h:active{background:rgba(128,128,128,.12);}
+  .bq-grp{padding:10px var(--bleed) 4px;}
+  .bq-it{padding:9px var(--bleed);}
+  .bq-it.ed{padding:10px var(--bleed);}
+  .bq-edit{padding:12px var(--bleed);}
+  .bq-col .bq-act{padding:10px var(--bleed);}
+  .bq-col .bq-edit + .bq-act{padding-top:0;}
+  .bq-res{margin:0 calc(-1 * var(--bleed)); padding:10px var(--bleed);}
+  .bq-empty{padding-left:var(--bleed); padding-right:var(--bleed);}
+  details.bq-past > summary{margin-left:2px;}
+</style>
+<style id="nx4">
+  /* ===== Шаг 4: цветные метки категорий, крупнее фильтры, читаемее мелкий текст ===== */
+  details.card, .item, .group{border-left:3px solid var(--dot,transparent);}
+  details.card > summary.card-head{padding-left:calc(var(--bleed) - 3px);}
+  .item{padding-left:calc(var(--bleed) - 3px);}
+  .group-title{padding-left:calc(var(--bleed) - 3px);}
+  .bq-res{border-left:3px solid var(--dot,transparent); padding-left:calc(var(--bleed) - 3px);}
+
+  /* фильтры — удобнее попадать пальцем */
+  .pill, button.pill{height:36px; padding:0 14px; font-size:.86rem;}
+  .pills, .pills.scroll{gap:8px;}
+  .bq-chip{height:36px; padding:0 13px; font-size:.86rem;}
+  .pill .n{font-size:.74rem;}
+
+  /* мелкий текст крупнее и контрастнее */
+  .it-sub, .bq-it .sb{font-size:.78rem;}
+  .it-sup{font-size:.78rem;}
+  .it-note, .bq-it .sb b{font-size:.74rem;}
+  .prep-note, .card-note, .cat-note, .group-title .note{font-size:.82rem;}
+  .ing-table th, .group th{font-size:.72rem;}
+  .ing-table td, .group td{font-size:.9rem;}
+  .decor-list li{font-size:.88rem;}
+  .decor-val{font-size:.82rem;}
+  .badge{font-size:.76rem;}
+  .bq-ev-h .c, .bq-lbl{font-size:.8rem;}
+  .bq-grp{font-size:.74rem;}
+  .inv-fld label{font-size:.68rem;}
+  .inv-prog{font-size:.8rem;}
+  .count, #count{font-size:.8rem;}
+  :root{--muted:#C9B4A2;}
+</style>
+<style id="nx-tk">
+  /* кнопки сверху — только в админ-режиме */
+  .adm-only{display:none;}
+  body.hip-admin .adm-only{display:flex;}
+  body.edit .act-row{display:none !important;}
+  .act-row{gap:8px; margin:0 0 12px;}
+  .act-btn{flex:1 1 0; min-width:0; display:flex; align-items:center; justify-content:flex-start; gap:10px; height:40px; padding:0 14px; border:1px solid var(--row-line); border-radius:6px; background:var(--field); color:var(--ink); font:500 .92rem var(--nf); box-shadow:none; -webkit-tap-highlight-color:transparent;}
+  .act-btn svg{width:20px; height:20px; flex:0 0 auto; fill:none; stroke:var(--accent-ink); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+  .act-btn span{flex:1; text-align:left;}
+  .act-btn i{font-style:normal; font-family:'IBM Plex Mono',monospace; color:var(--accent-ink);}
+  .act-btn:active{background:color-mix(in srgb, var(--accent) 16%, transparent);}
+
+  /* экран «Поставка» */
+  html.sp-lock{overflow:hidden;}
+  .sp{--sp-ext:160px; position:fixed; top:calc(-1 * var(--sp-ext)); left:0; right:0; bottom:0; z-index:200; color:var(--ink); font-family:var(--nf); background-color:var(--bg); background-image:linear-gradient(rgba(27,18,13,0.55), rgba(27,18,13,0.55)), url("bg-bar.jpg"); background-size:420px auto, 420px auto; background-position:top center, top center; -webkit-font-smoothing:antialiased;}
+  .sp[hidden]{display:none;}
+  .sp-sc{position:absolute; top:var(--sp-ext); left:0; right:0; bottom:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;}
+  .sp-top{position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:8px; padding:8px 16px; background:color-mix(in srgb, var(--bg) 94%, transparent); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border-bottom:1px solid var(--row-line);}
+  .sp-top h2{flex:1; margin:0; text-align:center; font:800 .95rem/1.2 var(--nf); letter-spacing:.05em; text-transform:uppercase;}
+  .sp-x{width:44px; height:44px; margin-left:-12px; display:flex; align-items:center; justify-content:center; border:0; background:none; color:var(--accent-ink); -webkit-tap-highlight-color:transparent;}
+  .sp-x svg{width:11px; height:19px;}
+  .sp-pad{width:32px;}
+  .sp-body{max-width:560px; margin:0 auto; padding:14px 16px 130px;}
+  .sp-hint{margin:6px 2px; color:var(--muted); font-size:.86rem;}
+  .sp-h{margin:18px 2px 8px; font:700 .74rem var(--nf); letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .sp-row{display:flex; align-items:center; justify-content:space-between; gap:10px; width:calc(100% + 2 * var(--bleed)); margin:0 calc(-1 * var(--bleed)); padding:11px var(--bleed); border:0; border-bottom:1px solid var(--row-line); background:var(--row); color:var(--ink); text-align:left; font:600 .98rem var(--nf); -webkit-tap-highlight-color:transparent;}
+  .sp-row:active{background:color-mix(in srgb, var(--accent) 14%, transparent);}
+  .sp-n{min-width:0;}
+  .sp-g{flex:0 0 auto; font-weight:400; font-size:.78rem; color:var(--muted); white-space:nowrap;}
+  .sp-form{margin:0 calc(-1 * var(--bleed)); padding:14px var(--bleed) 16px; background:var(--row); border-top:1px solid var(--row-line); border-bottom:1px solid var(--row-line);}
+  .sp-fh{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px;}
+  .sp-fn{font-weight:700; font-size:1.05rem; line-height:1.25;}
+  .sp-cur{margin-top:3px; font-size:.82rem; color:var(--muted);}
+  .sp-link{flex:0 0 auto; padding:2px 0; border:0; background:none; color:var(--accent-ink); font:500 .84rem var(--nf); text-decoration:underline; text-underline-offset:2px;}
+  .sp-lbl{display:block; margin:12px 0 6px; font-size:.8rem; color:var(--muted);}
+  .sp-chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .sp-chip{height:38px; padding:0 14px; border:0; border-radius:4px; background:var(--field); color:var(--ink); font:500 .92rem var(--nf); -webkit-tap-highlight-color:transparent;}
+  .sp-chip.on{background:var(--accent); color:var(--bg); font-weight:600;}
+  .sp-in{width:100%; height:44px; padding:0 12px; border:1px solid var(--row-line); border-radius:6px; background:var(--field); color:var(--ink); font:600 1.05rem var(--nf); box-sizing:border-box; outline:none; -webkit-appearance:none; appearance:none;}
+  .sp-in:focus{border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);}
+  .sp-prev{min-height:1.4em; margin:10px 0 0; font:600 1rem var(--nf); color:var(--accent-ink);}
+  .sp-add, .sp-save{display:block; width:100%; height:44px; margin-top:12px; border:0; border-radius:6px; background:var(--accent); color:var(--bg); font:600 .95rem var(--nf);}
+  .sp-add[disabled]{opacity:.4;}
+  .sp-dr, .sp-lg{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 calc(-1 * var(--bleed)); padding:10px var(--bleed); border-bottom:1px solid var(--row-line); background:var(--row);}
+  .sp-dr .t, .sp-lg .t{min-width:0; display:flex; flex-direction:column; gap:2px; font-weight:600; font-size:.96rem; line-height:1.25;}
+  .sp-dr .t small, .sp-lg .t small{font-weight:400; font-size:.8rem; color:var(--muted);}
+  .sp-rm{flex:0 0 auto; width:36px; height:36px; border:0; border-radius:4px; background:none; color:var(--muted); font:400 1.3rem/1 var(--nf);}
+  .sp-undo{flex:0 0 auto; padding:6px 0 6px 10px; border:0; background:none; color:var(--accent-ink); font:500 .84rem var(--nf); text-decoration:underline; text-underline-offset:2px;}
+  .sp-lg .q{flex:0 0 auto; font:600 .95rem var(--nf); color:#9DC8A6;}
+  .sp-msg{margin:12px 2px 0; padding:9px 12px; border-radius:6px; background:color-mix(in srgb, #7FB08A 20%, transparent); font-size:.9rem;}
+  .sp-msg.err{background:color-mix(in srgb, #D8584E 22%, transparent);}
+  .sp-dock{position:absolute; left:0; right:0; bottom:0; z-index:4; padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px)); background:linear-gradient(to bottom, rgba(36,22,17,0), var(--bg) 40%);}
+  .sp-dock[hidden]{display:none;}
+  .sp-dock .sp-save{margin:0 auto; max-width:528px;}
+
+  /* ===== редактор ТТК ===== */
+  :root{--bleed:16px;}
+  .sp-top h2{font-size:.9rem;}
+  textarea.sp-in{height:auto; padding:10px 12px; font-weight:400; font-size:.95rem; line-height:1.4; resize:vertical;}
+  .tk-f{margin:0;}
+  .tk-st{margin:-14px calc(-1 * var(--bleed)) 0; padding:12px var(--bleed); background:var(--row); border-top:1px solid var(--row-line); border-bottom:1px solid var(--row-line); font-size:.9rem; line-height:1.45;}
+  .tk-add{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 0;}
+  .tk-sw{display:flex; flex-wrap:wrap; gap:12px;}
+  .tk-sw button{width:30px; height:30px; padding:0; border-radius:50%; border:2px solid transparent; -webkit-tap-highlight-color:transparent;}
+  .tk-sw button.on{border-color:var(--ink); box-shadow:0 0 0 2px var(--bg) inset;}
+  .tk-ing{display:flex; align-items:center; gap:6px; margin:0 calc(-1 * var(--bleed)); padding:8px var(--bleed); border-bottom:1px solid var(--row-line); background:var(--row);}
+  .tk-ing .t{flex:1; min-width:0; font-weight:600; font-size:.94rem; line-height:1.25; overflow-wrap:anywhere;}
+  .tk-ing .t small{display:block; margin-top:2px; font-weight:400; font-size:.74rem; color:var(--muted);}
+  .tk-ing input{flex:0 0 74px; width:74px; min-width:0; height:38px; padding:0 8px; text-align:right; border:1px solid var(--row-line); border-radius:6px; background:var(--field); color:var(--ink); font:600 1rem var(--nf); outline:none; -webkit-appearance:none; appearance:none;}
+  .tk-ing input:focus{border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);}
+  .tk-ing input.bad{border-color:#D8584E;}
+  .tk-ing .u{flex:0 0 auto; min-width:24px; color:var(--muted); font:400 .84rem var(--nf); text-align:left;}
+  .tk-ing button.u{height:34px; padding:0 8px; border:0; border-radius:4px; background:var(--field); color:var(--accent-ink); font-weight:600;}
+  .tk-ing .mv{flex:0 0 auto; width:30px; height:36px; padding:0; border:0; background:none; color:var(--muted); font:400 1.25rem/1 var(--nf);}
+  .tk-pick{margin-top:10px; padding:10px 0 2px;}
+  .tk-res{margin:8px 0 2px;}
+  .tk-pv .sp-h{margin-top:16px;}
+  .tk-pl{display:flex; justify-content:space-between; gap:10px; margin:0 calc(-1 * var(--bleed)); padding:8px var(--bleed); border-bottom:1px solid var(--row-line); background:var(--row); font-size:.9rem;}
+  .tk-tot{font-weight:600;}
+  .tk-pm{display:block; margin-top:4px; padding:0; border:0; background:none; color:var(--accent-ink); font:600 .74rem var(--nf); text-align:left;}
+  .tk-pm.off{color:#E0A458;}
+  .tk-wl{margin:10px 0 6px; font-size:.78rem; color:var(--muted);}
+  .tk-wi{width:100%; height:40px; margin-top:8px; padding:0 10px; border:1px solid var(--row-line); border-radius:6px; background:var(--field); color:var(--ink); font:600 1rem var(--nf); outline:none; -webkit-appearance:none; appearance:none;}
+  .tk-src{margin:0 0 12px; padding:10px 0 0; border-top:1px solid var(--row-line);}
+  .tk-src:first-child{border-top:0; padding-top:0;}
+  .tk-src-r{display:flex; align-items:flex-end; gap:10px; margin-top:8px;}
+  .tk-src-r label{display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; font-size:.74rem; color:var(--muted);}
+  .tk-src-r input{width:100%; height:40px; padding:0 10px; border:1px solid var(--row-line); border-radius:6px; background:var(--field); color:var(--ink); font:600 1rem var(--nf); outline:none; -webkit-appearance:none; appearance:none;}
+  .tk-src-r input:focus{border-color:var(--accent);}
+  .tk-src-r .mv{flex:0 0 auto; width:34px; height:40px; padding:0; border:0; background:none; color:var(--muted); font:400 1.3rem/1 var(--nf);}
+  select.sp-in{width:100%; padding-right:30px; text-overflow:ellipsis;}
+  .tk-pl b{font-weight:600; color:var(--accent-ink); white-space:nowrap;}
+  .tk-acts{display:flex; gap:8px; margin:18px 0 0; flex-wrap:wrap;}
+  .tk-sub{display:none;}
+  /* вкладки в один ряд, без «съехавшей» последней; кнопка редактора с отступом */
+  .pills{flex-wrap:wrap; gap:5px;}
+  .pill, button.pill{flex:1 1 auto; justify-content:center; height:34px; padding:0 6px; font-size:.76rem;}
+  .pills + .act-row{margin:12px 0 0;}
+  header.topbar{padding-bottom:16px;}
+  /* ТТК у персонала */
+  body.ttk-live details.card:not(.ttk), body.ttk-live .demo-panel > .cat-note:not(.ttk-empty){display:none !important;}
+  body.ttk-live .demo-panel.ttk-none .scale-btn{display:none;}
+  details.card.ttk-first{border-top:1px solid var(--row-line); border-top-left-radius:6px;}
+  body.ing-on details.card.ttk-first{border-top:1px solid var(--row-line);}
+</style>
+<style id="nx-adm">
+  /* ===== админ-экраны: темнее фон, мельче и спокойнее ===== */
+  .sp{--row:rgba(255,255,255,.03); --row-line:rgba(255,255,255,.085); --field:rgba(255,255,255,.055);
+    background-image:linear-gradient(rgba(14,9,7,.93), rgba(14,9,7,.93)), url("bg-bar.jpg");}
+  .sp-top{padding:4px 16px; background:color-mix(in srgb, #0E0907 90%, transparent);}
+  .sp-top h2{font:700 .74rem/1.2 var(--nf); letter-spacing:.1em; color:var(--muted);}
+  .sp-x{width:40px; height:40px;}
+  .sp-x svg{width:9px; height:16px;}
+  .sp-body{padding:10px 16px 120px; font-size:.92rem;}
+  .sp-hint{margin:6px 2px; font-size:.76rem; line-height:1.4; color:var(--muted);}
+  .sp-h{margin:18px 2px 6px; font:600 .68rem var(--nf); letter-spacing:.09em;}
+  .sp-row{padding:9px var(--bleed); font:500 .92rem var(--nf);}
+  .sp-g{font-size:.74rem;}
+  .sp-lbl{margin:12px 0 5px; font-size:.74rem;}
+  .sp-chips{gap:6px;}
+  .sp-chip{height:32px; padding:0 12px; border-radius:6px; background:var(--field); color:var(--ink); font:500 .84rem var(--nf);}
+  .sp-chip.on{background:color-mix(in srgb, var(--accent) 22%, transparent); color:var(--accent-ink); font-weight:600; box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent);}
+  .sp-in{height:38px; padding:0 11px; font:500 .95rem var(--nf); border-radius:6px;}
+  textarea.sp-in{padding:8px 11px; font-size:.9rem;}
+  select.sp-in{padding-right:28px;}
+  .sp-add{height:36px; margin-top:6px; padding:0; border:0; border-radius:0; background:none; color:var(--accent-ink); font:600 .86rem var(--nf); text-align:left;}
+  .sp-save{height:42px; margin-top:10px; border-radius:6px; font:600 .9rem var(--nf);}
+  .sp-dock{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px)); background:linear-gradient(to bottom, rgba(14,9,7,0), #0E0907 45%);}
+  .sp-msg{font-size:.84rem;}
+  .sp-dr, .sp-lg{padding:8px var(--bleed);}
+  .sp-dr .t, .sp-lg .t{font-size:.9rem;}
+  .sp-form{padding:12px var(--bleed) 14px;}
+  /* редактор ТТК */
+  .tk-st{padding:10px var(--bleed); font-size:.84rem; background:var(--row);}
+  .tk-add{gap:6px; margin-top:12px;}
+  .tk-sw{gap:10px;}
+  .tk-sw button{width:26px; height:26px;}
+  .tk-ing{gap:6px; padding:6px var(--bleed);}
+  .tk-ing .t{font:500 .9rem/1.25 var(--nf);}
+  .tk-ing .t small{font-size:.7rem;}
+  .tk-ing input{flex-basis:66px; width:66px; height:34px; font:500 .92rem var(--nf);}
+  .tk-ing button.u{height:30px; font-size:.8rem;}
+  .tk-ing .u{font-size:.8rem;}
+  .tk-ing .mv{width:28px; height:32px; font-size:1.1rem; opacity:.7;}
+  .tk-pm{margin-top:3px; font:500 .7rem var(--nf); color:var(--muted);}
+  .tk-pm.off{color:#D9A15A;}
+  .tk-pl{padding:7px var(--bleed); font-size:.86rem;}
+  .tk-wl{font-size:.72rem; margin:8px 0 5px;}
+  .tk-wi, .tk-src-r input{height:36px; font:500 .92rem var(--nf);}
+  .tk-src-r label{font-size:.7rem;}
+  .tk-acts{margin-top:16px; gap:6px;}
+  .tk-f + .sp-chips{margin-top:10px;}
+  .tk-src{margin-bottom:10px;}
+  /* кнопка редактора на главной */
+  .act-btn{height:36px; padding:0 12px; font:500 .86rem var(--nf); background:rgba(255,255,255,.04);}
+  .act-btn svg{width:18px; height:18px;}
+</style>
 </head>
 <body>
 <script>
@@ -389,6 +734,7 @@
 <label class="pill" for="tab-premix">Премиксы Б/А</label>
 <label class="pill" for="tab-calc">Калькулятор</label>
 </nav>
+<div class="act-row adm-only"><button class="act-btn" id="tkOpen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M8.5 11h7M8.5 14.5h7M8.5 18h4"/></svg><span>Редактор ТТК</span><i>→</i></button></div>
 </header>
 <main id="app">
 <section class="demo-panel" data-cat="sets">
@@ -598,14 +944,19 @@
     };
     c.addEventListener('transitionend',onEnd);
   }
-  cards.forEach(function(d){
-    var sm=d.querySelector(':scope > summary'); if(!sm)return;
-    sm.addEventListener('click',function(e){
-      e.preventDefault();
-      if(!d.hasAttribute('open')){cards.forEach(function(o){if(o!==d)closeCard(o);});openCard(d);}
-      else closeCard(d);
+  function bind(){
+    cards=Array.prototype.slice.call(document.querySelectorAll('details.card'));
+    cards.forEach(function(d){
+      if(d.__acc)return; d.__acc=1;
+      var sm=d.querySelector(':scope > summary'); if(!sm)return;
+      sm.addEventListener('click',function(e){
+        e.preventDefault();
+        if(!d.hasAttribute('open')){cards.forEach(function(o){if(o!==d)closeCard(o);});openCard(d);}
+        else closeCard(d);
+      });
     });
-  });
+  }
+  bind(); window.__tkAcc=bind;
 })();
 </script>
 <script>
@@ -875,8 +1226,10 @@
   if(!inp) return;
   function norm(s){ return (s||'').toLowerCase().replace(/ё/g,'е'); }
   var items=[], panels=document.querySelectorAll('.demo-panel[data-cat]');
+  function build(){ items=[];
   panels.forEach(function(panel){
     panel.querySelectorAll('details.card').forEach(function(card){
+      if(document.body.classList.contains('ttk-live')!==card.classList.contains('ttk')) return;
       var c=card.querySelector('.card-name').cloneNode(true), pn=c.querySelector('.prep-note'); if(pn) pn.remove();
       var rows=[];
       card.querySelectorAll('.ing-table').forEach(function(t){
@@ -895,6 +1248,8 @@
       items.push({card:card, name:norm(c.textContent+' '+(card.getAttribute('data-tags')||'')), rows:rows});
     });
   });
+  }
+  build();
   function render(){
     var tokens=norm(inp.value.trim()).split(/\s+/).filter(Boolean), on=tokens.length>0, any=false;
     document.body.classList.toggle('ing-on',on);
@@ -911,6 +1266,7 @@
     panels.forEach(function(p){ p.classList.toggle('js-empty', on && !p.querySelector('details.card:not(.js-hidden)')); });
     if(empty) empty.hidden=!(on&&!any);
   }
+  window.__tkSearch=function(){ build(); render(); };
   inp.addEventListener('input',render);
   inp.addEventListener('focus',function(){ if(inp.value){ inp.value=''; render(); } });
   document.querySelectorAll('input.tab-radio').forEach(function(r){ r.addEventListener('change',function(){ if(inp.value){ inp.value=''; render(); } }); });
@@ -919,17 +1275,22 @@
   // ---------- Пересчёт премиксов под выбранный объём ----------
   var panel=document.querySelector('.demo-panel[data-cat="premix"]'), btn=document.getElementById('scBtn');
   if(!panel||!btn) return;
-  var cards=Array.prototype.slice.call(panel.querySelectorAll('details.card')), cur=0;
+  var cards=[], cur=0;
   var modal=document.getElementById('scModal'), chips=document.getElementById('scChips'), inp=document.getElementById('scIn'), banner=document.getElementById('scBanner'), txt=document.getElementById('scTxt');
   function fmt(x){ return String(Math.round(x*10)/10).replace('.',','); }
   function vol(ml){ return ml%1000===0 ? (ml/1000)+' л' : (ml>=1000 ? fmt(ml/1000)+' л' : ml+' мл'); }
-  cards.forEach(function(c){
-    var bd=c.querySelector('.badge'), m=bd&&bd.textContent.match(/(\d+)\s*мл/); c._base=m?+m[1]:1000;
-    c._cells=[]; c.querySelectorAll('.ing-table tbody tr').forEach(function(tr){ var td=tr.children[2]; if(td) c._cells.push([td,td.textContent]); });
-    var th=c.querySelectorAll('.ing-table thead th')[2]; c._th=th?[th,th.textContent]:null;
-    c._badge=bd?[bd,bd.textContent]:null;
-    var pn=c.querySelector('.prep-note'); c._pn=pn?[pn,pn.textContent]:null;
-  });
+  function collect(){
+    cards=Array.prototype.slice.call(panel.querySelectorAll('details.card'));
+    cards.forEach(function(c){
+      if(c._cells) return;
+      var bd=c.querySelector('.badge'), m=bd&&bd.textContent.match(/(\d+)\s*мл/); c._base=c.getAttribute('data-base')?+c.getAttribute('data-base'):(m?+m[1]:1000);
+      c._cells=[]; c.querySelectorAll('.ing-table tbody tr').forEach(function(tr){ var td=tr.children[tr.children.length-1]; if(td&&tr.children.length>1) c._cells.push([td,td.textContent]); });
+      var ths=c.querySelectorAll('.ing-table thead th'), th=ths[ths.length-1]; c._th=th?[th,th.textContent]:null;
+      c._badge=bd?[bd,bd.textContent]:null;
+      var pn=c.querySelector('.prep-note'); c._pn=pn?[pn,pn.textContent]:null;
+    });
+  }
+  collect();
   function apply(ml){
     cur=ml;
     cards.forEach(function(c){
@@ -937,7 +1298,7 @@
       c._cells.forEach(function(p){ var m=p[1].match(/^\s*(\d+(?:[.,]\d+)?)(.*)$/); p[0].textContent=(cur&&m)?fmt(parseFloat(m[1].replace(',','.'))*f)+m[2]:p[1]; });
       if(c._th) c._th[0].textContent=cur?'На '+vol(cur):c._th[1];
       if(c._badge) c._badge[0].textContent=cur?'Объём '+vol(cur):c._badge[1];
-      if(c._pn){ var m2=c._pn[1].match(/(\d+)\s*(?:л|мл)\s*=\s*(\d+)\s*порци/); c._pn[0].textContent=(cur&&m2)?' · '+vol(cur)+' = '+fmt(parseInt(m2[2],10)*f)+' порц.':c._pn[1]; }
+      if(c._pn){ var m2=c._pn[1].match(/(\d+)\s*(?:л|мл)\s*=\s*(\d+(?:[.,]\d+)?)\s*порц/); c._pn[0].textContent=(cur&&m2)?' · '+vol(cur)+' = '+fmt(parseFloat(m2[2].replace(',','.'))*f)+' порц.':c._pn[1]; }
     });
     banner.hidden=!cur; txt.textContent=cur?'Пересчитано под '+vol(cur)+' (рецепты даны на бутылку 1 л)':'';
     btn.textContent=cur?'⚖ Объём: '+vol(cur)+' · изменить':'⚖ Пересчитать под другой объём';
@@ -946,6 +1307,7 @@
   PRE.forEach(function(ml){ var b=document.createElement('button'); b.type='button'; b.className='sc-chip'; b.textContent=vol(ml); b.addEventListener('click',function(){ apply(ml===1000?0:ml); close(); }); b.setAttribute('data-ml',ml); chips.appendChild(b); });
   function open(){ chips.querySelectorAll('.sc-chip').forEach(function(b){ b.classList.toggle('on',(+b.getAttribute('data-ml')===(cur||1000))); }); inp.value=''; modal.hidden=false; }
   function close(){ modal.hidden=true; }
+  window.__tkScale=function(){ collect(); apply(cur); };
   btn.addEventListener('click',open);
   document.getElementById('scX').addEventListener('click',close);
   modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
@@ -954,6 +1316,407 @@
     apply(Math.max(100,Math.min(100000,Math.round(l*1000)))); close();
   });
   document.getElementById('scReset').addEventListener('click',function(){ apply(0); });
+})();
+</script>
+<div class="sp" id="tk" hidden role="dialog" aria-label="Редактор ТТК"><div class="sp-sc" id="tkSc">
+  <div class="sp-top"><button class="sp-x" id="tkBack" type="button" aria-label="Назад"><svg viewBox="0 0 11 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.5 2 9.5l7.5 8"/></svg></button><h2 id="tkTitle">Редактор ТТК</h2><span class="sp-pad"></span></div>
+  <div class="sp-body" id="tkBody"></div>
+</div><div class="sp-dock" id="tkDock" hidden><button class="sp-save" id="tkSave" type="button">Сохранить</button></div></div>
+<script src="core.js"></script>
+<script>
+(function(){
+  // ---------- ТТК: карточки из общего файла data/ttk.json + админ-редактор ----------
+  if(!window.HIP) return;
+  var PATH=HIP.ttkPath;
+  function $(id){ return document.getElementById(id); }
+  function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!==undefined) e.textContent=txt; return e; }
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function norm(s){ return (s||'').toLowerCase().replace(/ё/g,'е'); }
+  var fmt=HIP.fmt;
+  var COLORS=['#C4455A','#E08A4F','#C9A24A','#9DB86A','#7FB08A','#5FA3A8','#6C8EBF','#9A7BC0','#B889B8','#C28A5B'];
+  var TYPES=[['cocktail','Коктейль'],['set','Сет'],['premix','Премикс']];
+  var ORDER=['set','cocktail','premix'], PANEL={set:'sets',cocktail:'cocktail',premix:'premix'}, TNAME={set:'Сеты',cocktail:'Коктейли',premix:'Премиксы'}, TONE={set:'Сет',cocktail:'Коктейль',premix:'Премикс'};
+  var UNITS=['мл','г','шт'];
+
+  var ttk=HIP.cached(PATH)||{cards:[]}; if(!ttk.cards) ttk.cards=[];
+  var preview=false;
+  function card(id,t){ var a=(t||ttk).cards||[]; for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
+  function plural(n){ var a=n%10,b=n%100; return (a===1&&b!==11)?'порция':((a>=2&&a<=4&&(b<10||b>=20))?'порции':'порций'); }
+  function volText(ml){ return ml>=1000 ? fmt(ml/1000)+' л' : fmt(ml)+' мл'; }
+  function amt(q,u){ return q==null?'—':(fmt(Math.round(q*10)/10)+(u||'')); }
+
+  // ---------- карточки для персонала ----------
+  function res(c){ return HIP.ttkRes(ttk,c); }
+  function portTxt(n){ return (Math.round(n)===n)?(n+' '+plural(n)):(fmt(Math.round(n*10)/10)+' порц.'); }
+  function lines(c,factor,seen){
+    var out=[];
+    (c.ings||[]).forEach(function(x){
+      if(x.p){ var sub=res(card(x.p)); if(!sub||seen.indexOf(x.p)>-1) return; var v=HIP.ttkVol(sub); if(!(v>0)||!(x.q>0)) return; lines(sub,factor*x.q/v,seen.concat([x.p])).forEach(function(r){ out.push(r); }); }
+      else out.push({n:x.n,q:x.q==null?null:x.q*factor,u:x.u||''});
+    });
+    return out;
+  }
+  function cardEl(c){
+    c=res(c);
+    var d=document.createElement('details'); d.className='card ttk'; d.style.setProperty('--dot',c.color||COLORS[0]); d.setAttribute('data-id',c.id);
+    if(c.season) d.setAttribute('data-tags','сезонный');
+    var prem=c.type==='premix', v=HIP.ttkVol(c), pn='';
+    if(prem&&v>0){ pn=' · '+volText(v)+(c.portions>0?' = '+portTxt(c.portions):''); d.setAttribute('data-base',Math.round(v)); }
+    var html='<summary class="card-head"><span class="card-name">'+esc(c.name)+(pn?'<span class="prep-note">'+esc(pn)+'</span>':'')+'</span>'+(c.season?'<span class="season-tag">Сезонный</span>':'')+'<span class="chev">⌄</span></summary><div class="card-content"><div class="card-content-inner">';
+    var badges=[]; if(prem&&v>0) badges.push('Объём '+fmt(Math.round(v))+'мл'); if(!prem&&c.out>0) badges.push('Выход '+fmt(c.out)+'мл'); (c.tags||[]).forEach(function(t){ badges.push(t); }); if(c.season) badges.push('Сезонный');
+    if(badges.length){ html+='<div class="badges">'+badges.map(function(b,i){ return '<span class="badge'+(c.season&&b==='Сезонный'?' season':'')+'">'+esc(b)+'</span>'; }).join('')+'</div>'; }
+    html+='<table class="ing-table"><thead><tr><th>Ингредиент</th><th>'+(prem?'На партию':'На порцию')+'</th></tr></thead><tbody>';
+    (c.ings||[]).forEach(function(x){
+      if(x.p){
+        var sub=res(card(x.p)); html+='<tr><td class="ing-name">Премикс «'+esc(sub?sub.name:x.n)+'»</td><td class="ing-amt">'+amt(x.q,'мл')+'</td></tr>';
+        var sv=sub?HIP.ttkVol(sub):0; if(sub&&sv>0&&x.q>0) lines(sub,x.q/sv,[c.id,x.p]).forEach(function(r){ html+='<tr class="tk-sub"><td class="ing-name">'+esc(r.n)+'</td><td class="ing-amt">'+amt(r.q,r.u)+'</td></tr>'; });
+      } else html+='<tr><td class="ing-name">'+esc(x.n)+'</td><td class="ing-amt">'+amt(x.q,x.u)+'</td></tr>';
+    });
+    html+='</tbody></table>';
+    if(prem&&c.sep&&c.sep.length) html+='<p class="card-note">Подают отдельно (на 1 порцию): '+c.sep.map(function(g){ return esc(g.n)+' — '+g.items.map(function(x){ return esc(x.n)+' '+amt(x.q,x.u); }).join(', '); }).join('; ')+'.</p>';
+    if(c.note) html+='<p class="card-note">'+esc(c.note).replace(/\n/g,'<br>')+'</p>';
+    html+='</div></div>';
+    d.innerHTML=html; return d;
+  }
+  function isLive(){ return !!(ttk.published||(HIP.isAdmin()&&preview)); }
+  function renderLive(){
+    Array.prototype.forEach.call(document.querySelectorAll('details.card.ttk, .ttk-empty, #tkPrev'),function(n){ n.parentNode.removeChild(n); });
+    var live=isLive(); document.body.classList.toggle('ttk-live',live);
+    ORDER.forEach(function(t){
+      var panel=document.querySelector('.demo-panel[data-cat="'+PANEL[t]+'"]'); if(!panel) return;
+      var n=panel.querySelector('.cat-head .n'); if(n&&!n.hasAttribute('data-orig')) n.setAttribute('data-orig',n.textContent);
+      panel.classList.remove('ttk-none');
+      if(!live){ if(n) n.textContent=n.getAttribute('data-orig'); return; }
+      var list=ttk.cards.filter(function(c){ return c.type===t; }), ref=panel.querySelector('.scale-btn');
+      list.forEach(function(c,i){ var e=cardEl(c); if(i===0) e.classList.add('ttk-first'); if(ref) panel.insertBefore(e,ref); else panel.appendChild(e); });
+      if(!list.length){ panel.classList.add('ttk-none'); var p=el('p','cat-note ttk-empty','Пока нет карточек.'); if(ref) panel.insertBefore(p,ref); else panel.appendChild(p); }
+      if(n) n.textContent=list.length;
+    });
+    if(HIP.isAdmin()&&!ttk.published){
+      var b=el('div','scale-banner'); b.id='tkPrev';
+      if(live){ b.appendChild(el('span','','Предпросмотр: так карточки увидит персонал после публикации.')); var x=el('button','','Выйти'); x.type='button'; x.addEventListener('click',function(){ preview=false; renderLive(); }); b.appendChild(x); }
+      else { b.appendChild(el('span','','Только для админа: персонал пока видит старые карточки. Новые не опубликованы.')); var y=el('button','','Редактор'); y.type='button'; y.addEventListener('click',function(){ var o=$('tkOpen'); if(o) o.click(); }); b.appendChild(y); }
+      var m=$('app'); m.insertBefore(b,m.firstChild);
+    }
+    if(window.__tkAcc) window.__tkAcc(); if(window.__tkScale) window.__tkScale(); if(window.__tkSearch) window.__tkSearch();
+  }
+
+  // ---------- редактор (только админ) ----------
+  var T=$('tk'); if(!T){ renderLive(); return; }
+  document.documentElement.appendChild(T);   // вне body: body прячется, пока открыт редактор
+  var SC=$('tkSc'), BODY=$('tkBody'), DOCK=$('tkDock'), SAVE=$('tkSave'), TITLE=$('tkTitle');
+  var layer=0, pushed=0, selfPop=false, anim=null, st=null, draft=null, isNew=false, saving=false, rowsBox=null, addBtnEl=null, prevBox=null, msgBox=null, pickBox=null, pickIn=null, pickRes=null;
+  var MS=300, EASE='cubic-bezier(.32,.72,0,1)', SHADOW='-12px 0 32px rgba(0,0,0,.45)';
+  function reduce(){ return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function reset(){ T.style.transition=''; T.style.transform=''; T.style.boxShadow=''; }
+  function settle(){ if(anim){ var f=anim; anim=null; clearTimeout(f.t); f.fin(); } }
+  function lock(){ document.documentElement.classList.toggle('sp-lock',layer>0); }
+  function slideIn(){
+    settle(); T.hidden=false; var b=document.body;
+    if(reduce()){ b.style.visibility='hidden'; return; }
+    b.style.visibility=''; T.style.transition='none'; T.style.transform='translateX(100%)'; T.style.boxShadow=SHADOW; void T.offsetHeight;
+    var f={fin:function(){ reset(); b.style.visibility='hidden'; }}; anim=f; f.t=setTimeout(function(){ if(anim===f){ anim=null; f.fin(); } },MS+40);
+    requestAnimationFrame(function(){ if(anim!==f) return; T.style.transition='transform '+MS+'ms '+EASE; T.style.transform='translateX(0)'; });
+  }
+  function slideOut(){
+    settle(); var b=document.body;
+    function end(){ T.hidden=true; reset(); b.style.visibility=''; lock(); }
+    if(reduce()){ end(); return; }
+    b.style.visibility=''; T.style.transition='none'; T.style.transform='translateX(0)'; T.style.boxShadow=SHADOW; void T.offsetHeight;
+    var f={fin:end}; anim=f; f.t=setTimeout(function(){ if(anim===f){ anim=null; f.fin(); } },MS+40);
+    requestAnimationFrame(function(){ if(anim!==f) return; T.style.transition='transform '+MS+'ms '+EASE; T.style.transform='translateX(100%)'; });
+  }
+  function uiBack(){ if(pushed>0){ pushed--; selfPop=true; try{ history.back(); return; }catch(e){ selfPop=false; } } pop(); }
+  function pop(){ if(layer===2){ layer=1; showList(); } else if(layer===1){ layer=0; slideOut(); } }
+  window.addEventListener('popstate',function(){ if(!selfPop&&pushed>0) pushed--; selfPop=false; pop(); });
+  $('tkBack').addEventListener('click',uiBack);
+
+  // позиции из остатков
+  function stockOpts(){
+    var out=[], it=(st&&st.baseline&&st.baseline.items)||{}, hid=(st&&st.hidden)||{};
+    Object.keys(it).map(function(c){ return [c,it[c]]; }).sort(function(a,b){ return (a[1].o||0)-(b[1].o||0); }).forEach(function(p){
+      var c=p[0], x=p[1];
+      if(x.sub&&x.sub.length) x.sub.forEach(function(s){ var k=c+'::'+s.n; if(!hid[k]) out.push({k:k,n:x.n+' · '+s.n,u:x.u,g:x.g}); });
+      else if(!hid[c]) out.push({k:c,n:x.n,u:x.u,g:x.g});
+    });
+    return out;
+  }
+  function stockMap(){ var m={}; stockOpts().forEach(function(o){ m[o.k]=o; }); return m; }
+  function runit(u){ return u==='л'?'мл':(u==='кг'?'г':'шт'); }
+  function loadStock(){
+    HIP.read().then(function(s){ st=s; if(layer===1) showList(); else if(layer===2){ renderRows(); renderPrev(); pickResults(); } }).catch(function(){});
+  }
+  function usedBy(id){ return ttk.cards.filter(function(c){ return c.id!==id&&((HIP.ttkSrcs(c)||[]).some(function(r){ return r.c===id; })||(c.ings||[]).some(function(x){ return x.p===id; })); }); }
+  function dependsOn(id,target,seen){ // есть ли в рецепте id (прямо или через премиксы) ссылка на target
+    seen=seen||[]; if(seen.indexOf(id)>-1) return false; seen.push(id); var c=id===draft.id?draft:card(id); if(!c) return false;
+    if((HIP.ttkSrcs(c)||[]).some(function(r){ return r.c&&(r.c===target||dependsOn(r.c,target,seen)); })) return true;
+    return (c.ings||[]).some(function(x){ return x.p&&(x.p===target||dependsOn(x.p,target,seen)); });
+  }
+  function uid(){ return 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
+
+  // ----- список -----
+  function showList(){
+    layer=1; draft=null; DOCK.hidden=true; TITLE.textContent='Редактор ТТК'; BODY.innerHTML='';
+    var smap=st?stockMap():null, n=ttk.cards.length;
+    var box=el('div','tk-st'); BODY.appendChild(box);
+    if(ttk.published){
+      box.appendChild(el('div','',n?'Сейчас персонал видит новые карточки ('+n+'). Старые скрыты.':'Старые карточки скрыты. Новых пока нет, поэтому у персонала разделы пустые.'));
+      var off=el('button','sp-chip','Снять с публикации'); off.type='button'; off.style.marginTop='10px';
+      off.addEventListener('click',function(){ setPub(false,off); }); box.appendChild(off);
+    } else {
+      box.appendChild(el('div','',(n?'Пока персонал видит старые карточки. Новые — только у тебя. ':'Здесь пока пусто. Начни с премиксов, потом коктейли смогут на них ссылаться. Персонал пока видит старые карточки. ')+'Нажми «Опубликовать» — старые скроются у всех'+(n?'.':', даже если новых ещё нет (разделы будут пустыми).')));
+      var row=el('div','sp-chips'); row.style.marginTop='10px';
+      if(n){ var pv=el('button','sp-chip','Посмотреть как у персонала'); pv.type='button'; pv.addEventListener('click',function(){ preview=true; renderLive(); uiBack(); }); row.appendChild(pv); }
+      var pub=el('button','sp-chip on','Опубликовать'); pub.type='button'; var armed=false;
+      pub.addEventListener('click',function(){ if(!armed){ armed=true; pub.textContent='Точно? Старые карточки скроются'; return; } setPub(true,pub); });
+      row.appendChild(pub); box.appendChild(row);
+    }
+    var add=el('div','tk-add'); BODY.appendChild(add);
+    TYPES.forEach(function(t){ var b=el('button','sp-chip','+ '+t[1]); b.type='button'; b.addEventListener('click',function(){ showEdit({id:uid(),type:t[0],name:'',color:COLORS[(ttk.cards.length)%COLORS.length],ings:[],tags:[],note:''},true); }); add.appendChild(b); });
+    ORDER.forEach(function(t){
+      var list=ttk.cards.filter(function(c){ return c.type===t; }); if(!list.length) return;
+      BODY.appendChild(el('div','sp-h',TNAME[t]+' · '+list.length));
+      list.forEach(function(c){
+        var warn=[], free=0; (c.ings||[]).forEach(function(x){ if(x.k){ if(smap&&!smap[x.k]) warn.push(x.n); } else if(x.p){ if(!card(x.p)) warn.push('премикс'); } else free++; });
+        var b=el('button','sp-row'); b.type='button'; b.style.borderLeft='3px solid '+(c.color||COLORS[0]);
+        var nm=el('span','sp-n',c.name||'(без названия)'); b.appendChild(nm);
+        var rcc=HIP.ttkRes(ttk,c), sl=HIP.ttkSrcs(c), g=el('span','sp-g',(sl?'из ТТК: '+sl.map(function(r){ var q=card(r.c); return q?q.name:'?'; }).join(' + ')+(rcc.portions>0?' · '+portTxt(rcc.portions):''):(c.ings||[]).length+' ингр.')+(free?' · '+free+' без привязки':'')); if(warn.length){ g.textContent+=' · ⚠ нет в остатках: '+warn.length; g.style.color='#E0A458'; }
+        b.appendChild(g); b.addEventListener('click',function(){ showEdit(JSON.parse(JSON.stringify(c)),false); }); BODY.appendChild(b);
+      });
+    });
+    if(!st) BODY.appendChild(el('p','sp-hint','Загружаю список позиций из остатков…'));
+    else if(!st.baseline) BODY.appendChild(el('p','sp-hint','Остатки ещё не отправлены (инвента бар): привязывать ингредиенты будет не к чему, пока их нет.'));
+  }
+  function setPub(v,btn){
+    btn.disabled=true; var old=btn.textContent; btn.textContent='Сохраняю…';
+    HIP.update(function(t){ t.published=!!v; return t; },PATH).then(function(r){ ttk=r; if(!ttk.cards) ttk.cards=[]; preview=false; renderLive(); if(layer===1) showList(); })
+    .catch(function(e){ btn.disabled=false; btn.textContent=old; var m=el('div','sp-msg err',(e&&e.message)||'Не получилось сохранить.'); BODY.insertBefore(m,BODY.firstChild); });
+  }
+
+  // ----- редактор карточки -----
+  function showMsg(t,err){ if(!msgBox) return; msgBox.textContent=t||''; msgBox.className='sp-msg'+(err?' err':''); msgBox.hidden=!t; if(t) SC.scrollTop=0; }
+  function keep(fn){ var y=SC.scrollTop; fn(); if(SC.scrollTop!==y) SC.scrollTop=y; }   // перерисовка не должна сбрасывать прокрутку
+  function field(label,node){ var w=el('div','tk-f'); if(label) w.appendChild(el('label','sp-lbl',label)); w.appendChild(node); return w; }
+  function textIn(val,ph,fn){ var i=el('input','sp-in'); i.type='text'; i.value=val||''; i.placeholder=ph||''; i.autocomplete='off'; i.addEventListener('input',function(){ fn(i.value); }); return i; }
+  function showEdit(c,fresh){
+    var from=layer; layer=2; draft=c; isNew=!!fresh; if(typeof draft.src==='string'){ draft.srcs=HIP.ttkSrcs(draft); delete draft.src; delete draft.water; } saving=false; if(!draft.ings) draft.ings=[]; if(!draft.tags) draft.tags=[];
+    if(from===1){ try{ history.pushState({tk:2},''); pushed++; }catch(e){} }
+    TITLE.textContent=fresh?'Новая карточка':'Карточка'; BODY.innerHTML=''; DOCK.hidden=false; SAVE.disabled=false; SAVE.textContent='Сохранить'; SC.scrollTop=0;
+    msgBox=el('div','sp-msg'); msgBox.hidden=true; BODY.appendChild(msgBox);
+    BODY.appendChild(field('Название',textIn(draft.name,'Например: Грузинский лонг',function(v){ draft.name=v; })));
+    // тип
+    var tp=el('div','sp-chips'); TYPES.forEach(function(t){ var b=el('button','sp-chip'+(draft.type===t[0]?' on':''),t[1]); b.type='button';
+      b.addEventListener('click',function(){ if(draft.type==='premix'&&t[0]!=='premix'&&usedBy(draft.id).length){ showMsg('Этот премикс уже используется в «'+usedBy(draft.id)[0].name+'», тип менять нельзя.',true); return; }
+        draft.type=t[0]; Array.prototype.forEach.call(tp.children,function(x,i){ x.classList.toggle('on',TYPES[i][0]===draft.type); }); syncMode(); renderRows(); renderPrev(); });
+      tp.appendChild(b); }); BODY.appendChild(field('Тип',tp));
+    // премикс: как делаем
+    var premBox=el('div','tk-f');
+    var md=el('div','sp-chips'), mb1=el('button','sp-chip','Вручную'), mb2=el('button','sp-chip','Из коктейля'); mb1.type=mb2.type='button'; md.appendChild(mb1); md.appendChild(mb2);
+    premBox.appendChild(field('Как считаем премикс',md));
+    function setMode(der){ if(der){ if(!Array.isArray(draft.srcs)) draft.srcs=[{c:'',x:1,wm:'none'}]; if(!draft.make) draft.make={by:'v',x:draft.vol||1000}; } else delete draft.srcs; syncMode(); renderPrev(); }
+    mb1.addEventListener('click',function(){ setMode(false); }); mb2.addEventListener('click',function(){ setMode(true); });
+    // вручную
+    var manBox=el('div','tk-f');
+    var vi=textIn(draft.vol?fmt(draft.vol):'','1000',function(v){ var x=HIP.parse(v); draft.vol=x>0?x:null; renderPrev(); }); vi.inputMode='decimal';
+    var pi=textIn(draft.portions?String(draft.portions):'','например 5',function(v){ var x=parseInt(v,10); draft.portions=x>0?x:null; }); pi.inputMode='numeric';
+    manBox.appendChild(field('Выход партии, мл',vi));
+    var fl=el('div','sp-chips'), fb=el('button','sp-chip'+(draft.fill?' on':''),'Долить водой до выхода'); fb.type='button'; fb.addEventListener('click',function(){ draft.fill=!draft.fill; fb.classList.toggle('on',draft.fill); renderPrev(); }); fl.appendChild(fb); manBox.appendChild(fl);
+    manBox.appendChild(field('Порций в партии (необязательно)',pi));
+    premBox.appendChild(manBox);
+    // из коктейля (можно несколько версий: например 350 и 1000 мл)
+    var derBox=el('div','tk-f');
+    var srcBox=el('div','tk-srcs'); derBox.appendChild(field('Из каких ТТК считаем (на 1 порцию)',srcBox));
+    var addSrc=el('button','sp-add','+ Ещё версия (например 1000 мл)'); addSrc.type='button'; addSrc.addEventListener('click',function(){ keep(function(){ draft.srcs.push({c:'',x:1,wm:'none'}); renderSrcs(); }); renderPrev(); }); derBox.appendChild(addSrc);
+    function fillSel(sel,val){ sel.innerHTML=''; var o0=el('option','','— выбери коктейль или сет —'); o0.value=''; sel.appendChild(o0);
+      ttk.cards.forEach(function(c){ if(c.type==='premix'||c.id===draft.id||dependsOn(c.id,draft.id)) return; var o=el('option','',(c.type==='set'?'Сет · ':'')+c.name); o.value=c.id; sel.appendChild(o); });
+      sel.value=val||''; }
+    function numIn(val,ph,fn){ var i=el('input'); i.type='text'; i.inputMode='decimal'; i.autocomplete='off'; i.placeholder=ph; i.value=val>0?fmt(val):''; i.addEventListener('input',function(){ var x=HIP.parse(i.value); fn(x>0?x:0); renderPrev(); }); return i; }
+    function renderSrcs(){
+      srcBox.innerHTML=''; var by=(draft.make&&draft.make.by)||'v', tt={cards:ttk.cards.filter(function(c){ return c.id!==draft.id; }).concat([draft])};
+      draft.srcs.forEach(function(r,idx){
+        if(!r.wm) r.wm=r.w>0?'own':'none';
+        var w=el('div','tk-src'), sel=el('select','sp-in'); sel.setAttribute('aria-label','ТТК-основа'); fillSel(sel,r.c);
+        sel.addEventListener('change',function(){ r.c=sel.value; var sc=card(r.c), pt1=sc?HIP.ttkPortion({cards:ttk.cards},{c:r.c}):null; if(pt1&&sc.out>0&&r.wm==='none'&&!pt1.sep.some(function(x){ return x.p||x.u==='мл'; })) r.wm='out'; keep(renderSrcs); renderPrev(); }); w.appendChild(sel);
+        var ln=el('div','tk-src-r');
+        var a=el('label','',by==='n'?'порций':'доля'), xi=numIn(r.x,'1',function(v){ r.x=v; }); a.appendChild(xi); ln.appendChild(a);
+        if(draft.srcs.length>1){ var rm=el('button','mv','×'); rm.type='button'; rm.setAttribute('aria-label','Убрать версию'); rm.addEventListener('click',function(){ keep(function(){ draft.srcs.splice(idx,1); renderSrcs(); }); renderPrev(); }); ln.appendChild(rm); }
+        w.appendChild(ln);
+        // вода
+        var wl=el('div','tk-wl','Вода вместо растаявшего льда'); w.appendChild(wl);
+        var wc=el('div','sp-chips'); [['out','по выходу ТТК'],['none','без воды'],['own','своя, мл']].forEach(function(m){ var b=el('button','sp-chip'+(r.wm===m[0]?' on':''),m[1]); b.type='button'; b.addEventListener('click',function(){ r.wm=m[0]; keep(renderSrcs); renderPrev(); }); wc.appendChild(b); }); w.appendChild(wc);
+        if(r.wm==='own'){ var wi=numIn(r.w,'мл на порцию',function(v){ r.w=v; }); wi.className='tk-wi'; w.appendChild(wi); }
+        var pt=r.c?HIP.ttkPortion(tt,r):null, h='';
+        if(pt){
+          if(r.wm==='out'){ h=pt.card.out>0?(pt.w>0?'Вода: '+fmt(pt.w)+' мл на порцию (выход ТТК '+fmt(pt.card.out)+' − ингредиенты '+fmt(Math.round(pt.mlAll*10)/10)+').':'Выход ТТК не больше суммы ингредиентов, воды не будет.'):'В этой ТТК не указан выход: открой её и впиши «Выход после шейка».'; }
+          if(pt.sep.length) h+=(h?' ':'')+'Отдельно, не в бутылку: '+pt.sep.map(function(x){ return x.n; }).join(', ')+'.';
+        }
+        if(h) w.appendChild(el('p','sp-hint',h));
+        srcBox.appendChild(w);
+      });
+    }
+    var mk=el('div','sp-chips'), m1=el('button','sp-chip','по порциям'), m2=el('button','sp-chip','по объёму, мл'); mk.type='button'; m1.type=m2.type='button'; mk.appendChild(m1); mk.appendChild(m2);
+    var xi=textIn('','',function(v){ var x=HIP.parse(v); draft.make=draft.make||{by:'v',x:0}; draft.make.x=x>0?x:0; renderPrev(); }); xi.inputMode='decimal';
+    function mkSync(){ var by=(draft.make&&draft.make.by)||'v'; m1.classList.toggle('on',by==='n'); m2.classList.toggle('on',by==='v'); xi.hidden=by==='n'; xi.placeholder='например 1000'; }
+    function setBy(by){ draft.make=draft.make||{x:0}; draft.make.by=by; mkSync(); keep(renderSrcs); renderPrev(); }
+    m1.addEventListener('click',function(){ setBy('n'); }); m2.addEventListener('click',function(){ setBy('v'); });
+    derBox.appendChild(field('Сколько делаем',mk)); derBox.appendChild(xi);
+    derBox.appendChild(el('p','sp-hint','По порциям: ровно столько порций каждой версии. По объёму: версии делят общий объём по долям. Состав обновляется вместе с ТТК.'));
+    premBox.appendChild(derBox); BODY.appendChild(premBox);
+    function syncMode(){
+      var prem=draft.type==='premix', der=prem&&Array.isArray(draft.srcs);
+      outBox.hidden=prem; premBox.hidden=!prem; manBox.hidden=der; derBox.hidden=!der; mb1.classList.toggle('on',!der); mb2.classList.toggle('on',der);
+      if(compBox) compBox.hidden=der;
+      if(der){ mkSync(); renderSrcs(); if(document.activeElement!==xi) xi.value=(draft.make&&draft.make.x)?fmt(draft.make.x):''; }
+    }
+    var compBox=null;
+    // выход готового напитка (коктейль/сет)
+    var outBox=el('div','tk-f'); outBox.hidden=draft.type==='premix';
+    var oi=textIn(draft.out?fmt(draft.out):'','например 150',function(v){ var x=HIP.parse(v); draft.out=x>0?x:null; renderPrev(); }); oi.inputMode='decimal';
+    outBox.appendChild(field('Готовый выход после шейка, мл (необязательно)',oi)); outBox.appendChild(el('p','sp-hint','Нужен для премикса: вода = выход − жидкие ингредиенты. Лёд и газ-воду отмечай «отдельно».')); BODY.appendChild(outBox);
+    // цвет
+    var sw=el('div','tk-sw'); COLORS.forEach(function(col){ var b=el('button',draft.color===col?'on':''); b.type='button'; b.style.background=col; b.setAttribute('aria-label','Цвет'); b.addEventListener('click',function(){ draft.color=col; Array.prototype.forEach.call(sw.children,function(x){ x.classList.toggle('on',x===b); }); }); sw.appendChild(b); }); BODY.appendChild(field('Цвет метки',sw));
+    // состав
+    compBox=el('div'); BODY.appendChild(compBox);
+    compBox.appendChild(el('div','sp-h','Состав'));
+    rowsBox=el('div','tk-rows'); compBox.appendChild(rowsBox);
+    var addBtn=el('button','sp-add','+ Добавить в состав'); addBtn.type='button'; addBtn.style.marginTop='10px'; addBtnEl=addBtn;
+    addBtn.addEventListener('click',function(){ pickBox.hidden=false; addBtn.hidden=true; pickIn.value=''; pickResults(); focusNoJump(pickIn); }); compBox.appendChild(addBtn);
+    pickBox=el('div','tk-pick'); pickBox.hidden=true;
+    pickIn=el('input','sp-in'); pickIn.type='text'; pickIn.placeholder='Остатки, премикс или свой'; pickIn.autocomplete='off'; pickIn.addEventListener('input',pickResults);
+    pickRes=el('div','tk-res'); var cl=el('button','sp-link','Закрыть поиск'); cl.type='button'; cl.addEventListener('click',function(){ keep(function(){ pickBox.hidden=true; addBtn.hidden=false; }); });
+    pickBox.appendChild(pickIn); pickBox.appendChild(pickRes); pickBox.appendChild(cl); compBox.appendChild(pickBox);
+    prevBox=el('div','tk-pv'); BODY.appendChild(prevBox);
+    syncMode();
+    // метки, сезон, заметка
+    BODY.appendChild(field('Метки (через запятую)',textIn((draft.tags||[]).join(', '),'Шейк со льдом, Бокал Шале',function(v){ draft.tags=v.split(',').map(function(x){ return x.trim(); }).filter(Boolean); })));
+    var sz=el('div','sp-chips'); var sb=el('button','sp-chip'+(draft.season?' on':''),'Сезонный'); sb.type='button'; sb.addEventListener('click',function(){ draft.season=!draft.season; sb.classList.toggle('on',draft.season); }); sz.appendChild(sb); BODY.appendChild(sz);
+    var ta=el('textarea','sp-in tk-ta'); ta.rows=4; ta.value=draft.note||''; ta.placeholder='Подача: как собрать, какой бокал, чем украсить'; ta.addEventListener('input',function(){ draft.note=ta.value; }); BODY.appendChild(field('Подача и заметки',ta));
+    // действия
+    var act=el('div','tk-acts'); BODY.appendChild(act);
+    if(!fresh){
+      var cp=el('button','sp-chip','Сделать копию'); cp.type='button'; cp.addEventListener('click',function(){ var n=JSON.parse(JSON.stringify(draft)); n.id=uid(); n.name=(n.name||'')+' (копия)'; showEdit(n,true); });
+      var dl=el('button','sp-chip','Удалить'); dl.type='button'; var armed=false;
+      dl.addEventListener('click',function(){
+        var u=usedBy(draft.id); if(u.length){ showMsg('Нельзя удалить: премикс используется в «'+u.map(function(x){ return x.name; }).join('», «')+'». Сначала убери его оттуда.',true); return; }
+        if(!armed){ armed=true; dl.textContent='Точно удалить?'; dl.classList.add('on'); return; }
+        dl.disabled=true; var id=draft.id;
+        HIP.update(function(t){ t.cards=(t.cards||[]).filter(function(x){ return x.id!==id; }); return t; },PATH).then(function(r){ ttk=r; renderLive(); uiBack(); }).catch(function(e){ dl.disabled=false; showMsg((e&&e.message)||'Не получилось удалить.',true); });
+      });
+      act.appendChild(cp); act.appendChild(dl);
+    }
+    renderRows(); renderPrev();
+    if(fresh) setTimeout(function(){ var f=BODY.querySelector('input.sp-in'); if(f) try{ f.focus({preventScroll:true}); }catch(e){ f.focus(); } },320);
+  }
+  function renderRows(){ keep(renderRows0); }
+  function renderRows0(){
+    if(!rowsBox) return; rowsBox.innerHTML=''; var smap=st?stockMap():null;
+    if(!draft.ings.length) rowsBox.appendChild(el('p','sp-hint','Пока пусто. Нажми «Добавить в состав» и найди позицию из остатков.'));
+    draft.ings.forEach(function(x,i){
+      var r=el('div','tk-ing'), t=el('div','t'); t.appendChild(document.createTextNode(x.p?'Премикс «'+((card(x.p)||{}).name||x.n)+'»':x.n));
+      var sm=el('small'); if(x.k){ var o=smap&&smap[x.k]; sm.textContent=smap?(o?o.g+' · из остатков':'⚠ нет в остатках, спишется только после отправки инвенты'):'из остатков'; if(smap&&!o) sm.style.color='#E0A458'; }
+      else if(x.p){ sm.textContent=card(x.p)?'премикс · списывает его состав пропорционально':'⚠ премикс удалён'; if(!card(x.p)) sm.style.color='#E0A458'; }
+      else sm.textContent='без привязки · на остатки не влияет'; t.appendChild(sm);
+      if(draft.type!=='premix'){ var pm=el('button','tk-pm'+(x.nop?' off':''),x.nop?'✕ отдельно, не в премикс':'✓ идёт в премикс'); pm.type='button'; pm.addEventListener('click',function(){ x.nop=x.nop?0:1; pm.textContent=x.nop?'✕ отдельно, не в премикс':'✓ идёт в премикс'; pm.classList.toggle('off',!!x.nop); renderPrev(); }); t.appendChild(pm); }
+      r.appendChild(t);
+      var inp=el('input'); inp.type='text'; inp.inputMode='decimal'; inp.autocomplete='off'; inp.placeholder='0'; inp.value=x.q==null?'':fmt(x.q); inp.setAttribute('aria-label','Количество');
+      inp.addEventListener('input',function(){ var v=HIP.parse(inp.value); x.q=(v!=null&&v>=0)?v:null; inp.classList.toggle('bad',inp.value.trim()!==''&&v==null); renderPrev(); }); r.appendChild(inp);
+      if(!x.k&&!x.p){ var ub=el('button','u',x.u||'мл'); ub.type='button'; ub.addEventListener('click',function(){ x.u=UNITS[(UNITS.indexOf(x.u||'мл')+1)%UNITS.length]; ub.textContent=x.u; }); r.appendChild(ub); }
+      else r.appendChild(el('span','u',x.p?'мл':x.u));
+      if(i>0){ var up=el('button','mv','↑'); up.type='button'; up.setAttribute('aria-label','Выше'); up.addEventListener('click',function(){ var a=draft.ings; var t2=a[i-1]; a[i-1]=a[i]; a[i]=t2; renderRows(); }); r.appendChild(up); }
+      var rm=el('button','mv','×'); rm.type='button'; rm.setAttribute('aria-label','Убрать'); rm.addEventListener('click',function(){ draft.ings.splice(i,1); renderRows(); renderPrev(); }); r.appendChild(rm);
+      rowsBox.appendChild(r);
+    });
+  }
+  function renderPrev(){ keep(renderPrev0); }
+  function renderPrev0(){
+    if(!prevBox) return; prevBox.innerHTML='';
+    var others=ttk.cards.filter(function(c){ return c.id!==draft.id; }), t={cards:others.concat([draft])};
+    if(draft.type==='premix'){
+      var rc=HIP.ttkRes(t,draft), v=HIP.ttkVol(rc), der=Array.isArray(draft.srcs);
+      prevBox.appendChild(el('div','sp-h','Расчёт партии'));
+      if(der&&!draft.srcs.some(function(r){ return r.c; })){ prevBox.appendChild(el('p','sp-hint','Выбери ТТК, из которой считаем.')); return; }
+      if(der&&!(v>0)){ prevBox.appendChild(el('p','sp-hint','Укажи, сколько делаем (порций или мл); в выбранных ТТК должны быть ингредиенты в мл.')); return; }
+      var sum=0; (rc.ings||[]).forEach(function(x){ if(x.q>0&&(x.p||x.u==='мл')) sum+=x.q; });
+      (rc.ings||[]).forEach(function(x){ var l=el('div','tk-pl'); l.appendChild(el('span','',x.p?'Премикс «'+((card(x.p)||{}).name||x.n)+'»':x.n)); l.appendChild(el('b','',amt(x.q,x.p?'мл':x.u))); prevBox.appendChild(l); });
+      var tot=v>0?v:sum, tl=el('div','tk-pl tk-tot'); tl.appendChild(el('span','','Итого'+(rc.portions>0?' · '+portTxt(rc.portions):''))); tl.appendChild(el('b','',tot>0?fmt(Math.round(tot*10)/10)+'мл':'—')); prevBox.appendChild(tl);
+      if(!der&&draft.vol>0&&!draft.fill&&sum>0&&Math.abs(sum-draft.vol)>1) prevBox.appendChild(el('p','sp-hint','Сумма жидких частей '+fmt(Math.round(sum*10)/10)+' мл, а выход '+fmt(draft.vol)+' мл. Включи «Долить водой до выхода», чтобы разницу добавить водой.'));
+      if(der&&draft.srcs.filter(function(r){ return r.c&&r.x>0; }).length>1&&v>0){
+        // насколько общий состав «врёт» для каждой версии, если брать из общей бутылки
+        var shares={}; (rc.ings||[]).forEach(function(x){ if(x.q>0&&!(x.n==='Вода'&&!x.k&&!x.p)) shares[x.k?'k:'+x.k:(x.p?'p:'+x.p:'n:'+x.n+'|'+x.u)]=x.q/v; });
+        var info=[]; draft.srcs.forEach(function(r){ var sc=card(r.c); if(!sc||!(r.x>0)) return; var pt0=HIP.ttkPortion(t,r), per=pt0?pt0.per:[], unit=pt0?pt0.unit:0;
+          var bad=[]; per.forEach(function(x){ var key=x.k?'k:'+x.k:(x.p?'p:'+x.p:'n:'+x.n+'|'+x.u), got=(shares[key]||0)*unit, d=(got-x.q)/x.q*100; if(Math.abs(d)>=1) bad.push(x.n+' '+(d>0?'+':'−')+Math.round(Math.abs(d))+'%'); });
+          info.push('«'+sc.name+'»: '+(bad.length?bad.join(', '):'совпадает с ТТК')); });
+        prevBox.appendChild(el('p','sp-hint','Если наливать из общей бутылки, состав порции отличается от её ТТК так: '+info.join('; ')+'.'));
+      }
+      return;
+    }
+    var ex=HIP.ttkExpand(t,draft.id,1).filter(function(r){ return !r.free; });
+    if(!ex.length) return;
+    prevBox.appendChild(el('div','sp-h','Спишется со склада при 1 продаже'));
+    var merged={}, order=[]; ex.forEach(function(r){ if(!merged[r.k]){ merged[r.k]={n:r.n,q:0,u:r.u}; order.push(r.k); } merged[r.k].q+=r.q; });
+    order.forEach(function(k){ var m=merged[k], l=el('div','tk-pl'); l.appendChild(el('span','',m.n)); l.appendChild(el('b','',amt(m.q,m.u))); prevBox.appendChild(l); });
+  }
+  function pickResults(){ keep(pickResults0); }
+  function pickResults0(){
+    if(!pickRes) return; pickRes.innerHTML=''; var raw=pickIn.value.trim(), q=norm(raw).split(/\s+/).filter(Boolean);
+    if(!q.length){ pickRes.appendChild(el('p','sp-hint','Начни вводить название.')); return; }
+    var n=0;
+    function row(name,side,fn){ var b=el('button','sp-row'); b.type='button'; b.appendChild(el('span','sp-n',name)); b.appendChild(el('span','sp-g',side)); b.addEventListener('click',fn); pickRes.appendChild(b); n++; }
+    ttk.cards.forEach(function(c){
+      if(c.type!=='premix'||c.id===draft.id||dependsOn(c.id,draft.id)) return;
+      var hay=norm(c.name); if(!q.every(function(x){ return hay.indexOf(x)>-1; })) return;
+      row(c.name,'премикс',function(){ addIng({p:c.id,n:c.name,u:'мл',q:null}); });
+    });
+    if(st&&st.baseline){ var c2=0; stockOpts().forEach(function(o){ if(c2>=30) return; var hay=norm(o.n+' '+o.g); if(!q.every(function(x){ return hay.indexOf(x)>-1; })) return; c2++; row(o.n,o.g+' · '+o.u,function(){ addIng({k:o.k,n:o.n,u:runit(o.u),q:null}); }); }); }
+    else pickRes.appendChild(el('p','sp-hint',st?'Остатки ещё не отправлены — можно добавить только свой ингредиент или премикс.':'Загружаю остатки…'));
+    var fb=el('button','sp-row'); fb.type='button'; fb.appendChild(el('span','sp-n','Без привязки: «'+raw+'»')); fb.appendChild(el('span','sp-g','не списывается')); fb.addEventListener('click',function(){ addIng({n:raw,u:/л[её]д|ice/i.test(raw)?'г':'мл',q:null,nop:1}); }); pickRes.appendChild(fb);
+  }
+  // фокус без прыжка страницы: сдвигаем прокрутку только если поле не видно (с запасом под кнопку «Сохранить»)
+  function focusNoJump(inp){
+    try{ inp.focus({preventScroll:true}); }catch(e){ inp.focus(); }
+    var r=inp.getBoundingClientRect(), top=SC.getBoundingClientRect().top+60, bottom=(window.innerHeight||700)-150;
+    if(r.bottom>bottom) SC.scrollTop+=r.bottom-bottom; else if(r.top<top) SC.scrollTop-=top-r.top;
+  }
+  function addIng(o){
+    var ex=-1; draft.ings.forEach(function(x,i){ if((o.k&&x.k===o.k)||(o.p&&x.p===o.p)) ex=i; });
+    keep(function(){
+      pickIn.value=''; pickBox.hidden=true; if(addBtnEl) addBtnEl.hidden=false;
+      if(ex<0){ draft.ings.push(o); ex=draft.ings.length-1; renderRows(); renderPrev(); }
+    });
+    var inputs=rowsBox.querySelectorAll('.tk-ing input'); if(inputs[ex]) focusNoJump(inputs[ex]);
+  }
+  function validate(){
+    if(!(draft.name||'').trim()) return 'Укажи название.';
+    if(draft.type==='premix'&&Array.isArray(draft.srcs)){ if(!draft.srcs.some(function(r){ return r.c&&r.x>0; })) return 'Выбери ТТК, из которой считаем, и укажи её долю или порции.'; if(draft.make&&draft.make.by==='v'&&!(draft.make.x>0)) return 'Укажи общий объём партии, мл.'; return ''; }
+    for(var i=0;i<draft.ings.length;i++){ var x=draft.ings[i]; if((x.k||x.p)&&!(x.q>0)) return 'Укажи количество: '+(x.p?'премикс «'+((card(x.p)||{}).name||x.n)+'»':x.n)+'.'; }
+    if(!draft.ings.length) return 'Добавь хотя бы один ингредиент.';
+    return '';
+  }
+  SAVE.addEventListener('click',function(){
+    if(saving||layer!==2) return; var er=validate(); if(er){ showMsg(er,true); return; }
+    var c={id:draft.id,type:draft.type,name:draft.name.trim(),color:draft.color||COLORS[0],ings:draft.ings.map(function(x){ var o={n:x.n,u:x.u,q:x.q}; if(x.k) o.k=x.k; if(x.p) o.p=x.p; if(x.nop&&draft.type!=='premix') o.nop=1; return o; })};
+    if(draft.type!=='premix'&&draft.out>0) c.out=draft.out;
+    if(draft.type==='premix'){
+      if(Array.isArray(draft.srcs)){ c.srcs=draft.srcs.filter(function(r){ return r.c&&r.x>0; }).map(function(r){ var o={c:r.c,x:r.x,wm:r.wm||'none'}; if(o.wm==='own') o.w=r.w>0?r.w:0; return o; }); c.ings=[]; c.make=(draft.make&&draft.make.by==='n')?{by:'n'}:{by:'v',x:(draft.make&&draft.make.x)||0}; }
+      else { if(draft.vol>0) c.vol=draft.vol; if(draft.portions>0) c.portions=draft.portions; if(draft.fill) c.fill=true; }
+    }
+    if(draft.tags&&draft.tags.length) c.tags=draft.tags; if(draft.season) c.season=true; if((draft.note||'').trim()) c.note=draft.note.trim();
+    saving=true; SAVE.disabled=true; SAVE.textContent='Сохраняю…'; showMsg('');
+    HIP.update(function(t){ t.cards=t.cards||[]; var i=-1; t.cards.forEach(function(x,j){ if(x.id===c.id) i=j; }); if(i<0) t.cards.push(c); else t.cards[i]=c; if(t.published==null) t.published=false; t.v=1; return t; },PATH)
+    .then(function(r){ ttk=r; if(!ttk.cards) ttk.cards=[]; saving=false; renderLive(); uiBack(); })
+    .catch(function(e){ saving=false; SAVE.disabled=false; SAVE.textContent='Сохранить'; showMsg((e&&e.message)||'Не получилось сохранить.',true); });
+  });
+  function open(){
+    if(layer) return;
+    if(!HIP.isAdmin()){ HIP.adminDialog(open); return; }
+    layer=1; lock(); showList(); loadStock(); slideIn(); SC.scrollTop=0;
+    try{ history.pushState({tk:1},''); pushed++; }catch(e){}
+  }
+  $('tkOpen').addEventListener('click',open);
+  var prevChange=HIP.onChange; HIP.onChange=function(){ if(typeof prevChange==='function') prevChange(); if(!HIP.isAdmin()){ preview=false; } renderLive(); };
+
+  renderLive();
+  HIP.read(PATH).then(function(d){ if(d){ ttk=d; if(!ttk.cards) ttk.cards=[]; } renderLive(); if(layer===1) showList(); }).catch(function(){});
 })();
 </script>
 </body>
